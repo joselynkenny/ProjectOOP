@@ -40,6 +40,30 @@
 #define IDB_BLUE                        163
 #define IDB_BITMAP3                     164
 #define IDB_RED                         164
+#define IDB_LOGOCANDY1                  165
+#define IDB_LOGOCANDY2                  166
+#define IDB_LOGOCANDY3                  167
+#define IDB_LOGOCANDY4                  168
+#define IDB_LOGOCANDY5                  169
+#define IDB_LOGOCANDY6                  170
+#define IDB_LOGOCANDY7                  171
+#define IDB_LOGOCANDY8                  172
+#define IDB_LOGOCANDY9                  173
+#define IDB_LOGOCANDY10                 174
+#define IDB_LOGOCANDY11                 175
+#define IDB_LOGOCANDY12                 176
+#define IDB_LOGOCANDY13                 177
+#define IDB_LOGOCANDY14                 178
+#define IDB_LOGOCANDY15                 179
+#define IDB_LOGOCANDY16                 180
+#define IDB_LOGOCANDY17                 181
+#define IDB_LOGOCANDY18                 182
+#define IDB_LOGOCANDY19                 183
+#define IDB_LOGOCANDY20                 184
+#define IDB_LOGOCANDY21                 185
+#define IDB_LOGOCANDY22                 186
+#define IDB_LOGOCANDY23                 187
+#define IDB_BITMAP4                     188
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -52,7 +76,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        165
+#define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

@@ -203,6 +203,11 @@ void CAnimation::Reset()
 	bmp_counter = 0;
 }
 
+void CAnimation::SetCycle(bool cycle)
+{
+	this->cycle = cycle;
+}
+
 void CAnimation::SetDelayCount(int dc)
 {
 	GAME_ASSERT(dc > 0, "CAnimation: Delay count must be >= 1");
