@@ -71,6 +71,8 @@ namespace game_framework {
 	private:
 		CMovingBitmap BackgroundMenu;								// csieªºlogo
 		CAnimation LogoCandy;
+		CAnimation LogoTiffy;
+		CAnimation LogoToffee;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
