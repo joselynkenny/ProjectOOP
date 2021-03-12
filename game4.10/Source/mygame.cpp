@@ -72,12 +72,26 @@ CGameStateInit::CGameStateInit(CGame *g)
 void CGameStateInit::OnInit()
 {
 	ShowInitProgress(0);	
+	//BackgroundMenu
 	BackgroundMenu.LoadBitmap("Bitmaps\\InitBackground.bmp");
+
+	//LogoCandy
+	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,
+		IDB_LOGOCANDY9, IDB_LOGOCANDY10, IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16,
+		IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20 ,IDB_LOGOCANDY19, IDB_LOGOCANDY18, IDB_LOGOCANDY17, IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14, IDB_LOGOCANDY13, IDB_LOGOCANDY12,
+		IDB_LOGOCANDY11, IDB_LOGOCANDY10, IDB_LOGOCANDY9, IDB_LOGOCANDY8, IDB_LOGOCANDY7, IDB_LOGOCANDY6, IDB_LOGOCANDY5, IDB_LOGOCANDY4,
+		IDB_LOGOCANDY3, IDB_LOGOCANDY2, IDB_LOGOCANDY1 };
+	for (int i = 0; i < 38; i++) {
+		LogoCandy.AddBitmap(LogoCandy_list[i], RGB(255, 255, 255));
+	}
+	LogoCandy.SetDelayCount(1);
+	LogoCandy.SetCycle(false);
 	Sleep(300);				
 }
 
 void CGameStateInit::OnBeginState()
 {
+
 }
 
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -95,6 +109,9 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 	GotoGameState(GAME_STATE_RUN);		// ¤Á´«¦ÜGAME_STATE_RUN
 }
 
+void CGameStateInit::OnMove() {
+	LogoCandy.OnMove();
+}
 void CGameStateInit::OnShow()
 {
 	//BackgroundMenu
@@ -102,13 +119,8 @@ void CGameStateInit::OnShow()
 	BackgroundMenu.ShowBitmap();
 
 	//LogoCandy
-	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,
-		IDB_LOGOCANDY9, IDB_LOGOCANDY10, IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16,
-		IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20 };
-	for (int i = 0; i < 20; i++) {
-		LogoCandy.AddBitmap(LogoCandy_list[i], RGB(255, 255, 255));
-	}
-	LogoCandy.SetDelayCount(1);
+	LogoCandy.SetTopLeft(250, -50);
+	LogoCandy.OnShow();
 	//LogoCandy.SetCycle(false);
 
 

@@ -67,6 +67,7 @@ namespace game_framework {
 		void OnLButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 	protected:
 		void OnShow();									// 顯示這個狀態的遊戲畫面
+		void OnMove();
 	private:
 		CMovingBitmap BackgroundMenu;								// csie的logo
 		CAnimation LogoCandy;
