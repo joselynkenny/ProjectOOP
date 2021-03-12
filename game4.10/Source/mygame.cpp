@@ -71,9 +71,19 @@ CGameStateInit::CGameStateInit(CGame *g)
 
 void CGameStateInit::OnInit()
 {
-	ShowInitProgress(0);	
-	logo.LoadBitmap(IDB_BACKGROUND);
-	Sleep(300);				
+	//
+	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
+	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
+	//
+	ShowInitProgress(0);	// 一開始的loading進度為0%
+	//
+	// 開始載入資料
+	//
+	logo.LoadBitmap("Bitmaps\\InitBackground.bmp");
+	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
+	//
+	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
+	//
 }
 
 void CGameStateInit::OnBeginState()
@@ -100,7 +110,7 @@ void CGameStateInit::OnShow()
 	//
 	// 貼上logo
 	//
-	logo.SetTopLeft((SIZE_X - logo.Width())/2, SIZE_Y/8);
+	logo.SetTopLeft(0,0);
 	logo.ShowBitmap();
 	//
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
