@@ -92,7 +92,7 @@ void CGameStateInit::OnInit()
 	for (int i = 0; i < 19; i++) {
 		LogoTiffy.AddBitmap(LogoTiffy_list[i], RGB(255, 255, 255));
 	}
-	LogoTiffy.SetDelayCount(4);
+	LogoTiffy.SetDelayCount(3);
 
 	//LogoToffee
 	int LogoToffee_list[] = { IDB_LOGOTOFFEE1, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE6,
@@ -100,7 +100,7 @@ void CGameStateInit::OnInit()
 	for (int i = 0; i < 11; i++) {
 		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
 	}
-	LogoToffee.SetDelayCount(4);
+	LogoToffee.SetDelayCount(3);
 	Sleep(300);				
 }
 
