@@ -231,6 +231,7 @@ public:
 	void  OnMove();					// 依頻率更換bitmap
 	void  OnShow();					// 將動畫貼到螢幕
 	void  Reset();					// 重設播放順序回到第一張圖形
+	void  SetCycle(bool);
 	void  SetDelayCount(int);		// 設定動畫播放速度的常數(越大越慢)
 	void  SetTopLeft(int,int);		// 將動畫的左上角座標移至 (x,y)
 	int   Top();					// 取得動畫的左上角的 y 座標
@@ -239,9 +240,11 @@ private:
 	list<CMovingBitmap>				bmp;			// list of CMovingBitmap
 	list<CMovingBitmap>::iterator	bmp_iter;		// list iterator
 	int								bmp_counter;	// 儲存bmp_iter為第n個bmp
+	bool							cycle;
 	int								delay_counter;	// 延緩動畫播放速度的計數器
 	int								delay_count;	// 動畫播放速度的常數
 	int								x, y;			// 動畫的座標
+
 };
 
 /////////////////////////////////////////////////////////////////////////////
