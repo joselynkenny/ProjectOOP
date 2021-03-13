@@ -130,8 +130,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDR_MAINFRAME           BITMAP                  "..\\res\\Toolbar.bmp"
 
-IDB_MONSTER             BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\game4.10\\RES\\monsterinc (1).bmp"
-
 IDB_TESTAJ              BITMAP                  "..\\res\\bitmap3.bmp"
 
 IDB_BLUE                BITMAP                  "..\\res\\bmp00001.bmp"
