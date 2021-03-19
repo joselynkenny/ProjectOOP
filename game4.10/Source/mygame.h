@@ -75,32 +75,7 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateStart
 	/////////////////////////////////////////////////////////////////////////////
-	class CGameStateMenu : public CGameState
-	{
-	public:
-		CGameStateMenu(CGame *g);
-		
-	protected:
-		void OnMove();
-		void OnShow();
-		void SetMusic(bool);
-
-	private:
-		void ShowStageButton(int, int, int, int);
-		void ShowStars(int, int, int);
-
-		CMovingBitmap menuBackground, woodBackgourd, stageButton[5];
-		CMovingBitmap star1, star2, star3, comingSoon;
-		int sy;
-		int MAX_Y, MIN_Y;
-		bool IsMovingUp, IsMovingDown, drag;
-		bool goldFinger;
-		int StagePos[15][2];
-		CInteger stageNum;
-		LONG clickX, clickY, clickSY;	//save position of mouse and menu when mouse clicked
-		int mouseDisplayment, inertia;
-	};
-
+	/*
 	class CGameStateStart : public CGameState {
 	public:
 		CGameStateStart(CGame *g);
@@ -117,6 +92,7 @@ namespace game_framework {
 		CMovingBitmap StageStart;								
 
 	};
+	*/
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 	// 每個Member function的Implementation都要弄懂
