@@ -77,6 +77,7 @@ void CGameStateInit::OnInit()
 	//BackgroundMenu.LoadBitmap("Bitmaps\\InitBackground.bmp");
 
 	//PlayButton
+<<<<<<< HEAD
 	//int playBtnBmp[] = { IDB_PLAYBUTTON_1, IDB_PLAYBUTTON_2, IDB_PLAYBUTTON_3, IDB_PLAYBUTTON_4,
 		//				 IDB_PLAYBUTTON_5, IDB_PLAYBUTTON_6, IDB_PLAYBUTTON_7, IDB_PLAYBUTTON_8,
 	//					 IDB_PLAYBUTTON_9, IDB_PLAYBUTTON_10, IDB_PLAYBUTTON_11, IDB_PLAYBUTTON_12
@@ -90,6 +91,17 @@ void CGameStateInit::OnInit()
 	//playButton.SetDelayCount(4);
 	//lickedPlayButton.LoadBitmap("Bitmaps\\PlayButtonClicked.bmp", RGB(0, 0, 0));
 	/*
+=======
+	int playBtnBmp[] = { IDB_PLAYBUTTON_1, IDB_PLAYBUTTON_2, IDB_PLAYBUTTON_3, IDB_PLAYBUTTON_4,
+						 IDB_PLAYBUTTON_5, IDB_PLAYBUTTON_6, IDB_PLAYBUTTON_7, IDB_PLAYBUTTON_8,
+						 IDB_PLAYBUTTON_9, IDB_PLAYBUTTON_10, IDB_PLAYBUTTON_11, IDB_PLAYBUTTON_12};
+	for (int i = 0; i < 12; i++) {
+		playButton.AddBitmap(playBtnBmp[i], RGB(0, 0, 0));
+	}
+	playButton.SetDelayCount(4);
+	clickedPlayButton.LoadBitmap("Bitmaps\\PlayButtonClicked.bmp", RGB(0, 0, 0));
+
+>>>>>>> e276518b53130473cd11ba097673f5700848872d
 	//LogoCandy
 	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,IDB_LOGOCANDY9, IDB_LOGOCANDY10,
 		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20,
@@ -153,6 +165,7 @@ void CGameStateInit::OnMove() {
 void CGameStateInit::OnShow()
 {
 	//BackgroundMenu
+<<<<<<< HEAD
 	//BackgroundMenu.SetTopLeft(0,0);
 	//BackgroundMenu.ShowBitmap();
 
@@ -164,6 +177,20 @@ void CGameStateInit::OnShow()
 		//playButton.OnShow();
 	//}
 	/*
+=======
+	BackgroundMenu.SetTopLeft(0,0);
+	BackgroundMenu.ShowBitmap();
+
+	//PlayButton
+	if (playBtnClicked)	{
+		clickedPlayButton.SetTopLeft(SIZE_X / 2 - playButton.Width() / 2, SIZE_Y / 5 * 4 - playButton.Height());
+		clickedPlayButton.ShowBitmap();
+	} else {
+		playButton.SetTopLeft(SIZE_X / 2 - playButton.Width() / 2, SIZE_Y / 5 * 4 - playButton.Height());
+		playButton.OnShow();
+	}
+
+>>>>>>> e276518b53130473cd11ba097673f5700848872d
 	//LogoCandy
 	LogoCandy.SetTopLeft(250, -50);
 	LogoCandy.OnShow();
