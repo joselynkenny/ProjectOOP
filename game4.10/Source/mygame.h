@@ -74,7 +74,21 @@ namespace game_framework {
 		CAnimation LogoTiffy;
 		CAnimation LogoToffee;
 	};
+	/////////////////////////////////////////////////////////////////////////////
+	// CGameStateStart
+	/////////////////////////////////////////////////////////////////////////////
+	class CGameStateStart : public CGameState {
+	public:
+		CGameStateStart(CGame *g);
+		void OnInit();  								// 遊戲的初值及圖形設定
 
+	protected:
+		void OnShow();									// 顯示這個狀態的遊戲畫面
+		void OnMove();
+	private:
+		CMovingBitmap Stage;								// csie的logo
+
+	};
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 	// 每個Member function的Implementation都要弄懂
