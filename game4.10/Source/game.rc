@@ -130,6 +130,8 @@ IDB_PLAYBUTTON_12       BITMAP                  "..\\Bitmaps\\PlayButton12.bmp"
 
 IDB_BITMAP4             BITMAP                  "..\\bitmaps\\bitmap4.bmp"
 
+IDB_BLUE                BITMAP                  "..\\bitmaps\\bitmap5.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

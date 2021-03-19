@@ -79,14 +79,10 @@ void CGameStateInit::OnInit()
 	//PlayButton
 	int playBtnBmp[] = { IDB_PLAYBUTTON_1, IDB_PLAYBUTTON_2, IDB_PLAYBUTTON_3, IDB_PLAYBUTTON_4,
 						 IDB_PLAYBUTTON_5, IDB_PLAYBUTTON_6, IDB_PLAYBUTTON_7, IDB_PLAYBUTTON_8,
-						 IDB_PLAYBUTTON_9, IDB_PLAYBUTTON_10, IDB_PLAYBUTTON_11, IDB_PLAYBUTTON_12
-	};
-
-	for (int i = 0; i < 12; i++)
-	{
+						 IDB_PLAYBUTTON_9, IDB_PLAYBUTTON_10, IDB_PLAYBUTTON_11, IDB_PLAYBUTTON_12};
+	for (int i = 0; i < 12; i++) {
 		playButton.AddBitmap(playBtnBmp[i], RGB(0, 0, 0));
 	}
-
 	playButton.SetDelayCount(4);
 	clickedPlayButton.LoadBitmap("Bitmaps\\PlayButtonClicked.bmp", RGB(0, 0, 0));
 
@@ -155,6 +151,7 @@ void CGameStateInit::OnShow()
 	BackgroundMenu.SetTopLeft(0,0);
 	BackgroundMenu.ShowBitmap();
 
+	//PlayButton
 	if (playBtnClicked)	{
 		clickedPlayButton.SetTopLeft(SIZE_X / 2 - playButton.Width() / 2, SIZE_Y / 5 * 4 - playButton.Height());
 		clickedPlayButton.ShowBitmap();

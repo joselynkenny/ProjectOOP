@@ -167,9 +167,6 @@
     <ClInclude Include="Source\CBouncingBall.h">
       <Filter>MyGame</Filter>
     </ClInclude>
-    <ClInclude Include="Candy.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\game.rc">
