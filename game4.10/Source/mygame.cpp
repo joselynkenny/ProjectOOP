@@ -137,7 +137,7 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_RUN);		// ¤Á´«¦ÜGAME_STATE_RUN
+	GotoGameState(GAME_STATE_START);		// ¤Á´«¦ÜGAME_STATE_RUN
 }
 
 void CGameStateInit::OnMove() {
@@ -179,7 +179,7 @@ void CGameStateInit::OnShow()
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
-/*CGameStateStart::CGameStateStart(CGame *g)
+CGameStateStart::CGameStateStart(CGame *g)
 	: CGameState(g)
 {
 }
@@ -190,7 +190,7 @@ void CGameStateStart::OnInit()
 {
 	//ShowInitProgress(20);
 	//Stage
-	//StageStart.LoadBitmap("Bitmaps\\Loading1.bmp");
+	StageStart.LoadBitmap("Bitmaps\\Loading1.bmp");
 	//OnBeginState();
 }
 void CGameStateStart::OnBeginState()
@@ -227,10 +227,10 @@ void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)
 void CGameStateStart::OnShow()
 {
 	//Stage
-	//StageStart.SetTopLeft(0, 0);
-	//StageStart.ShowBitmap();
+	StageStart.SetTopLeft(0, 0);
+	StageStart.ShowBitmap();
 }
-*/
+
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateOver
 /////////////////////////////////////////////////////////////////////////////
