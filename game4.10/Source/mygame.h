@@ -54,22 +54,21 @@ namespace game_framework {
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
-	// 這個class為遊戲的遊戲開頭畫面物件
-	// 每個Member function的Implementation都要弄懂
+	// CGameStateInit
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CGameStateInit : public CGameState {
 	public:
 		CGameStateInit(CGame *g);
-		void OnInit();  								// 遊戲的初值及圖形設定
-		void OnBeginState();							// 設定每次重玩所需的變數
-		void OnKeyUp(UINT, UINT, UINT); 				// 處理鍵盤Up的動作
-		void OnLButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
+		void OnInit();  								
+		void OnBeginState();							
+		void OnKeyUp(UINT, UINT, UINT); 				
+		void OnLButtonDown(UINT nFlags, CPoint point);  
 	protected:
-		void OnShow();									// 顯示這個狀態的遊戲畫面
+		void OnShow();									
 		void OnMove();
 	private:
-		CMovingBitmap BackgroundMenu ,clickedPlayButton;								// csie的logo
+		CMovingBitmap BackgroundMenu ,clickedPlayButton;								
 		CAnimation LogoCandy, LogoTiffy, LogoToffee, playButton;
 		bool playBtnClicked, finishLoaded;
 	};
@@ -79,13 +78,15 @@ namespace game_framework {
 	class CGameStateStart : public CGameState {
 	public:
 		CGameStateStart(CGame *g);
-		void OnInit();  								// 遊戲的初值及圖形設定
-
+		void OnInit();  							
+		void OnBeginState();
+		void OnKeyUp(UINT, UINT, UINT);
+		void OnLButtonDown(UINT nFlags, CPoint point);
 	protected:
-		void OnShow();									// 顯示這個狀態的遊戲畫面
+		void OnShow();									
 		void OnMove();
 	private:
-		CMovingBitmap Stage;								// csie的logo
+		CMovingBitmap Stage;								
 
 	};
 	/////////////////////////////////////////////////////////////////////////////

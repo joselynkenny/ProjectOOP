@@ -195,103 +195,46 @@ void CGameStateInit::OnShow()
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
-CGameStateInit::CGameStateStart(CGame *g)
+CGameStateStart::CGameStateStart(CGame *g)
 	: CGameState(g)
 {
 }
 
-void CGameStateInit::OnInit()
+void CGameStateStart::OnInit()
 {
 	ShowInitProgress(0);
-	//BackgroundMenu
-	BackgroundMenu.LoadBitmap("Bitmaps\\InitBackground.bmp");
-
-	//LogoCandy
-	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,IDB_LOGOCANDY9, IDB_LOGOCANDY10,
-		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20,
-		IDB_LOGOCANDY19, IDB_LOGOCANDY18, IDB_LOGOCANDY17, IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14, IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10,
-		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17,IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14,
-		IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10, IDB_LOGOCANDY9, IDB_LOGOCANDY8 };
-	for (int i = 0; i < 46; i++) {
-		LogoCandy.AddBitmap(LogoCandy_list[i], RGB(255, 255, 255));
-	}
-	LogoCandy.SetDelayCount(1);
-
-	//LogoTiffy
-	int LogoTiffy_list[] = { IDB_LOGOTIFFY0, IDB_LOGOTIFFY1, IDB_LOGOTIFFY2, IDB_LOGOTIFFY3, IDB_LOGOTIFFY4, IDB_LOGOTIFFY5, IDB_LOGOTIFFY6, IDB_LOGOTIFFY7, IDB_LOGOTIFFY8,IDB_LOGOTIFFY9,
-		IDB_LOGOTIFFY8, IDB_LOGOTIFFY7, IDB_LOGOTIFFY6, IDB_LOGOTIFFY5, IDB_LOGOTIFFY4, IDB_LOGOTIFFY3, IDB_LOGOTIFFY2, IDB_LOGOTIFFY1, IDB_LOGOTIFFY0 };
-	for (int i = 0; i < 19; i++) {
-		LogoTiffy.AddBitmap(LogoTiffy_list[i], RGB(255, 255, 255));
-	}
-	LogoTiffy.SetDelayCount(3);
-
-	//LogoToffee
-	int LogoToffee_list[] = { IDB_LOGOTOFFEE1, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE6,
-		IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE1 };
-	for (int i = 0; i < 11; i++) {
-		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
-	}
-	LogoToffee.SetDelayCount(3);
-	Sleep(300);
+	//Stage
+	Stage.LoadBitmap("Bitmaps\\Stage.bmp");
 }
 
-void CGameStateInit::OnBeginState()
+void CGameStateStart::OnBeginState()
 {
 
 }
 
-void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
 	const char KEY_SPACE = ' ';
 	if (nChar == KEY_SPACE)
-		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
-	else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
-		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+		GotoGameState(GAME_STATE_RUN);						
+	else if (nChar == KEY_ESC)								
+		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	
 }
 
-void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
+void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+	GotoGameState(GAME_STATE_RUN);		
 }
 
-void CGameStateInit::OnMove() {
-	LogoCandy.OnMove();
-	LogoTiffy.OnMove();
-	LogoToffee.OnMove();
+void CGameStateStart::OnMove() {
+
 }
-void CGameStateInit::OnShow()
+void CGameStateStart::OnShow()
 {
-	//BackgroundMenu
-	BackgroundMenu.SetTopLeft(0, 0);
-	BackgroundMenu.ShowBitmap();
-
-	//LogoCandy
-	LogoCandy.SetTopLeft(250, -50);
-	LogoCandy.OnShow();
-
-	//LogoTiffy
-	LogoTiffy.SetTopLeft(95, 400);
-	LogoTiffy.OnShow();
-
-	//LogoToffee
-	LogoToffee.SetTopLeft(700, 60);
-	LogoToffee.OnShow();
-
-	//	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-		//CFont f,*fp;
-		//f.CreatePointFont(160,"Times New Roman");	// 產生 font f; 160表示16 point的字
-		//fp=pDC->SelectObject(&f);					// 選用 font f
-		//pDC->SetBkColor(RGB(0,0,0));
-		//pDC->SetTextColor(RGB(255,255,0));
-		//pDC->TextOut(120,220,"Please click mouse or press SPACE to begin.");
-		//pDC->TextOut(5,395,"Press Ctrl-F to switch in between window mode and full screen mode.");
-		//if (ENABLE_GAME_PAUSE)
-			//pDC->TextOut(5,425,"Press Ctrl-Q to pause the Game.");
-		//pDC->TextOut(5,455,"Press Alt-F4 or ESC to Quit.");
-		//pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-		//CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-
+	//Stage
+	Stage.SetTopLeft(0, 0);
+	Stage.ShowBitmap();
 }
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的結束狀態(Game Over)
