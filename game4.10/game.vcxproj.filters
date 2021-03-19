@@ -129,9 +129,6 @@
     <ClCompile Include="Source\CBouncingBall.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
-    <ClCompile Include="Candy.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h">
@@ -168,9 +165,6 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\CBouncingBall.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Candy.h">
       <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>

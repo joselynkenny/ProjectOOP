@@ -372,14 +372,14 @@ void CMovingBitmap::LoadBitmap(char *filename, COLORREF color)
 	isBitmapLoaded = true;
 }
 
-void CMovingBitmap::LoadBitmap(string & filename, COLORREF color)
-{
-	char file[50] = { 0 };
-	for (unsigned i = 0; i < filename.size(); i++) {
-		file[i] = filename[i];
-	}
-	LoadBitmap(file, color);
-}
+//void CMovingBitmap::LoadBitmap(string & filename, COLORREF color)
+//{
+	//char file[50] = { 0 };
+	//for (unsigned i = 0; i < filename.size(); i++) {
+	//	file[i] = filename[i];
+	//}
+	//LoadBitmap(file, color);
+//}
 
 void CMovingBitmap::SetTopLeft(int x, int y)
 {

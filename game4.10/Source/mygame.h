@@ -68,9 +68,9 @@ namespace game_framework {
 		void OnShow();									
 		void OnMove();
 	private:
-		CMovingBitmap BackgroundMenu ,clickedPlayButton;								
-		CAnimation LogoCandy, LogoTiffy, LogoToffee, playButton;
-		bool playBtnClicked, finishLoaded;
+		//CMovingBitmap BackgroundMenu;
+		//CAnimation LogoCandy, LogoTiffy, LogoToffee;
+		//bool playBtnClicked, finishLoaded;
 	};
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateStart
