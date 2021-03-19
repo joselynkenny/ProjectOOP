@@ -69,10 +69,9 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 		void OnMove();
 	private:
-		CMovingBitmap BackgroundMenu;								// csie的logo
-		CAnimation LogoCandy;
-		CAnimation LogoTiffy;
-		CAnimation LogoToffee;
+		CMovingBitmap BackgroundMenu ,clickedPlayButton;								// csie的logo
+		CAnimation LogoCandy, LogoTiffy, LogoToffee, playButton;
+		bool playBtnClicked, finishLoaded;
 	};
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateStart

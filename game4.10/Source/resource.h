@@ -63,7 +63,6 @@
 #define IDB_LOGOCANDY21                 185
 #define IDB_LOGOCANDY22                 186
 #define IDB_LOGOCANDY23                 187
-#define IDB_BITMAP4                     188
 #define IDB_LOGOTIFFY0                  189
 #define IDB_LOGOTIFFY1                  190
 #define IDB_LOGOTIFFY2                  191
@@ -81,6 +80,19 @@
 #define IDB_LOGOTOFFEE4                 202
 #define IDB_LOGOTOFFEE5                 203
 #define IDB_LOGOTOFFEE6                 204
+#define IDB_PLAYBUTTON_1                206
+#define IDB_PLAYBUTTON_2                209
+#define IDB_PLAYBUTTON_3                210
+#define IDB_PLAYBUTTON_4                211
+#define IDB_PLAYBUTTON_5                212
+#define IDB_PLAYBUTTON_6                213
+#define IDB_PLAYBUTTON_7                214
+#define IDB_PLAYBUTTON_8                215
+#define IDB_PLAYBUTTON_9                216
+#define IDB_PLAYBUTTON_10               217
+#define IDB_PLAYBUTTON_11               218
+#define IDB_PLAYBUTTON_12               219
+#define IDB_BITMAP4                     221
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -93,7 +105,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        205
+#define _APS_NEXT_RESOURCE_VALUE        223
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101
