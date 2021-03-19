@@ -75,20 +75,24 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateStart
 	/////////////////////////////////////////////////////////////////////////////
+	/*
 	class CGameStateStart : public CGameState {
 	public:
 		CGameStateStart(CGame *g);
-		void OnInit();  							
+		~CGameStateStart();
+		void OnInit();  				
 		void OnBeginState();
 		void OnKeyUp(UINT, UINT, UINT);
+		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnLButtonDown(UINT nFlags, CPoint point);
 	protected:
 		void OnShow();									
-		void OnMove();
 	private:
-		CMovingBitmap Stage;								
+		CMovingBitmap StageStart;								
 
 	};
+	*/
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 	// 每個Member function的Implementation都要弄懂
