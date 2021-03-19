@@ -75,18 +75,46 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateStart
 	/////////////////////////////////////////////////////////////////////////////
+	class CGameStateMenu : public CGameState
+	{
+	public:
+		CGameStateMenu(CGame *g);
+		
+	protected:
+		void OnMove();
+		void OnShow();
+		void SetMusic(bool);
+
+	private:
+		void ShowStageButton(int, int, int, int);
+		void ShowStars(int, int, int);
+
+		CMovingBitmap menuBackground, woodBackgourd, stageButton[5];
+		CMovingBitmap star1, star2, star3, comingSoon;
+		int sy;
+		int MAX_Y, MIN_Y;
+		bool IsMovingUp, IsMovingDown, drag;
+		bool goldFinger;
+		int StagePos[15][2];
+		CInteger stageNum;
+		LONG clickX, clickY, clickSY;	//save position of mouse and menu when mouse clicked
+		int mouseDisplayment, inertia;
+	};
+
 	class CGameStateStart : public CGameState {
 	public:
 		CGameStateStart(CGame *g);
-		void OnInit();  							
+		~CGameStateStart();
+		void OnInit();  				
 		void OnBeginState();
 		void OnKeyUp(UINT, UINT, UINT);
+		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnLButtonDown(UINT nFlags, CPoint point);
 	protected:
 		void OnShow();									
-		void OnMove();
 	private:
-		CMovingBitmap Stage;								
+		CMovingBitmap StageStart;								
 
 	};
 	/////////////////////////////////////////////////////////////////////////////

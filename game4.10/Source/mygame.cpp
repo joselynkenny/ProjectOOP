@@ -116,7 +116,8 @@ void CGameStateInit::OnInit()
 		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
 	}
 	LogoToffee.SetDelayCount(3);
-	Sleep(300);				
+	Sleep(300);		
+	OnBeginState();
 }
 
 void CGameStateInit::OnBeginState()
@@ -200,16 +201,28 @@ CGameStateStart::CGameStateStart(CGame *g)
 {
 }
 
+CGameStateStart::~CGameStateStart()
+{
+}
+
 void CGameStateStart::OnInit()
 {
-	ShowInitProgress(0);
+	ShowInitProgress(20);
 	//Stage
-	Stage.LoadBitmap("Bitmaps\\Stage.bmp");
+	StageStart.LoadBitmap("Bitmaps\\InitBackground.bmp");
 }
 
 void CGameStateStart::OnBeginState()
 {
 
+}
+
+void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	const char KEY_LEFT = 0x25; // keyboard左箭頭
+	const char KEY_UP = 0x26; // keyboard上箭頭
+	const char KEY_RIGHT = 0x27; // keyboard右箭頭
+	const char KEY_DOWN = 0x28; // keyboard下箭頭
 }
 
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -227,17 +240,20 @@ void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint point)
 	GotoGameState(GAME_STATE_RUN);		
 }
 
-void CGameStateStart::OnMove() {
-
+void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
+{
+	//eraser.SetMovingLeft(false);
 }
+
+
 void CGameStateStart::OnShow()
 {
 	//Stage
-	Stage.SetTopLeft(0, 0);
-	Stage.ShowBitmap();
+	StageStart.SetTopLeft(00, 0);
+	StageStart.ShowBitmap();
 }
 /////////////////////////////////////////////////////////////////////////////
-// 這個class為遊戲的結束狀態(Game Over)
+// CGameStateOver
 /////////////////////////////////////////////////////////////////////////////
 
 CGameStateOver::CGameStateOver(CGame *g)
