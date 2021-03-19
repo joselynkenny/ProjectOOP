@@ -121,12 +121,10 @@ void CGameStateInit::OnInit()
 
 void CGameStateInit::OnBeginState()
 {
-	if (finishLoaded)
-	{
+	if (finishLoaded) {
 		LogoCandy.Reset();	//reset animation of candy crush logo
 		playBtnClicked = false;	//reset playbutton state
 	}
-
 }
 
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
