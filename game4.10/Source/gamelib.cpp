@@ -433,10 +433,10 @@ void CGameState::ShowInitProgress(int percent)
 	if (!SHOW_LOAD_PROGRESS)
 		return;
 	const int bar_width = SIZE_X * 2 / 3;
-	const int bar_height = SIZE_Y / 20;
-	const int x1 = (SIZE_X - bar_width) / 2;
+	const int bar_height = SIZE_Y / 30;
+	const int x1 = (SIZE_X - bar_width) ;
 	const int x2 = x1 + bar_width;
-	const int y1 = (SIZE_Y - bar_height) / 2;
+	const int y1 = (SIZE_Y - bar_height) ;
 	const int y2 = y1 + bar_height;
 	const int pen_width = bar_height / 8;
 	const int progress_x1 = x1 + pen_width;
@@ -445,37 +445,27 @@ void CGameState::ShowInitProgress(int percent)
 	const int progress_y1 = y1 + pen_width;
 	const int progress_y2 = y2 - pen_width;
 
-	CDDraw::BltBackColor(DEFAULT_BG_COLOR);		// 將 Back Plain 塗上預設的顏色
-	CMovingBitmap loading;						// 貼上loading圖示
-	loading.LoadBitmap(IDB_LOADING, RGB(0,0,0));
-	loading.SetTopLeft((SIZE_X - loading.Width())/2, y1 - 2 * loading.Height());
+	CDDraw::BltBackColor(DEFAULT_BG_COLOR);		
+	//LoginLoading
+	CMovingBitmap loading;						
+	loading.LoadBitmap("Bitmaps\\Loading1.bmp");
+	loading.SetTopLeft(0,0);
 	loading.ShowBitmap();
-	//
-	// 以下為CDC的用法
-	//
-	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-	CPen *pp, p(PS_NULL, 0, RGB(0,0,0));		// 清除pen
+	
+
+	CDC *pDC = CDDraw::GetBackCDC();			
+	CPen *pp, p(PS_NULL, 0, RGB(0,0,0));		
 	pp = pDC->SelectObject(&p);
 
-	CBrush *pb, b(RGB(0,255,0));				// 畫綠色 progress框
-	pb = pDC->SelectObject(&b);
-	pDC->Rectangle(x1,y1,x2,y2);				
 
-	CBrush b1(DEFAULT_BG_COLOR);				// 畫黑色 progrss中心
-	pDC->SelectObject(&b1);
-	pDC->Rectangle(progress_x1,progress_y1,progress_x2_end,progress_y2);
-
-	CBrush b2(RGB(255,255,0));					// 畫黃色 progrss進度
+	CBrush b2(RGB(255,255,255));					
 	pDC->SelectObject(&b2);
 	pDC->Rectangle(progress_x1,progress_y1,progress_x2,progress_y2);
 
-	pDC->SelectObject(pp);						// 釋放 pen
-	pDC->SelectObject(pb);						// 釋放 brush
-	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-	//
-	// 如果是別的地方用到CDC的話，不要抄以下這行，否則螢幕會閃爍
-	//
-	CDDraw::BltBackToPrimary();					// 將 Back Plain 貼到螢幕
+	pDC->SelectObject(pp);												
+	CDDraw::ReleaseBackCDC();					
+
+	CDDraw::BltBackToPrimary();			
 }
 
 void CGameState::OnDraw() // Template Method
