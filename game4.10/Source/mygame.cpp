@@ -221,7 +221,7 @@ void CGameStateStart::OnMove()
 	if (!scroll) {
 		if (area > 0) 
 			scroll_Y += area--;
-		else
+		else if (area < 0)
 			scroll_Y += area++;
 	}
 	SetUp(TapUp);
@@ -239,7 +239,6 @@ void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == KEY_UP) TapUp = true;
 	if (nChar == KEY_DOWN) TapDown = true;
 }
-
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
@@ -253,16 +252,18 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == KEY_ESC)								
 		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	
 }
-
-void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint point)
+void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
 {
-	scroll = true; 
+	scroll = true;
+	clickVertical = p.y;
+	clickHorizontal = p.x;
+	clickScroll = scroll_Y;
 }
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
 	scroll = false;
-}
 
+}
 void CGameStateStart::OnShow()
 {
 	//Stage
@@ -274,7 +275,6 @@ void CGameStateStart::OnShow()
 	if (scroll_Y > 0 && scroll_Y > -3600)
 		scroll_Y = 0;
 }
-
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateOver
 /////////////////////////////////////////////////////////////////////////////
