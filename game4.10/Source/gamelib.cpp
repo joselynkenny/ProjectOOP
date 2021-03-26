@@ -406,11 +406,10 @@ void CMovingBitmap::ShowBitmap(double factor)
 
 void CMovingBitmap::ShowBitmap(CMovingBitmap &bm)
 {
-	GAME_ASSERT(isBitmapLoaded,"A bitmap must be loaded before ShowBitmap() is called !!!");
-	GAME_ASSERT(bm.isBitmapLoaded,"A bitmap must be loaded before ShowBitmap() is called !!!");
-	CDDraw::BltBitmapToBitmap(SurfaceID, bm.SurfaceID, location.left,location.top);
+	GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+	GAME_ASSERT(bm.isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+	CDDraw::BltBitmapToBitmap(SurfaceID, bm.SurfaceID, location.left, location.top);
 }
-
 int CMovingBitmap::Top()
 {
 	GAME_ASSERT(isBitmapLoaded,"A bitmap must be loaded before Top() is called !!!");

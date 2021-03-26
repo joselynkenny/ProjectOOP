@@ -86,10 +86,17 @@ namespace game_framework {
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnLButtonDown(UINT nFlags, CPoint point);
+		void OnMouse(UINT nFlags, CPoint point);
+		void SetUp(bool status);
+		void SetDown(bool status);
 	protected:
-		void OnShow();									
+		void OnShow();	
+		void OnMove();
 	private:
-		CMovingBitmap StageStart;								
+		CMovingBitmap StageStart;
+		int scroll_Y,area;
+		bool scroll,TapUp,TapDown;
+		LONG clickVertical, clickHorizontal, clickScroll;
 
 	};
 	

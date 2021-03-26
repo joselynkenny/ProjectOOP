@@ -180,18 +180,52 @@ void CGameStateInit::OnShow()
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
 CGameStateStart::CGameStateStart(CGame *g)
-	: CGameState(g)
+	: CGameState(g),scroll(false),area(0)
 {
+	scroll_Y = -3600;
+	TapUp = false;
+	TapDown = true;
 }
 CGameStateStart::~CGameStateStart()
 {
 }
 void CGameStateStart::OnInit()
 {
-	//ShowInitProgress(20);
-	//Stage
-	StageStart.LoadBitmap("Bitmaps\\Loading1.bmp");
+	//Stages
+	StageStart.LoadBitmap("Bitmaps\\Stage.bmp");
 	//OnBeginState();
+}
+void CGameStateStart::OnMouse(UINT nFlags, CPoint p) {
+
+	if (scroll) {
+		if (p.y - clickVertical > 0)
+			area = 20;
+		else
+			area = -20;
+		scroll_Y = clickScroll + p.y - clickVertical;
+
+	}
+}
+void CGameStateStart::SetUp(bool status)
+{
+	if (status && scroll_Y <= 0)
+		scroll_Y += 5;
+}
+void CGameStateStart::SetDown(bool status)
+{
+	if (status && scroll_Y >= -3600)
+		scroll_Y -= 5;
+}
+void CGameStateStart::OnMove()
+{
+	if (!scroll) {
+		if (area > 0) 
+			scroll_Y += area--;
+		else
+			scroll_Y += area++;
+	}
+	SetUp(TapUp);
+	SetDown(TapDown);
 }
 void CGameStateStart::OnBeginState()
 {
@@ -202,12 +236,18 @@ void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	const char KEY_UP = 0x26; // keyboard上箭頭
 	const char KEY_RIGHT = 0x27; // keyboard右箭頭
 	const char KEY_DOWN = 0x28; // keyboard下箭頭
+	if (nChar == KEY_UP) TapUp = true;
+	if (nChar == KEY_DOWN) TapDown = true;
 }
 
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
 	const char KEY_SPACE = ' ';
+	const char KEY_UP = 0x26;
+	const char KEY_DOWN = 0x28;
+	if (nChar == KEY_UP) TapUp =false;
+	if (nChar == KEY_DOWN) TapDown =false;
 	if (nChar == KEY_SPACE)
 		GotoGameState(GAME_STATE_RUN);						
 	else if (nChar == KEY_ESC)								
@@ -216,19 +256,23 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_RUN);		
+	scroll = true; 
 }
-
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
-
+	scroll = false;
 }
 
 void CGameStateStart::OnShow()
 {
 	//Stage
-	StageStart.SetTopLeft(0, 0);
+	StageStart.SetTopLeft(0, scroll_Y);
 	StageStart.ShowBitmap();
+
+	if (scroll_Y < 0 && scroll_Y < -3600)
+		scroll_Y = -3600;
+	if (scroll_Y > 0 && scroll_Y > -3600)
+		scroll_Y = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////
