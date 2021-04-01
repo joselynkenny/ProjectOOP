@@ -41,7 +41,7 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
-#include "StagePlay.h"
+//#include "StagePlay.h"
 
 
 namespace game_framework {
@@ -138,9 +138,9 @@ namespace game_framework {
 		int random_num;
 	};
 	class CBouncingBall;
-	class StagePlay;
+	//class StagePlay;
 
-	class StagePlay;
+	//class StagePlay;
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
