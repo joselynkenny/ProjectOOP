@@ -41,6 +41,8 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
+#include "StagePlay.h"
+
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -86,15 +88,16 @@ namespace game_framework {
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnLButtonDown(UINT nFlags, CPoint point);
-		void OnMouse(UINT nFlags, CPoint point);
+		void OnMouse(bool status);
 		void SetUp(bool status);
 		void SetDown(bool status);
+		
 	protected:
 		void OnShow();	
 		void OnMove();
 	private:
 		CMovingBitmap StageStart;
-		int scroll_Y,area;
+		int scroll_Y,area, mouseWheel;
 		bool scroll,TapUp,TapDown;
 		LONG clickVertical, clickHorizontal, clickScroll;
 
@@ -135,6 +138,9 @@ namespace game_framework {
 		int random_num;
 	};
 	class CBouncingBall;
+	class StagePlay;
+
+	class StagePlay;
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
