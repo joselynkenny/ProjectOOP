@@ -4,9 +4,9 @@ namespace game_framework {
 	// 看懂就可以改寫成自己的程式了
 	/////////////////////////////////////////////////////////////////////////////
 
-	class CBouncingBall {
+	class StagePlay {
 	public:
-		CBouncingBall();
+		StagePlay();
 		void LoadBitmap();
 		void OnShow();
 		void OnMove();

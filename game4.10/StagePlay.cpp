@@ -4,14 +4,14 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
-#include "CBouncingBall.h"
+#include "StagePlay.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// CBouncingBall: BouncingBall class
 	/////////////////////////////////////////////////////////////////////////////
 
-	CBouncingBall::CBouncingBall()
+	StagePlay::StagePlay()
 	{
 		const int INITIAL_VELOCITY = 20;	// 初始上升速度
 		const int FLOOR = 400;				// 地板座標
@@ -22,14 +22,14 @@ namespace game_framework {
 		velocity = initial_velocity;
 	}
 
-	void CBouncingBall::LoadBitmap()
+	void StagePlay::LoadBitmap()
 	{
 		char *filename[4] = { ".\\bitmaps\\ball1.bmp",".\\bitmaps\\ball2.bmp",".\\bitmaps\\ball3.bmp",".\\bitmaps\\ball4.bmp" };
 		for (int i = 0; i < 4; i++)	// 載入動畫(由4張圖形構成)
 			animation.AddBitmap(filename[i], RGB(0, 0, 0));
 	}
 
-	void CBouncingBall::OnMove()
+	void StagePlay::OnMove()
 	{
 		if (rising) {			// 上升狀態
 			if (velocity > 0) {
@@ -55,7 +55,7 @@ namespace game_framework {
 		animation.OnMove();		// 執行一次animation.OnMove()，animation才會換圖
 	}
 
-	void CBouncingBall::OnShow()
+	void StagePlay::OnShow()
 	{
 		animation.SetTopLeft(x, y);
 		animation.OnShow();
