@@ -97,6 +97,7 @@ enum GAME_STATES {
 #include <string>
 using namespace std;
 
+
 /////////////////////////////////////////////////////////////////////////////
 // 回報程式錯誤用的macro
 // 備註：這裡使用macro以便保留檔案名稱及行號，利於debug。
@@ -286,11 +287,13 @@ class CGameStateOver;
 // 每個Public Interface的用法都要懂，Implementation可以不懂
 /////////////////////////////////////////////////////////////////////////////
 
+
 class CGameState {
 public:
 	CGameState(CGame *g);
 	void OnDraw();			// Template Method
 	void OnCycle();			// Template Method
+	bool OnClick(const CPoint& point, CMovingBitmap& button);
 	//
 	// virtual functions, 由繼承者提供implementation
 	//
@@ -312,7 +315,9 @@ protected:
 	//
 	virtual void OnMove() {}								// 移動這個狀態的遊戲元素
 	virtual void OnShow() = 0;								// 顯示這個狀態的遊戲畫面
+	
 	CGame *game;
+
 };
 
 /////////////////////////////////////////////////////////////////////////////

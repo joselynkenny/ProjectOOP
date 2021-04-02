@@ -41,7 +41,7 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
-//#include "StagePlay.h"
+#include "StagePlay.h"
 
 
 namespace game_framework {
@@ -97,7 +97,7 @@ namespace game_framework {
 		void OnMove();
 	private:
 		CMovingBitmap StageStart;
-		int scroll_Y,area, mouseWheel;
+		int scroll_Y,area,Level[2][2];;
 		bool scroll,TapUp,TapDown;
 		LONG clickVertical, clickHorizontal, clickScroll;
 
@@ -126,21 +126,23 @@ namespace game_framework {
 		void OnShow();
 		void OnMove();
 		void OnKeyDown(UINT);
+		void OnLButtonUp(UINT nFlags, CPoint point);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);
+		bool OnClick(const CPoint& point, CMovingBitmap& button);
 		~CGameMap();
 	protected:
-		CMovingBitmap blue, green;
-		int map[4][5];
+		CMovingBitmap box,green,blue,orange,purple,yellow;
+		int map[5][8];
 		const int X, Y;
 		const int MW, MH;
 		CBouncingBall* bballs;
 		int random_num;
+	private:
+		int Candy1, Candy2, Pointx1,Pointx2, Pointy1, Pointy2;
 	};
 	class CBouncingBall;
-	//class StagePlay;
 
-	//class StagePlay;
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
@@ -161,7 +163,7 @@ namespace game_framework {
 		const int		NUMBALLS;	// 球的總數
 		CPractice		c_practice;
 		CGameMap		gamemap;
-		CMovingBitmap	background;	// 背景圖
+		CMovingBitmap	background,box;	// 背景圖
 		CMovingBitmap	practice;	// 背景圖
 		int				picX, picY;
 		CMovingBitmap	help;		// 說明圖
@@ -170,6 +172,7 @@ namespace game_framework {
 		CEraser			eraser;		// 拍子
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
+
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

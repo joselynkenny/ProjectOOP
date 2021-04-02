@@ -54,10 +54,12 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
+#include <stdlib.h>
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
 #include "mygame.h"
+#include "StagePlay.h"
 
 
 
@@ -188,7 +190,6 @@ CGameStateStart::CGameStateStart(CGame *g)
 {
 	scroll_Y = -3600;
 	
-	
 }
 CGameStateStart::~CGameStateStart()
 {
@@ -198,7 +199,7 @@ void CGameStateStart::OnInit()
 {
 	//Stages
 	StageStart.LoadBitmap("Bitmaps\\Stage.bmp");
-	//OnBeginState();
+
 }
 
 void CGameStateStart::OnMouse(bool status) {
@@ -259,7 +260,7 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
 {
-	//clickScroll = scroll_Y;
+
 }
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
@@ -378,48 +379,154 @@ void CBouncingBall::SetVelocity(int velocity)
 	this->initial_velocity = velocity;
 }
 CGameMap::CGameMap()
-	:X(20), Y(40), MW(120), MH(100) 
+	:X(500), Y(200), MW(50), MH(50) 
 {
-	int map_init[4][5] ={{0,0,1,0,0},
-						{0,1,2,1,0},
-						{1,2,1,2,1},
-						{2,1,2,1,2}};
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 5; j++)
-			map[i][j] = map_init[i][j];
+	Candy1, Candy2 = 5;
+	/*int map_init[5][8] ={{3,3,3,3,3,3,3,3},
+						{3,3,3,3,3,3,3,3},
+						{3,3,3,3,3,3,3,3},
+						{3,3,3,3,3,3,3,3},
+						{3,3,3,3,3,3,3,3} };*/
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 8; j++)
+			map[i][j] = rand()%5;
+	
 	random_num = 0;
 	bballs = NULL;
 }
 
 void CGameMap::LoadBitmap()
 {
-	blue.LoadBitmap(IDB_BLUE);
-	green.LoadBitmap(IDB_RED);
+	blue.LoadBitmap("Bitmaps\\BlueCandy.bmp", RGB(255, 255, 255));
+	green.LoadBitmap("Bitmaps\\GreenCandy.bmp", RGB(255, 255, 255));
+	orange.LoadBitmap("Bitmaps\\OrangeCandy.bmp", RGB(255, 255, 255));
+	purple.LoadBitmap("Bitmaps\\PurpleCandy.bmp", RGB(255, 255, 255));
+	yellow.LoadBitmap("Bitmaps\\YellowCandy.bmp", RGB(255, 255, 255));
+	box.LoadBitmap("Bitmaps\\box.bmp",RGB(255,255,255));
 }
-
+ bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button)
+{
+	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
+		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
+	
+	if (OnClick(point, blue)) {
+		if (Candy1 == 5) {
+			Candy1 = 1;
+			Pointx1 = point.x;
+			Pointy1 = point.x;
+		}
+		else {
+			Candy2 = 1;
+			Pointx2 = point.x;
+			Pointy2 = point.x;
+		}
+	}
+	else if (OnClick(point, yellow)) {
+		if (Candy1 == 5) {
+			Candy1 = 0;
+			Pointx1 = point.x;
+			Pointy1 = point.x;
+		}
+		else {
+			Candy2 = 0;
+			Pointx2 = point.x;
+			Pointy2 = point.x;
+		}
+	}
+	else if (OnClick(point, green)) {
+		if (Candy1 == 5) {
+			Candy1 = 2;
+			Pointx1 = point.x;
+			Pointy1 = point.x;
+		}
+		else {
+			Candy2 = 2;
+			Pointx2 = point.x;
+			Pointy2 = point.x;
+		}
+	}
+	else if (OnClick(point, orange)) {
+		if (Candy1 == 5) {
+			Candy1 = 3;
+			Pointx1 = point.x;
+			Pointy1 = point.x;
+		}
+		else {
+			Candy2 = 3;
+			Pointx2 = point.x;
+			Pointy2 = point.x;
+		}
+	}
+	else if (OnClick(point, purple)) {
+		if (Candy1 == 5) {
+			Candy1 = 4;
+			Pointx1 = point.x;
+			Pointy1 = point.x;
+		}
+		else {
+			Candy2 = 4;
+			Pointx2 = point.x;
+			Pointy2 = point.x;
+		}
+	}
+	if (Candy2 != 5) {
+		
+		Candy1 = 5;
+		Candy2 = 5;
+	}
+}
 void CGameMap::OnShow()
 {
-	for (int i = 0; i < 5; i++)
-		for (int j = 0; j < 4; j++) {
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 5; j++) {
 			switch (map[j][i]) {
 			case 0:
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
+				yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+				yellow.ShowBitmap();
 				break;
 			case 1:
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
 				blue.SetTopLeft(X + (MW*i), Y + (MH*j));
 				blue.ShowBitmap();
 				break;
 			case 2:
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
 				green.SetTopLeft(X + (MW*i), Y + (MH*j));
 				green.ShowBitmap();
+				break;
+			case 3:
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
+				orange.SetTopLeft(X + (MW*i), Y + (MH*j));
+				orange.ShowBitmap();
+				break;
+			case 4:
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
+				purple.SetTopLeft(X + (MW*i), Y + (MH*j));
+				purple.ShowBitmap();
 				break;
 			default:
 				ASSERT(0);
 			}
 		}
-	for (int i = 0; i < random_num; i++)
-	{
-		bballs[i].OnShow();
-	}
+	//for (int i = 0; i < random_num; i++)
+	//{
+		//bballs[i].OnShow();
+//	}
 			
 }
 
@@ -573,33 +680,30 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	ShowInitProgress(33);	
 	background.LoadBitmap("Bitmaps\\Play.bmp");
+	box.LoadBitmap("Bitmaps\\box.bmp");
+
 	int i;
 	for (i = 0; i < NUMBALLS; i++)	
 		ball[i].LoadBitmap();								
-	eraser.LoadBitmap();
-	//background.LoadBitmap(IDB_BACKGROUND);					
+	eraser.LoadBitmap();					
 	practice.LoadBitmap(IDB_TESTAJ,RGB(255,255,255));
 	//practice.LoadBitmap("Bitmaps/Nbmp.bmp");
 	c_practice.LoadBitmap();
 	gamemap.LoadBitmap();
-
-	//
-	// 完成部分Loading動作，提高進度
-	//
 	ShowInitProgress(50);
-	Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-	//
-	// 繼續載入其他資料
-	//
-	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				// 載入說明的圖形
-	corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
-	//corner.ShowBitmap(background);							// 將corner貼到background
-	bball.LoadBitmap();										// 載入圖形
-	hits_left.LoadBitmap();									
-	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
-	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
-	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+	Sleep(300);
+
+	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				
+	corner.LoadBitmap(IDB_CORNER);							
+	//corner.ShowBitmap(background);							
+	bball.LoadBitmap();							
+	hits_left.LoadBitmap();	
+	
+	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	
+	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	
+	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	
 }
+
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -671,8 +775,11 @@ void CGameStateRun::OnShow()
 	//
 	background.ShowBitmap();			// 貼上背景圖
 	background.SetTopLeft(0, 0);
+	box.SetTopLeft( 3000 , 500);
+	box.ShowBitmap();
 
-	help.ShowBitmap();					// 貼上說明圖
+
+	/*help.ShowBitmap();					// 貼上說明圖
 	hits_left.ShowBitmap();
 	for (int i=0; i < NUMBALLS; i++)
 		ball[i].OnShow();				// 貼上第i號球
@@ -680,14 +787,15 @@ void CGameStateRun::OnShow()
 	eraser.OnShow();					// 貼上擦子
 	//
 	//  貼上左上及右下角落的圖
-	//
-	corner.SetTopLeft(0,0);
-	corner.ShowBitmap();
+	//*/
+	/*
 	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
 	corner.ShowBitmap();
+	/*
 	practice.ShowBitmap();
-	c_practice.OnShow();
+	c_practice.OnShow();*/
 	gamemap.OnShow();
+	//stageplay.OnShow();*/
 
 }
 }
