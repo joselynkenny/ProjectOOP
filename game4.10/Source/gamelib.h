@@ -310,7 +310,9 @@ public:
 protected:
 	void GotoGameState(int state);							// 跳躍至指定的state
 	void ShowInitProgress(int percent);						// 顯示初始化的進度
-	//
+	bool ButtonOnClick(const CPoint& point, CMovingBitmap& button);
+	bool ButtonOnClick(const CPoint& point, CAnimation& button);
+															//
 	// virtual functions, 由繼承者提供implementation
 	//
 	virtual void OnMove() {}								// 移動這個狀態的遊戲元素

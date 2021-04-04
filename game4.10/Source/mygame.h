@@ -66,6 +66,7 @@ namespace game_framework {
 		void OnBeginState();							
 		void OnKeyUp(UINT, UINT, UINT); 				
 		void OnLButtonDown(UINT nFlags, CPoint point);  
+		void OnLButtonUp(UINT nFlags, CPoint point);
 	protected:
 		void OnShow();									
 		void OnMove();

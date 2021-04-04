@@ -119,8 +119,10 @@ void CGameStateInit::OnInit()
 		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
 	}
 	LogoToffee.SetDelayCount(3);
-	Sleep(300);		
-	
+	Sleep(300);	
+
+	finishLoaded = true;
+	OnBeginState();
 }
 
 void CGameStateInit::OnBeginState()
@@ -143,7 +145,20 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_START);		// ¤Á´«¦ÜGAME_STATE_RUN
+	if(ButtonOnClick(point, playButton)) {
+		playBtnClicked = true;
+	} else {
+		playBtnClicked = false;
+	}
+}
+
+void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
+	if (ButtonOnClick(point, playButton)) {
+		GotoGameState(GAME_STATE_START);
+	}
+	else {
+		playBtnClicked = false;
+	}
 }
 
 void CGameStateInit::OnMove() {

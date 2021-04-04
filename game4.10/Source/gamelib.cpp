@@ -489,6 +489,33 @@ void CGameState::OnCycle() // Template Method
 	OnShow();
 }
 
+bool CGameState::ButtonOnClick(const CPoint& point, CMovingBitmap& button)
+{
+	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
+		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//return true if the cursor located in the button area
+bool CGameState::ButtonOnClick(const CPoint& point, CAnimation& button)
+{
+	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
+		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CGame: Game Class
 // 這個class是遊戲的facade，是MFC與各個遊戲狀態的橋樑，如果不增加或減少
