@@ -263,6 +263,11 @@ int CInteger::GetInteger()
 	return n;
 }
 
+void CInteger::SetType(int Type)
+{
+	type = Type;
+}
+
 void CInteger::LoadBitmap()
 {
 	//
@@ -431,6 +436,7 @@ CGameState::CGameState(CGame *g)
 {
 
 	game = g; 	// ³]©wgameªºpointer
+	//MAX_STAGE = 15;
 }
 
 void CGameState::GotoGameState(int state)

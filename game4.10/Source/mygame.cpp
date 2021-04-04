@@ -201,11 +201,23 @@ void CGameStateInit::OnShow()
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
 CGameStateStart::CGameStateStart(CGame *g)
-	: CGameState(g),scroll(false),area(0)
+	: CGameState(g),scroll(false),area(0),mouseDisplayment(0), inertia(0)
 {
+	TapUp = false; TapDown = false;
 	scroll_Y = -3600;
+
+	int Pos[][2] = { {270,4030},{495,3980},{530,3850},{320,3870},{135,3910},
+						 {135,3750},{340,3690},{570,3720},{770,3800},{960,3840},
+						 {1085,3750},{1010,3600},{760,3540},{520,3590},{280,3585} };
+	
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 2; j++) {
+			StagePos[i][j] = Pos[i][j];
+		}
+	}
 	
 }
+
 CGameStateStart::~CGameStateStart()
 {
 }
@@ -214,10 +226,23 @@ void CGameStateStart::OnInit()
 {
 	//Stages
 	StageStart.LoadBitmap("Bitmaps\\Stage.bmp");
+	stageNum.SetType(1);
+
+	int StageButton[5] = { IDB_STAGE_BUTTON_BLUE, IDB_STAGE_BUTTON_RED, IDB_STAGE_BUTTON_GREEN, IDB_STAGE_BUTTON_YELLOW, IDB_STAGE_BUTTON_GREY };
+
+	for (int i = 0; i < 5; i++) {
+		stageButton[i].LoadBitmap(StageButton[i], RGB(255, 255, 255));
+	}
 
 }
 
-void CGameStateStart::OnMouse(bool status) {
+void CGameStateStart::OnMouseMove(UINT nFlags, CPoint p) {
+	if (scroll)
+	{
+		int displayment = p.y - clickVertical;
+		scroll_Y = clickScroll + displayment;
+		inertia = displayment < 0 ? -20 : 20;
+	}
 
 }
 void CGameStateStart::SetUp(bool status)
@@ -240,11 +265,15 @@ void CGameStateStart::OnMove()
 	
 	SetUp(TapUp);
 	SetDown(TapDown);
-	OnMouse(1);
+	if (!scroll && inertia > 0) scroll_Y += inertia--;
+	else if (!scroll && inertia < 0) scroll_Y += inertia++;
+	//OnMouseMove(1);
 }
+
 void CGameStateStart::OnBeginState()
 {
 }
+
 void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_LEFT = 0x25; // keyboard¥ª½bÀY
@@ -260,6 +289,7 @@ void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		TapDown = true;
 	}
 }
+
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
@@ -273,14 +303,20 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == KEY_ESC)								
 		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	
 }
+
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
 {
-
+	scroll = true;
+	clickHorizontal = p.x;
+	clickVertical = p.y;
+	clickScroll = scroll_Y;
 }
+
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
-
+	scroll = false;
 }
+
 void CGameStateStart::OnShow()
 {
 	//Stage
@@ -291,6 +327,20 @@ void CGameStateStart::OnShow()
 		scroll_Y = -3600;
 	if (scroll_Y > 0 && scroll_Y > -3600)
 		scroll_Y = 0;
+}
+
+void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int yButton)
+{
+	stageButton[stageBtn].SetTopLeft(xButton, yButton);
+	stageButton[stageBtn].ShowBitmap();
+
+	/*
+	if (stages[stage]->IsUnlock())
+	{
+		stageNum.SetTopLeft(xButton + ((stageButton[stageBtn].Width() / 2) - (10 * GetDigit(stage) / 2)), yButton + (stageButton[stageBtn].Height() / 4));
+		stageNum.ShowBitmap();
+	}
+	*/
 }
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateOver

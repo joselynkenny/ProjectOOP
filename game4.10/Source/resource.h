@@ -92,8 +92,12 @@
 #define IDB_PLAYBUTTON_10               217
 #define IDB_PLAYBUTTON_11               218
 #define IDB_PLAYBUTTON_12               219
-#define IDB_BITMAP4                     221
-#define IDB_BITMAP5                     223
+#define IDB_STAGE_BUTTON_BLUE           224
+#define IDB_STAGE_BUTTON_GREEN          226
+#define IDB_STAGE_BUTTON_GREY           227
+#define IDB_STAGE_BUTTON_RED            228
+#define IDB_BITMAP4                     229
+#define IDB_STAGE_BUTTON_YELLOW         229
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -106,7 +110,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        224
+#define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

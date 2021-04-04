@@ -363,5 +363,23 @@
     <Image Include="Bitmaps\PlayButtonClicked.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Bitmaps\Stage_Button_Blue.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmaps\bitmap6.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Bitmaps\Stage_Button_Green.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Bitmaps\Stage_Button_Grey.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Bitmaps\Stage_Button_Red.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Bitmaps\Stage_Button_Yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
