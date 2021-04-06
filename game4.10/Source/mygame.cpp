@@ -381,7 +381,7 @@ void CBouncingBall::SetVelocity(int velocity)
 CGameMap::CGameMap()
 	:X(500), Y(200), MW(50), MH(50) 
 {
-	Candy1, Candy2 = 5;
+	//Candy1, Candy2 = 5;
 	/*int map_init[5][8] ={{3,3,3,3,3,3,3,3},
 						{3,3,3,3,3,3,3,3},
 						{3,3,3,3,3,3,3,3},
@@ -397,15 +397,13 @@ CGameMap::CGameMap()
 
 void CGameMap::LoadBitmap()
 {
-	blue.LoadBitmap("Bitmaps\\BlueCandy.bmp", RGB(255, 255, 255));
-	green.LoadBitmap("Bitmaps\\GreenCandy.bmp", RGB(255, 255, 255));
-	orange.LoadBitmap("Bitmaps\\OrangeCandy.bmp", RGB(255, 255, 255));
-	purple.LoadBitmap("Bitmaps\\PurpleCandy.bmp", RGB(255, 255, 255));
-	yellow.LoadBitmap("Bitmaps\\YellowCandy.bmp", RGB(255, 255, 255));
-	box.LoadBitmap("Bitmaps\\box.bmp",RGB(255,255,255));
+
 }
- bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button)
-{
+CGameMap* CGameMap::Click(){
+	on = on == true ? false : true;
+	return this;
+}
+ bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button){
 	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
 		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
 	{
@@ -416,76 +414,59 @@ void CGameMap::LoadBitmap()
 		return false;
 	}
 }
+ bool CGameMap::IsNeighbour(StagePlay &a, StagePlay &b)
+ {
+	 bool vertiNeighbour = fabs(a.GetTopLeftX() - b.GetTopLeftX()) == 50 && a.GetTopLeftY() == b.GetTopLeftY();
+	 bool horztNeighbour = fabs(a.GetTopLeftY() - b.GetTopLeftY()) == 50 && a.GetTopLeftX() == b.GetTopLeftX();
+	 return vertiNeighbour || horztNeighbour;
+ }
+ void CGameMap::SwapCandy()
+ {
+	 TotalCandy[0]->SetDestination(TotalCandy[1]->GetCurrentX(), TotalCandy[1]->GetCurrentY());
+	 TotalCandy[1]->SetDestination(TotalCandy[0]->GetCurrentX(), TotalCandy[0]->GetCurrentY());
+
+	 StagePlay temp = *TotalCandy[0];
+	 *TotalCandy[0] = *TotalCandy[1];
+	 *TotalCandy[1] = temp;
+ }
+ void CGameMap::InitClickedCandy()
+ {
+	 for (auto i = TotalCandy.begin(); i != TotalCandy.end(); i++)
+	 {
+		 (*i)->InitClick();
+	 }
+	 TotalCandy.clear();
+ }
 void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
-	
-	if (OnClick(point, blue)) {
-		if (Candy1 == 5) {
-			Candy1 = 1;
-			Pointx1 = point.x;
-			Pointy1 = point.x;
+	int j= (point.x - 280) / 50;
+	int i= (point.y - 35) / 50;
+	if (!map[i][j]) return;
+	StagePlay* Candy1 = maps[i][j].Click();
+	auto candy = find(TotalCandy.begin(), TotalCandy.end(), TotalCandy); 
+
+	if (candy == TotalCandy.end())
+		TotalCandy.push_back(Candy1);
+	else TotalCandy.erase(candy);			
+
+	if (TotalCandy.size() == 2)
+	{
+		if (IsNeighbour(*TotalCandy[0], *TotalCandy[1]))
+		{
+			SwapCandy();
+			if (TotalCandy[0]->GetPower() == 4 || TotalCandy[1]->GetPower() == 4 || (TotalCandy[0]->GetPower() && TotalCandy[1]->GetPower()))
+				swap = true;
 		}
-		else {
-			Candy2 = 1;
-			Pointx2 = point.x;
-			Pointy2 = point.x;
-		}
-	}
-	else if (OnClick(point, yellow)) {
-		if (Candy1 == 5) {
-			Candy1 = 0;
-			Pointx1 = point.x;
-			Pointy1 = point.x;
-		}
-		else {
-			Candy2 = 0;
-			Pointx2 = point.x;
-			Pointy2 = point.x;
-		}
-	}
-	else if (OnClick(point, green)) {
-		if (Candy1 == 5) {
-			Candy1 = 2;
-			Pointx1 = point.x;
-			Pointy1 = point.x;
-		}
-		else {
-			Candy2 = 2;
-			Pointx2 = point.x;
-			Pointy2 = point.x;
-		}
-	}
-	else if (OnClick(point, orange)) {
-		if (Candy1 == 5) {
-			Candy1 = 3;
-			Pointx1 = point.x;
-			Pointy1 = point.x;
-		}
-		else {
-			Candy2 = 3;
-			Pointx2 = point.x;
-			Pointy2 = point.x;
-		}
-	}
-	else if (OnClick(point, purple)) {
-		if (Candy1 == 5) {
-			Candy1 = 4;
-			Pointx1 = point.x;
-			Pointy1 = point.x;
-		}
-		else {
-			Candy2 = 4;
-			Pointx2 = point.x;
-			Pointy2 = point.x;
-		}
-	}
-	if (Candy2 != 5) {
-		
-		Candy1 = 5;
-		Candy2 = 5;
+		else if (!swap) InitClickedCandy();
 	}
 }
 void CGameMap::OnShow()
 {
+	blue.LoadBitmap(IDB_BLUE_C);
+	green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
+	orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
+	purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
+	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
+	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 5; j++) {
 			switch (map[j][i]) {

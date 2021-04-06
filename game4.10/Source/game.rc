@@ -240,6 +240,18 @@ IDB_LOGOTOFFEE5         BITMAP                  "..\\Bitmaps\\Toffee_5.bmp"
 
 IDB_LOGOTOFFEE6         BITMAP                  "..\\Bitmaps\\Toffee_6.bmp"
 
+IDB_BLUE_C              BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\BlueCandy.bmp"
+
+IDB_GREEN_C             BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\GreenCandy.bmp"
+
+IDB_ORANGE_C            BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\OrangeCandy.bmp"
+
+IDB_PURPLE_C            BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\PurpleCandy.bmp"
+
+IDB_RED_C               BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\RedCandy.bmp"
+
+IDB_YELLOW_C            BITMAP                  "C:\\Users\\Joselyn Kenny\\Documents\\ProjectOOP\\game4.10\\Bitmaps\\YellowCandy.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

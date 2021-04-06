@@ -1,19 +1,29 @@
+#ifndef STAGE_PLAY
+#define STAGE_PLAY
 namespace game_framework {
 
-/*	class StagePlay {
+	class StagePlay
+	{
 	public:
 		StagePlay();
-		void LoadBitmap();
-		void Map();
-		void OnShow();
-		void OnMove();
-		void OnKeyDown(UINT, UINT, UINT);				
-		void OnKeyUp(UINT, UINT, UINT);					
-		void OnLButtonDown(UINT nFlags, CPoint point);	
-		void OnLButtonUp(UINT nFlags, CPoint point);		
+		~StagePlay();
+		StagePlay* Click();							
+		static void LoadBitmap();			
+		void OnMove(bool mute = false);		
+		void OnShow();	
+		void InitClick();
+		void SetDestination(int, int);
+		int GetCurrentX();					
+		int GetCurrentY();
+		int GetPower();	
+		int GetTopLeftX();					
+		int GetTopLeftY();					
+		int GetTopLeft(char c);
+
 	private:
-		CMovingBitmap box;
-		list<pair<int, int>> map;
+		static CMovingBitmap box, green,red, blue, orange, purple, yellow;
+		bool on;
+		int style, x, y, dx, dy,power, pushX, pushY;
 	};
-	*/
 }
+#endif

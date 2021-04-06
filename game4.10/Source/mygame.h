@@ -122,6 +122,7 @@ namespace game_framework {
 	{
 	public:
 		CGameMap();
+		CGameMap* CGameMap::Click();
 		void LoadBitmap();
 		void OnShow();
 		void OnMove();
@@ -129,17 +130,23 @@ namespace game_framework {
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);
+		void InitClickedCandy();
+		void SwapCandy();
+		bool IsNeighbour(StagePlay &a, StagePlay &b);
 		bool OnClick(const CPoint& point, CMovingBitmap& button);
 		~CGameMap();
 	protected:
-		CMovingBitmap box,green,blue,orange,purple,yellow;
-		int map[5][8];
 		const int X, Y;
 		const int MW, MH;
 		CBouncingBall* bballs;
 		int random_num;
 	private:
-		int Candy1, Candy2, Pointx1,Pointx2, Pointy1, Pointy2;
+		vector<StagePlay*> TotalCandy;
+		int map[5][8];
+		StagePlay maps[5][8];
+		bool on,swap;
+		static CMovingBitmap box, green, red, blue, orange, purple, yellow;
+		
 	};
 	class CBouncingBall;
 

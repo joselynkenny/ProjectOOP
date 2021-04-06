@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
-#include <fstream>
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
@@ -9,50 +8,79 @@
 
 namespace game_framework {
 
-/*	StagePlay::StagePlay()
+	StagePlay::StagePlay()
+		: style(-1)
+	{	}
+	StagePlay::~StagePlay()
+	{}
+	StagePlay* StagePlay::Click()
 	{
-
+		on = on == true ? false : true;
+		return this;
 	}
+	void StagePlay::LoadBitmap() {
 
-	void StagePlay::LoadBitmap()
-	{
-		//box.LoadBitmap("Bitmaps\\box.bmp");
+		blue.LoadBitmap(IDB_BLUE_C);
+		green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
+		orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
+		purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
+		red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
+		yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
 	}
-	void StagePlay::Map()
+	void StagePlay::SetDestination(int x, int y)
 	{
-
-		map.clear();
-		for (int i = 0; i < 10; i++)
+		dx = x;
+		dy = y;
+	}
+	void StagePlay::InitClick()
+	{
+		on = false;
+	}
+	void StagePlay::OnMove(bool mute)
+	{
+		if (pushX != 0 || pushY != 0)
 		{
-			for (int j = 0; j < 10; j++)
+			int offsetX = pushX > 0 ? 1 : -1, offsetY = pushY > 0 ? 1 : -1;
+			if (pushX != 0)
 			{
-				map.push_back(pair<int, int>(i, j));
+				x += offsetX;
+				pushX -= offsetX;
 			}
+			if (pushY != 0)
+			{
+				y += offsetY;
+				pushY -= offsetY;
+			}
+			return;
 		}
 	}
-	void StagePlay::OnMove()
+	int StagePlay::GetCurrentX()
 	{
-		
+		return x;
 	}
-
-	void StagePlay::OnShow()
+	int StagePlay::GetCurrentY()
 	{
-		box.SetTopLeft(0, 0);
-		box.ShowBitmap();
+		return y;
 	}
-	void StagePlay::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+	int StagePlay::GetPower()
 	{
-	
+		return power;
 	}
-
-	void StagePlay::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+	int StagePlay::GetTopLeftX()
 	{
-
+		return dx;
 	}
-	void StagePlay::OnLButtonDown(UINT nFlags, CPoint point) {
-
+	int StagePlay::GetTopLeftY()
+	{
+		return dy;
 	}
-	void StagePlay::OnLButtonUp(UINT nFlags, CPoint point) {
-
-	}*/
+	int StagePlay::GetTopLeft(char c)
+	{
+		switch (c)
+		{
+		case 'x': return GetTopLeftX();
+		case 'y': return GetTopLeftY();
+		default: return 0;
+		}
+	}
 }
