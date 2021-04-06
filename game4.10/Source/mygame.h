@@ -66,6 +66,7 @@ namespace game_framework {
 		void OnBeginState();							
 		void OnKeyUp(UINT, UINT, UINT); 				
 		void OnLButtonDown(UINT nFlags, CPoint point);  
+		void OnLButtonUp(UINT nFlags, CPoint point);
 	protected:
 		void OnShow();									
 		void OnMove();
@@ -88,7 +89,7 @@ namespace game_framework {
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnLButtonDown(UINT nFlags, CPoint point);
-		void OnMouse(bool status);
+		void OnMouseMove(UINT nFlags, CPoint point);
 		void SetUp(bool status);
 		void SetDown(bool status);
 		
@@ -96,11 +97,14 @@ namespace game_framework {
 		void OnShow();	
 		void OnMove();
 	private:
-		CMovingBitmap StageStart;
+		void ShowStageButton(int, int, int, int);
+		CMovingBitmap StageStart, stageButton[5];
 		int scroll_Y,area,Level[2][2];;
 		bool scroll,TapUp,TapDown;
+		int StagePos[15][2];
+		CInteger stageNum;
 		LONG clickVertical, clickHorizontal, clickScroll;
-
+		int mouseDisplayment, inertia;
 	};
 	
 	/////////////////////////////////////////////////////////////////////////////

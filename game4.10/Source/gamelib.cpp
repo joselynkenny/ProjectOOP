@@ -263,6 +263,11 @@ int CInteger::GetInteger()
 	return n;
 }
 
+void CInteger::SetType(int Type)
+{
+	type = Type;
+}
+
 void CInteger::LoadBitmap()
 {
 	//
@@ -431,6 +436,7 @@ CGameState::CGameState(CGame *g)
 {
 
 	game = g; 	// ³]©wgameªºpointer
+	//MAX_STAGE = 15;
 }
 
 void CGameState::GotoGameState(int state)
@@ -487,6 +493,33 @@ void CGameState::OnCycle() // Template Method
 {
 	OnMove();
 	OnShow();
+}
+
+bool CGameState::ButtonOnClick(const CPoint& point, CMovingBitmap& button)
+{
+	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
+		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//return true if the cursor located in the button area
+bool CGameState::ButtonOnClick(const CPoint& point, CAnimation& button)
+{
+	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
+		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////

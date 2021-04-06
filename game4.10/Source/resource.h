@@ -92,6 +92,7 @@
 #define IDB_PLAYBUTTON_10               217
 #define IDB_PLAYBUTTON_11               218
 #define IDB_PLAYBUTTON_12               219
+<<<<<<< HEAD
 #define IDB_BITMAP4                     221
 #define IDB_BITMAP5                     223
 #define IDB_BLUE_C                      224
@@ -101,6 +102,14 @@
 #define IDB_RED_C                       228
 #define IDB_BITMAP6                     229
 #define IDB_YELLOW_C                    229
+=======
+#define IDB_STAGE_BUTTON_BLUE           224
+#define IDB_STAGE_BUTTON_GREEN          226
+#define IDB_STAGE_BUTTON_GREY           227
+#define IDB_STAGE_BUTTON_RED            228
+#define IDB_BITMAP4                     229
+#define IDB_STAGE_BUTTON_YELLOW         229
+>>>>>>> 3f7cf48d2b849ba1cebafa83e06bb1b08b70e68c
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772

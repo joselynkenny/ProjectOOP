@@ -128,9 +128,17 @@ IDB_PLAYBUTTON_11       BITMAP                  "..\\Bitmaps\\PlayButton11.bmp"
 
 IDB_PLAYBUTTON_12       BITMAP                  "..\\Bitmaps\\PlayButton12.bmp"
 
-IDB_BITMAP4             BITMAP                  "..\\bitmaps\\bitmap4.bmp"
-
 IDB_BLUE                BITMAP                  "..\\bitmaps\\bitmap5.bmp"
+
+IDB_STAGE_BUTTON_BLUE   BITMAP                  "..\\Bitmaps\\Stage_Button_Blue.bmp"
+
+IDB_STAGE_BUTTON_GREEN  BITMAP                  "..\\Bitmaps\\Stage_Button_Green.bmp"
+
+IDB_STAGE_BUTTON_GREY   BITMAP                  "..\\Bitmaps\\Stage_Button_Grey.bmp"
+
+IDB_STAGE_BUTTON_RED    BITMAP                  "..\\Bitmaps\\Stage_Button_Red.bmp"
+
+IDB_STAGE_BUTTON_YELLOW BITMAP                  "..\\Bitmaps\\Stage_Button_Yellow.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////

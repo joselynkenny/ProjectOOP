@@ -89,28 +89,17 @@ void CGameStateInit::OnInit()
 	for (int i = 0; i < 12; i++) {
 		playButton.AddBitmap(playBtnBmp[i], RGB(0, 0, 0));
 	}
-	playButton.SetDelayCount(2);
+
+	playButton.SetDelayCount(4);
 	clickedPlayButton.LoadBitmap("Bitmaps\\PlayButtonClicked.bmp", RGB(0, 0, 0));
 	
-
-	//LogoCandy
-	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,IDB_LOGOCANDY9, IDB_LOGOCANDY10,
-		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20,
-		IDB_LOGOCANDY19, IDB_LOGOCANDY18, IDB_LOGOCANDY17, IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14, IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10, 
-		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17,IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14,
-		IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10, IDB_LOGOCANDY9, IDB_LOGOCANDY8};
-	for (int i = 0; i < 46; i++) {
-		LogoCandy.AddBitmap(LogoCandy_list[i], RGB(255, 255, 255));
-	}
-	LogoCandy.SetDelayCount(1);
-
 	//LogoTiffy
 	int LogoTiffy_list[] = { IDB_LOGOTIFFY0, IDB_LOGOTIFFY1, IDB_LOGOTIFFY2, IDB_LOGOTIFFY3, IDB_LOGOTIFFY4, IDB_LOGOTIFFY5, IDB_LOGOTIFFY6, IDB_LOGOTIFFY7, IDB_LOGOTIFFY8,IDB_LOGOTIFFY9,
 		IDB_LOGOTIFFY8, IDB_LOGOTIFFY7, IDB_LOGOTIFFY6, IDB_LOGOTIFFY5, IDB_LOGOTIFFY4, IDB_LOGOTIFFY3, IDB_LOGOTIFFY2, IDB_LOGOTIFFY1, IDB_LOGOTIFFY0 };
 	for (int i = 0; i < 19; i++) {
 		LogoTiffy.AddBitmap(LogoTiffy_list[i], RGB(255, 255, 255));
 	}
-	LogoTiffy.SetDelayCount(3);
+	LogoTiffy.SetDelayCount(4);
 
 	//LogoToffee
 	int LogoToffee_list[] = { IDB_LOGOTOFFEE1, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE6,
@@ -119,8 +108,24 @@ void CGameStateInit::OnInit()
 		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
 	}
 	LogoToffee.SetDelayCount(3);
-	Sleep(300);		
+	Sleep(300);	
+
+	//LogoCandy
+	int LogoCandy_list[] = { IDB_LOGOCANDY1, IDB_LOGOCANDY2, IDB_LOGOCANDY3, IDB_LOGOCANDY4, IDB_LOGOCANDY5, IDB_LOGOCANDY6, IDB_LOGOCANDY7, IDB_LOGOCANDY8,IDB_LOGOCANDY9, IDB_LOGOCANDY10,
+		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17, IDB_LOGOCANDY18, IDB_LOGOCANDY19, IDB_LOGOCANDY20,
+		IDB_LOGOCANDY19, IDB_LOGOCANDY18, IDB_LOGOCANDY17, IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14, IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10,
+		IDB_LOGOCANDY11, IDB_LOGOCANDY12, IDB_LOGOCANDY13, IDB_LOGOCANDY14, IDB_LOGOCANDY15, IDB_LOGOCANDY16, IDB_LOGOCANDY17,IDB_LOGOCANDY16, IDB_LOGOCANDY15, IDB_LOGOCANDY14,
+		IDB_LOGOCANDY13, IDB_LOGOCANDY12, IDB_LOGOCANDY11, IDB_LOGOCANDY10, IDB_LOGOCANDY9, IDB_LOGOCANDY8 };
 	
+	for (int i = 0; i < 46; i++) {
+		LogoCandy.AddBitmap(LogoCandy_list[i], RGB(255, 255, 255));
+	}
+
+	LogoCandy.SetDelayCount(1);
+	LogoCandy.SetCycle(false);
+
+	finishLoaded = true;
+	OnBeginState();
 }
 
 void CGameStateInit::OnBeginState()
@@ -143,16 +148,29 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_START);		// ¤Á´«¦ÜGAME_STATE_RUN
+	if(ButtonOnClick(point, playButton)) {
+		playBtnClicked = true;
+	} else {
+		playBtnClicked = false;
+	}
+}
+
+void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
+	if (ButtonOnClick(point, playButton)) {
+		GotoGameState(GAME_STATE_START);
+	}
+	else {
+		playBtnClicked = false;
+	}
 }
 
 void CGameStateInit::OnMove() {
-	
 	LogoCandy.OnMove();
 	if (!playBtnClicked) playButton.OnMove();
 	LogoTiffy.OnMove();
 	LogoToffee.OnMove();
 }
+
 void CGameStateInit::OnShow()
 {
 	//BackgroundMenu
@@ -171,6 +189,7 @@ void CGameStateInit::OnShow()
 	//LogoToffee
 	LogoToffee.SetTopLeft(700, 60);
 	LogoToffee.OnShow();
+
 	//PlayButton
 	if (playBtnClicked)	{
 		clickedPlayButton.SetTopLeft(SIZE_X / 2 - playButton.Width() / 2, SIZE_Y / 5 * 4 - playButton.Height());
@@ -186,11 +205,23 @@ void CGameStateInit::OnShow()
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
 CGameStateStart::CGameStateStart(CGame *g)
-	: CGameState(g),scroll(false),area(0)
+	: CGameState(g),scroll(false),area(0),mouseDisplayment(0), inertia(0)
 {
+	TapUp = false; TapDown = false;
 	scroll_Y = -3600;
+
+	int Pos[][2] = { {270,4030},{495,3980},{530,3850},{320,3870},{135,3910},
+						 {135,3750},{340,3690},{570,3720},{770,3800},{960,3840},
+						 {1085,3750},{1010,3600},{760,3540},{520,3590},{280,3585} };
+	
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 2; j++) {
+			StagePos[i][j] = Pos[i][j];
+		}
+	}
 	
 }
+
 CGameStateStart::~CGameStateStart()
 {
 }
@@ -199,10 +230,23 @@ void CGameStateStart::OnInit()
 {
 	//Stages
 	StageStart.LoadBitmap("Bitmaps\\Stage.bmp");
+	stageNum.SetType(1);
+
+	int StageButton[5] = { IDB_STAGE_BUTTON_BLUE, IDB_STAGE_BUTTON_RED, IDB_STAGE_BUTTON_GREEN, IDB_STAGE_BUTTON_YELLOW, IDB_STAGE_BUTTON_GREY };
+
+	for (int i = 0; i < 5; i++) {
+		stageButton[i].LoadBitmap(StageButton[i], RGB(255, 255, 255));
+	}
 
 }
 
-void CGameStateStart::OnMouse(bool status) {
+void CGameStateStart::OnMouseMove(UINT nFlags, CPoint p) {
+	if (scroll)
+	{
+		int displayment = p.y - clickVertical;
+		scroll_Y = clickScroll + displayment;
+		inertia = displayment < 0 ? -20 : 20;
+	}
 
 }
 void CGameStateStart::SetUp(bool status)
@@ -225,11 +269,15 @@ void CGameStateStart::OnMove()
 	
 	SetUp(TapUp);
 	SetDown(TapDown);
-	OnMouse(1);
+	if (!scroll && inertia > 0) scroll_Y += inertia--;
+	else if (!scroll && inertia < 0) scroll_Y += inertia++;
+	//OnMouseMove(1);
 }
+
 void CGameStateStart::OnBeginState()
 {
 }
+
 void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_LEFT = 0x25; // keyboard¥ª½bÀY
@@ -245,6 +293,7 @@ void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		TapDown = true;
 	}
 }
+
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
@@ -258,14 +307,20 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == KEY_ESC)								
 		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	
 }
+
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
 {
-
+	scroll = true;
+	clickHorizontal = p.x;
+	clickVertical = p.y;
+	clickScroll = scroll_Y;
 }
+
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
-
+	scroll = false;
 }
+
 void CGameStateStart::OnShow()
 {
 	//Stage
@@ -276,6 +331,20 @@ void CGameStateStart::OnShow()
 		scroll_Y = -3600;
 	if (scroll_Y > 0 && scroll_Y > -3600)
 		scroll_Y = 0;
+}
+
+void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int yButton)
+{
+	stageButton[stageBtn].SetTopLeft(xButton, yButton);
+	stageButton[stageBtn].ShowBitmap();
+
+	/*
+	if (stages[stage]->IsUnlock())
+	{
+		stageNum.SetTopLeft(xButton + ((stageButton[stageBtn].Width() / 2) - (10 * GetDigit(stage) / 2)), yButton + (stageButton[stageBtn].Height() / 4));
+		stageNum.ShowBitmap();
+	}
+	*/
 }
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateOver
