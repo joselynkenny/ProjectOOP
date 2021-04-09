@@ -447,6 +447,7 @@ void CBouncingBall::SetVelocity(int velocity)
 	this->velocity = velocity;
 	this->initial_velocity = velocity;
 }
+#include <iostream>
 CGameMap::CGameMap()
 	:X(500), Y(200), MW(50), MH(50) 
 {
@@ -459,20 +460,26 @@ CGameMap::CGameMap()
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 8; j++)
 			map[i][j] = rand()%5;
-	
 	random_num = 0;
 	bballs = NULL;
 }
 
-void CGameMap::LoadBitmap()
+void CGameMap::LoadBitmaps()
 {
-
+	blue.LoadBitmap(IDB_BLUE_C);
+	green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
+	orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
+	purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
+	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
+	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
+	box.LoadBitmap("Bitmaps\\box.bmp");
+	
 }
 CGameMap* CGameMap::Click(){
 	on = on == true ? false : true;
 	return this;
 }
- bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button){
+ /*bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button){
 	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
 		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
 	{
@@ -482,90 +489,67 @@ CGameMap* CGameMap::Click(){
 	{
 		return false;
 	}
-}
- bool CGameMap::IsNeighbour(StagePlay &a, StagePlay &b)
+}*/
+ bool CGameMap::Friend(int ii,int jj,int i, int j)
  {
-	 bool vertiNeighbour = fabs(a.GetTopLeftX() - b.GetTopLeftX()) == 50 && a.GetTopLeftY() == b.GetTopLeftY();
-	 bool horztNeighbour = fabs(a.GetTopLeftY() - b.GetTopLeftY()) == 50 && a.GetTopLeftX() == b.GetTopLeftX();
-	 return vertiNeighbour || horztNeighbour;
- }
- void CGameMap::SwapCandy()
- {
-	 TotalCandy[0]->SetDestination(TotalCandy[1]->GetCurrentX(), TotalCandy[1]->GetCurrentY());
-	 TotalCandy[1]->SetDestination(TotalCandy[0]->GetCurrentX(), TotalCandy[0]->GetCurrentY());
-
-	 StagePlay temp = *TotalCandy[0];
-	 *TotalCandy[0] = *TotalCandy[1];
-	 *TotalCandy[1] = temp;
- }
- void CGameMap::InitClickedCandy()
- {
-	 for (auto i = TotalCandy.begin(); i != TotalCandy.end(); i++)
-	 {
-		 (*i)->InitClick();
-	 }
-	 TotalCandy.clear();
+	 if ((ii - 1 == i || ii + 1 == i) && (jj - 1 == j || j + 1 == j))
+		 return true;
+	 else 
+		return false;
+	
  }
 void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
 	int j= (point.x - 280) / 50;
 	int i= (point.y - 35) / 50;
-	if (!map[i][j]) return;
-	StagePlay* Candy1 = maps[i][j].Click();
-	auto candy = find(TotalCandy.begin(), TotalCandy.end(), TotalCandy); 
-
-	if (candy == TotalCandy.end())
-		TotalCandy.push_back(Candy1);
-	else TotalCandy.erase(candy);			
-
-	if (TotalCandy.size() == 2)
+	//std::cout << "j "<< endl;
+	//if (!map[i][j]) return;
+	//StagePlay* Candy1 = maps[i][j].Click();
+	if (TotalCandy == 0) {
+		TotalCandy += 1;
+		ii = i;
+		jj = j;
+	}
+	else if (TotalCandy== 1)
 	{
-		if (IsNeighbour(*TotalCandy[0], *TotalCandy[1]))
+
+		if (Friend(ii,jj,i,j))
 		{
-			SwapCandy();
-			if (TotalCandy[0]->GetPower() == 4 || TotalCandy[1]->GetPower() == 4 || (TotalCandy[0]->GetPower() && TotalCandy[1]->GetPower()))
-				swap = true;
+
+			int temp = map[ii][jj];
+			map[ii][jj] = map[i][j];
+			map[i][j] = temp;
+			//if (TotalCandy[0]->GetPower() == 4 || TotalCandy[1]->GetPower() == 4 || (TotalCandy[0]->GetPower() && TotalCandy[1]->GetPower()))
+			//swap = true;
 		}
-		else if (!swap) InitClickedCandy();
+		//else if (!swap) InitClickedCandy();
+		TotalCandy, ii, jj = 0;
 	}
 }
 void CGameMap::OnShow()
 {
-	blue.LoadBitmap(IDB_BLUE_C);
-	green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
-	orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
-	purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
-	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
-	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
+
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 5; j++) {
+			box.SetTopLeft(X + (MW*i), Y + (MH*j));
+			box.ShowBitmap();
 			switch (map[j][i]) {
 			case 0:
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
 				yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
 				yellow.ShowBitmap();
 				break;
 			case 1:
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
 				blue.SetTopLeft(X + (MW*i), Y + (MH*j));
 				blue.ShowBitmap();
 				break;
 			case 2:
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
 				green.SetTopLeft(X + (MW*i), Y + (MH*j));
 				green.ShowBitmap();
 				break;
 			case 3:
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
 				orange.SetTopLeft(X + (MW*i), Y + (MH*j));
 				orange.ShowBitmap();
 				break;
 			case 4:
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
 				purple.SetTopLeft(X + (MW*i), Y + (MH*j));
 				purple.ShowBitmap();
 				break;
@@ -573,13 +557,8 @@ void CGameMap::OnShow()
 				ASSERT(0);
 			}
 		}
-	//for (int i = 0; i < random_num; i++)
-	//{
-		//bballs[i].OnShow();
-//	}
 			
 }
-
 void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
 {
 	const int VELOCITY = 10;
@@ -591,7 +570,6 @@ void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
 	bballs[ini_index].SetVelocity(VELOCITY + col);
 	bballs[ini_index].SetXY(X + col * MW + MW / 2, floor);
 }
-
 void CGameMap::RandomBouncingBall()
 {
 	const int MAX_RAND_NUM = 10;
@@ -610,14 +588,12 @@ void CGameMap::RandomBouncingBall()
 			}
 		}
 }
-
 void CGameMap::OnKeyDown(UINT nChar)
 {
 	const int KEY_SPACE = 0x20;
 	if (nChar == KEY_SPACE)
 		RandomBouncingBall();
 }
-
 void CGameMap::OnMove()
 {
 	for (int i = 0; i < random_num; i++) 
@@ -660,11 +636,11 @@ void CGameStateRun::OnBeginState()
 		ball[i].SetDelay(x_pos);
 		ball[i].SetIsAlive(true);
 	}
-	eraser.Initialize();
+	//eraser.Initialize();
 	//background.SetTopLeft(0,0);				// 設定背景的起始座標
-	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
-	hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
-	hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
+	//help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
+	//hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
+	//hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
 	CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
 	CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
@@ -672,13 +648,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	//
-	// 如果希望修改cursor的樣式，則將下面程式的commment取消即可
-	//
-	// SetCursor(AfxGetApp()->LoadCursor(IDC_GAMECURSOR));
-	//
-	// 移動背景圖的座標
-	//
+
 	////if (background.Top() > SIZE_Y)
 		//background.SetTopLeft(60 ,-background.Height());
 	//background.SetTopLeft(background.Left(),background.Top()+1);
@@ -690,23 +660,23 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	else {
 		picX = picY = 0;
 	}
-	practice.SetTopLeft(picX, picY);
-	c_practice.OnMove();
+	//practice.SetTopLeft(picX, picY);
+	//c_practice.OnMove();
 	gamemap.OnMove();
 	//
 	// 移動球
 	//
-	int i;
-	for (i=0; i < NUMBALLS; i++)
-		ball[i].OnMove();
+	//int i;
+	//for (i=0; i < NUMBALLS; i++)
+	//	ball[i].OnMove();
 	//
 	// 移動擦子
 	//
-	eraser.OnMove();
+	//eraser.OnMove();
 	//
 	// 判斷擦子是否碰到球
 	//
-	for (i=0; i < NUMBALLS; i++)
+	/*for (i=0; i < NUMBALLS; i++)
 		if (ball[i].IsAlive() && ball[i].HitEraser(&eraser)) {
 			ball[i].SetIsAlive(false);
 			CAudio::Instance()->Play(AUDIO_DING);
@@ -720,34 +690,34 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				GotoGameState(GAME_STATE_OVER);
 			}
 		}
-	//
+	//*/
 	// 移動彈跳的球
 	//
-	bball.OnMove();
+	//bball.OnMove();
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	ShowInitProgress(33);	
-	background.LoadBitmap("Bitmaps\\Play.bmp");
-	box.LoadBitmap("Bitmaps\\box.bmp");
+	backgrounds.LoadBitmap("Bitmaps\\Play.bmp");
 
-	int i;
-	for (i = 0; i < NUMBALLS; i++)	
-		ball[i].LoadBitmap();								
-	eraser.LoadBitmap();					
-	practice.LoadBitmap(IDB_TESTAJ,RGB(255,255,255));
+	//int i;
+	//for (i = 0; i < NUMBALLS; i++)	
+	//	ball[i].LoadBitmap();								
+	//eraser.LoadBitmap();					
+	//practice.LoadBitmap(IDB_TESTAJ,RGB(255,255,255));
 	//practice.LoadBitmap("Bitmaps/Nbmp.bmp");
-	c_practice.LoadBitmap();
-	gamemap.LoadBitmap();
+	//c_practice.LoadBitmap();
+
 	ShowInitProgress(50);
 	Sleep(300);
 
-	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				
-	corner.LoadBitmap(IDB_CORNER);							
+	//help.LoadBitmap(IDB_HELP,RGB(255,255,255));				
+	//corner.LoadBitmap(IDB_CORNER);							
 	//corner.ShowBitmap(background);							
-	bball.LoadBitmap();							
-	hits_left.LoadBitmap();	
+	//bball.LoadBitmap();							
+	//hits_left.LoadBitmap();	
+	gamemap.LoadBitmaps();
 	
 	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	
 	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	
@@ -796,6 +766,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
 	eraser.SetMovingLeft(false);
+	gamemap.OnLButtonUp(nFlags, point);
 }
 
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -823,10 +794,11 @@ void CGameStateRun::OnShow()
 	//
 	//  貼上背景圖、撞擊數、球、擦子、彈跳的球
 	//
-	background.ShowBitmap();			// 貼上背景圖
-	background.SetTopLeft(0, 0);
-	box.SetTopLeft( 3000 , 500);
-	box.ShowBitmap();
+	backgrounds.SetTopLeft(0, 0);
+	backgrounds.ShowBitmap();			// 貼上背景圖
+
+	//box.SetTopLeft( 3000 , 500);
+	//box.ShowBitmap();
 
 
 	/*help.ShowBitmap();					// 貼上說明圖

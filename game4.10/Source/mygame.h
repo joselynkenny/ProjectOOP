@@ -127,16 +127,14 @@ namespace game_framework {
 	public:
 		CGameMap();
 		CGameMap* CGameMap::Click();
-		void LoadBitmap();
+		void LoadBitmaps();
 		void OnShow();
 		void OnMove();
 		void OnKeyDown(UINT);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);
-		void InitClickedCandy();
-		void SwapCandy();
-		bool IsNeighbour(StagePlay &a, StagePlay &b);
+		bool Friend(int ii, int jj, int i, int j);
 		bool OnClick(const CPoint& point, CMovingBitmap& button);
 		~CGameMap();
 	protected:
@@ -144,12 +142,14 @@ namespace game_framework {
 		const int MW, MH;
 		CBouncingBall* bballs;
 		int random_num;
+		
 	private:
-		vector<StagePlay*> TotalCandy;
+		//vector<StagePlay*> TotalCandy;
+		CMovingBitmap box, green, red, blue, orange, purple, yellow;
 		int map[5][8];
-		StagePlay maps[5][8];
+		int TotalCandy,ii,jj;
 		bool on,swap;
-		static CMovingBitmap box, green, red, blue, orange, purple, yellow;
+		
 		
 	};
 	class CBouncingBall;
@@ -174,7 +174,7 @@ namespace game_framework {
 		const int		NUMBALLS;	// 球的總數
 		CPractice		c_practice;
 		CGameMap		gamemap;
-		CMovingBitmap	background,box;	// 背景圖
+		CMovingBitmap	backgrounds,box;	// 背景圖
 		CMovingBitmap	practice;	// 背景圖
 		int				picX, picY;
 		CMovingBitmap	help;		// 說明圖

@@ -1,4 +1,4 @@
-#ifndef STAGE_PLAY
+/*#ifndef STAGE_PLAY
 #define STAGE_PLAY
 namespace game_framework {
 
@@ -26,4 +26,4 @@ namespace game_framework {
 		int style, x, y, dx, dy,power, pushX, pushY;
 	};
 }
-#endif
+#endif*/

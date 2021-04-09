@@ -364,24 +364,6 @@
     <Image Include="Bitmaps\PlayButtonClicked.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-<<<<<<< HEAD
-    <Image Include="Bitmaps\BlueCandy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\GreenCandy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\OrangeCandy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\PurpleCandy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\RedCandy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\YellowCandy.bmp">
-=======
     <Image Include="Bitmaps\Stage_Button_Blue.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -398,7 +380,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Bitmaps\Stage_Button_Yellow.bmp">
->>>>>>> 3f7cf48d2b849ba1cebafa83e06bb1b08b70e68c
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
