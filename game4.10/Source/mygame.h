@@ -131,6 +131,7 @@ namespace game_framework {
 		void OnShow();
 		void OnMove();
 		void OnKeyDown(UINT);
+		void OnLButtonDown(UINT nFlags, CPoint point);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);

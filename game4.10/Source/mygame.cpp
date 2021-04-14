@@ -60,6 +60,7 @@
 #include "gamelib.h"
 #include "mygame.h"
 #include "StagePlay.h"
+#include <iostream>
 
 
 
@@ -447,20 +448,16 @@ void CBouncingBall::SetVelocity(int velocity)
 	this->velocity = velocity;
 	this->initial_velocity = velocity;
 }
-#include <iostream>
+
 CGameMap::CGameMap()
-	:X(500), Y(200), MW(50), MH(50) 
+	:X(500), Y(200), MW(50), MH(50) ,swap(true)
 {
-	//Candy1, Candy2 = 5;
-	/*int map_init[5][8] ={{3,3,3,3,3,3,3,3},
-						{3,3,3,3,3,3,3,3},
-						{3,3,3,3,3,3,3,3},
-						{3,3,3,3,3,3,3,3},
-						{3,3,3,3,3,3,3,3} };*/
+	TotalCandy = 0;
+	ii = 0;
+	jj = 0;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 8; j++)
 			map[i][j] = rand()%5;
-	random_num = 0;
 	bballs = NULL;
 }
 
@@ -498,65 +495,66 @@ CGameMap* CGameMap::Click(){
 		return false;
 	
  }
-void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
-	int j= (point.x - 280) / 50;
-	int i= (point.y - 35) / 50;
-	//std::cout << "j "<< endl;
-	//if (!map[i][j]) return;
-	//StagePlay* Candy1 = maps[i][j].Click();
+ 
+void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
+	int j= (point.x - X) / MW;
+	int i= (point.y - Y) / MH;
 	if (TotalCandy == 0) {
-		TotalCandy += 1;
+		TotalCandy = 1;
 		ii = i;
 		jj = j;
 	}
-	else if (TotalCandy== 1)
+	else if (TotalCandy == 1)
 	{
-
-		if (Friend(ii,jj,i,j))
+		if ((ii - 1 == i || ii + 1 == i) && (jj - 1 == j || jj + 1 == j))
 		{
-
 			int temp = map[ii][jj];
-			map[ii][jj] = map[i][j];
+			map[ii][jj] =map[i][j];
 			map[i][j] = temp;
-			//if (TotalCandy[0]->GetPower() == 4 || TotalCandy[1]->GetPower() == 4 || (TotalCandy[0]->GetPower() && TotalCandy[1]->GetPower()))
-			//swap = true;
+			swap = false;
+			ii, jj = 0;
+			TotalCandy = 0;
 		}
-		//else if (!swap) InitClickedCandy();
-		TotalCandy, ii, jj = 0;
-	}
+
+	} 
+
+}
+void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
+
 }
 void CGameMap::OnShow()
 {
-
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 5; j++) {
-			box.SetTopLeft(X + (MW*i), Y + (MH*j));
-			box.ShowBitmap();
-			switch (map[j][i]) {
-			case 0:
-				yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-				yellow.ShowBitmap();
-				break;
-			case 1:
-				blue.SetTopLeft(X + (MW*i), Y + (MH*j));
-				blue.ShowBitmap();
-				break;
-			case 2:
-				green.SetTopLeft(X + (MW*i), Y + (MH*j));
-				green.ShowBitmap();
-				break;
-			case 3:
-				orange.SetTopLeft(X + (MW*i), Y + (MH*j));
-				orange.ShowBitmap();
-				break;
-			case 4:
-				purple.SetTopLeft(X + (MW*i), Y + (MH*j));
-				purple.ShowBitmap();
-				break;
-			default:
-				ASSERT(0);
+	if (swap) {
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 5; j++) {
+				box.SetTopLeft(X + (MW*i), Y + (MH*j));
+				box.ShowBitmap();
+				switch (map[j][i]) {
+				case 0:
+					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow.ShowBitmap();
+					break;
+				case 1:
+					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
+					blue.ShowBitmap();
+					break;
+				case 2:
+					green.SetTopLeft(X + (MW*i), Y + (MH*j));
+					green.ShowBitmap();
+					break;
+				case 3:
+					orange.SetTopLeft(X + (MW*i), Y + (MH*j));
+					orange.ShowBitmap();
+					break;
+				case 4:
+					purple.SetTopLeft(X + (MW*i), Y + (MH*j));
+					purple.ShowBitmap();
+					break;
+				default:
+					ASSERT(0);
+				}
 			}
-		}
+	}
 			
 }
 void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
@@ -761,6 +759,8 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
 	eraser.SetMovingLeft(true);
+	gamemap.OnLButtonDown(nFlags, point);
+	std::cout << "click" << endl;
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
