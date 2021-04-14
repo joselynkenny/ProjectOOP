@@ -571,7 +571,7 @@ CGameMap* CGameMap::Click(){
 				 }
 			 }
 	 }
-	 /*else {
+	 else {
 		 for (int i = 0; i < 5; i++) //horizontal
 			 for (int j = 0; j < 6; j++) {
 				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
@@ -584,7 +584,7 @@ CGameMap* CGameMap::Click(){
 					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
 				 }
 			 }
-	 }*/
+	 }
  }
  void CGameMap::fourcandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
