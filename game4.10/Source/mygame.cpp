@@ -585,6 +585,7 @@ CGameMap* CGameMap::Click(){
 				 }
 			 }
 	 }
+	 dropcandy(map);
  }
  void CGameMap::fourcandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
@@ -599,6 +600,7 @@ CGameMap* CGameMap::Click(){
 				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i+3][j]=5;
 			 }
 		 }
+	 dropcandy(map);
  }
  void CGameMap::fivecandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
@@ -611,6 +613,18 @@ CGameMap* CGameMap::Click(){
 		 for (int j = 0; j < 8; j++) {
 			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i + 2][j] == map[i + 3][j] && map[i + 3][j] == map[i + 4][j]) {
 				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i + 3][j] = map[i + 4][j] = 5;
+			 }
+		 }
+	 dropcandy(map);
+ }
+ void CGameMap::dropcandy(int map[5][8]) {
+	 for (int i = 0; i < 5; i++)
+		 for (int j = 0; j < 8; j++) {
+			 if (map[i][j] == 5) {
+				 for (int k = i; k > 0; k--) {
+					 map[k][j] = map[k - 1][j];
+				 }
+				 map[0][j] = rand() % 5;
 			 }
 		 }
  }
@@ -634,6 +648,7 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 			fivecandy(map);
 			fourcandy(map);
 			threecandy(map);
+
 		}
 
 	} 

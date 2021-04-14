@@ -137,6 +137,7 @@ namespace game_framework {
 		void threecandy(int map[5][8]);
 		void fourcandy(int map[5][8]);
 		void fivecandy(int map[5][8]);
+		void dropcandy(int map[5][8]);
 		void InitializeBouncingBall(int, int, int);
 		bool Friend(int ii, int jj, int i, int j);
 		bool OnClick(const CPoint& point, CMovingBitmap& button);
