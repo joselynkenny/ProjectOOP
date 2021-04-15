@@ -431,11 +431,13 @@ int CMovingBitmap::Width()
 // stage
 /////////////////////////////////////////////////////////////////////////////
 
+bool CGameState::sound, CGameState::music;
 
 CGameState::CGameState(CGame *g)
 {
 
 	game = g; 	// ³]©wgameªºpointer
+	sound = music = true;
 	//MAX_STAGE = 15;
 }
 

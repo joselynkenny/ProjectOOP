@@ -62,10 +62,6 @@
 #include "StagePlay.h"
 #include <iostream>
 
-
-
- 
-
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateInit
@@ -83,6 +79,9 @@ void CGameStateInit::OnInit()
 	//BackgroundMenu
 	BackgroundMenu.LoadBitmap("Bitmaps\\InitBackground.bmp");
 
+	CAudio::Instance()->Load(AUDIO_STAGE, "sounds\\Overworld_Level_Select.mp3");
+	CAudio::Instance()->Load(AUDIO_BTN_CLICK, "sounds\\button_press.wav");
+	CAudio::Instance()->Load(AUDIO_BTN_RELEASE, "sounds\\button_release.wav");
 	
 	int playBtnBmp[] = { IDB_PLAYBUTTON_1, IDB_PLAYBUTTON_2, IDB_PLAYBUTTON_3, IDB_PLAYBUTTON_4,
 						 IDB_PLAYBUTTON_5, IDB_PLAYBUTTON_6, IDB_PLAYBUTTON_7, IDB_PLAYBUTTON_8,
@@ -134,6 +133,9 @@ void CGameStateInit::OnBeginState()
 	if (finishLoaded) {
 		LogoCandy.Reset();	//reset animation of candy crush logo
 		playBtnClicked = false;	//reset playbutton state
+		if (music) {
+			CAudio::Instance()->Play(AUDIO_STAGE, true);
+		}
 	}
 }
 
@@ -201,6 +203,15 @@ void CGameStateInit::OnShow()
 	}
 
 }	
+
+void CGameStateInit::SetMusic(bool music)
+{
+	this->music = music;
+	if (music)
+		CAudio::Instance()->Play(AUDIO_STAGE, true);
+	else
+		CAudio::Instance()->Stop(AUDIO_STAGE);
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateStart
@@ -470,12 +481,13 @@ void CGameMap::LoadBitmaps()
 	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
 	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
 	box.LoadBitmap("Bitmaps\\box.bmp");
-	
 }
+
 CGameMap* CGameMap::Click(){
 	on = on == true ? false : true;
 	return this;
 }
+
  /*bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button){
 	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
 		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
@@ -487,6 +499,7 @@ CGameMap* CGameMap::Click(){
 		return false;
 	}
 }*/
+
  bool CGameMap::Friend(int ii,int jj,int i, int j)
  {
 	 if ((ii - 1 == i || ii + 1 == i) && (jj - 1 == j || j + 1 == j))
@@ -495,6 +508,7 @@ CGameMap* CGameMap::Click(){
 		return false;
 	
  }
+
  void CGameMap::threecandy(int map[5][8]) {
 	 int horizontal=0;
 	 for (int i = 0; i < 5; i++) //SumbuX
@@ -587,6 +601,7 @@ CGameMap* CGameMap::Click(){
 	 }
 	 dropcandy(map);
  }
+
  void CGameMap::fourcandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
 		 for (int j = 0; j < 5; j++) {
@@ -602,6 +617,7 @@ CGameMap* CGameMap::Click(){
 		 }
 	 dropcandy(map);
  }
+
  void CGameMap::fivecandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
 		 for (int j = 0; j < 4; j++) {
@@ -617,6 +633,7 @@ CGameMap* CGameMap::Click(){
 		 }
 	 dropcandy(map);
  }
+
  void CGameMap::dropcandy(int map[5][8]) {
 	 for (int i = 0; i < 5; i++)
 		 for (int j = 0; j < 8; j++) {
@@ -628,6 +645,7 @@ CGameMap* CGameMap::Click(){
 			 }
 		 }
  }
+
 void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 	int j= (point.x - X) / MW;
 	int i= (point.y - Y) / MH;
@@ -648,7 +666,6 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 			fivecandy(map);
 			fourcandy(map);
 			threecandy(map);
-
 		}
 
 	} 
@@ -657,6 +674,7 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
 
 }
+
 void CGameMap::OnShow()
 {
 	if (swap) {
@@ -694,6 +712,7 @@ void CGameMap::OnShow()
 	}
 			
 }
+
 void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
 {
 	const int VELOCITY = 10;
@@ -705,6 +724,7 @@ void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
 	bballs[ini_index].SetVelocity(VELOCITY + col);
 	bballs[ini_index].SetXY(X + col * MW + MW / 2, floor);
 }
+
 void CGameMap::RandomBouncingBall()
 {
 	const int MAX_RAND_NUM = 10;
@@ -723,12 +743,14 @@ void CGameMap::RandomBouncingBall()
 			}
 		}
 }
+
 void CGameMap::OnKeyDown(UINT nChar)
 {
 	const int KEY_SPACE = 0x20;
 	if (nChar == KEY_SPACE)
 		RandomBouncingBall();
 }
+
 void CGameMap::OnMove()
 {
 	for (int i = 0; i < random_num; i++) 
@@ -776,9 +798,9 @@ void CGameStateRun::OnBeginState()
 	//help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
 	//hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
 	//hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
-	CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
-	CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
-	CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
+	//CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
+	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
+	//CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -854,9 +876,11 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//hits_left.LoadBitmap();	
 	gamemap.LoadBitmaps();
 	
+	/*
 	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	
 	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	
 	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	
+	*/
 }
 
 

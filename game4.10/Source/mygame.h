@@ -70,6 +70,7 @@ namespace game_framework {
 	protected:
 		void OnShow();									
 		void OnMove();
+		void SetMusic(bool);
 	private:
 		CMovingBitmap BackgroundMenu, clickedPlayButton;
 		CAnimation LogoCandy, LogoTiffy, LogoToffee, playButton;

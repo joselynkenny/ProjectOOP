@@ -68,6 +68,8 @@
 #include <string>
 using namespace std;
 
+#include "IdAudio.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // 這個class會建立DirectX Audio物件，以提供音效
 // 每個Public Interface的用法都要懂，Implementation可以不懂

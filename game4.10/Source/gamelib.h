@@ -309,6 +309,7 @@ public:
 	virtual void OnMouseMove(UINT nFlags, CPoint point) {}  // ³B²z·Æ¹«ªº°Ê§@ 
 	virtual void OnRButtonDown(UINT nFlags, CPoint point) {}// ³B²z·Æ¹«ªº°Ê§@
 	virtual void OnRButtonUp(UINT nFlags, CPoint point) {}	// ³B²z·Æ¹«ªº°Ê§@
+	static bool sound, music;
 protected:
 	void GotoGameState(int state);							// ¸õÅD¦Ü«ü©wªºstate
 	void ShowInitProgress(int percent);						// Åã¥Üªì©l¤Æªº¶i«×
@@ -319,6 +320,7 @@ protected:
 	//
 	virtual void OnMove() {}								// ²¾°Ê³o­Óª¬ºAªº¹CÀ¸¤¸¯À
 	virtual void OnShow() = 0;								// Åã¥Ü³o­Óª¬ºAªº¹CÀ¸µe­±
+	virtual void SetMusic(bool) {};
 	
 	CGame *game;
 	//static GameArea gameArea;								// 游戲的主要控制
