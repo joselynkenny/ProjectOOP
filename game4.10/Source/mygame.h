@@ -135,10 +135,10 @@ namespace game_framework {
 		void OnLButtonDown(UINT nFlags, CPoint point);
 		void OnLButtonUp(UINT nFlags, CPoint point);
 		void RandomBouncingBall();
-		void threecandy(int map[5][8]);
-		void fourcandy(int map[5][8]);
-		void fivecandy(int map[5][8]);
-		void dropcandy(int map[5][8]);
+		bool threecandy(int map[5][8]);
+		bool fourcandy(int map[5][8]);
+		bool fivecandy(int map[5][8]);
+		bool dropcandy(int map[5][8]);
 		void InitializeBouncingBall(int, int, int);
 		bool Friend(int ii, int jj, int i, int j);
 		bool OnClick(const CPoint& point, CMovingBitmap& button);
@@ -151,7 +151,7 @@ namespace game_framework {
 		
 	private:
 		//vector<StagePlay*> TotalCandy;
-		CMovingBitmap box, green, red, blue, orange, purple, yellow;
+		CMovingBitmap box, green, red, blue, orange, purple, yellow,blue_ver,green_ver,red_ver,orange_ver,purple_ver,yellow_ver;
 		int map[5][8];
 		int TotalCandy,ii,jj;
 		bool on,swap;

@@ -75,6 +75,8 @@
 #define SHOW_GAME_CYCLE_TIME false		// ¬O§_¦bdebug modeÅã¥Ücycle time
 #define ENABLE_GAME_PAUSE	 true		// ¬O§_¤¹³\¥H Ctrl-Q ¼È°±¹CÀ¸
 #define ENABLE_AUDIO		 true		// ±Ò°Ê­µ®Ä¤¶­±
+#define KIRI				 5
+#define KANAN				 8
 
 /////////////////////////////////////////////////////////////////////////////
 // ©w¸qCGame¤ÎCGameState©Ò¨Ï¥Îªº¤T­Óª¬ºA±`¼Æ

@@ -466,189 +466,171 @@ CGameMap::CGameMap()
 	TotalCandy = 0;
 	ii = 0;
 	jj = 0;
-	for (int i = 0; i < 5; i++)
-		for (int j = 0; j < 8; j++)
-			map[i][j] = rand()%5;
+	for (int i = 0; i < KIRI; i++)
+		for (int j = 0; j < KANAN; j++)
+			map[i][j] = 1+ rand()%5;
 	bballs = NULL;
 }
 
 void CGameMap::LoadBitmaps()
 {
-	blue.LoadBitmap(IDB_BLUE_C);
+	blue.LoadBitmap(IDB_BLUE_C, RGB(255, 255, 255));
 	green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
 	orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
 	purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
 	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
 	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
+
+	blue_ver.LoadBitmap(IDB_BLUE_VER, RGB(255, 255, 255));
+	green_ver.LoadBitmap(IDB_GREEN_VER, RGB(255, 255, 255));
+	orange_ver.LoadBitmap(IDB_ORANGE_VER, RGB(255, 255, 255));
+	purple_ver.LoadBitmap(IDB_PURPLE_VER, RGB(255, 255, 255));
+	red_ver.LoadBitmap(IDB_RED_VER, RGB(255, 255, 255));
+	yellow_ver.LoadBitmap(IDB_YELLOW_VER, RGB(255, 255, 255));
+
+
 	box.LoadBitmap("Bitmaps\\box.bmp");
 }
 
-CGameMap* CGameMap::Click(){
-	on = on == true ? false : true;
-	return this;
-}
-
- /*bool CGameMap::OnClick(const CPoint& point, CMovingBitmap& button){
-	if (button.Left() <= point.x && point.x <= (button.Left() + button.Width()) &&
-		button.Top() <= point.y && point.y <= (button.Top() + button.Height()))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}*/
-
- bool CGameMap::Friend(int ii,int jj,int i, int j)
- {
-	 if ((ii - 1 == i || ii + 1 == i) && (jj - 1 == j || j + 1 == j))
-		 return true;
-	 else 
-		return false;
-	
- }
-
- void CGameMap::threecandy(int map[5][8]) {
+bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 	 int horizontal=0;
-	 for (int i = 0; i < 5; i++) //SumbuX
-		 for (int j = 0; j < 6; j++) {
+	 for (int i = 0; i < KIRI; i++) //SumbuX check bom
+		 for (int j = 0; j < KANAN-2; j++) {
 			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
 				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
 					 horizontal = 1;
-					 //map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
 				 }
 				 if (map[i][j + 2] == map[i + 1][j + 2] && map[i + 1][j + 2] == map[i + 2][j + 2]) {
 					 horizontal = 1;
-					 //map[i][j+2] = map[i + 1][j+2] = map[i + 2][j+2] = 5;
 				 }
-				// map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
 			 }
 		 }
-	 for (int i = 0; i < 3; i++)//SumbuY
-		 for (int j = 0; j < 8; j++) {
+	 for (int i = 0; i < KIRI-2; i++)//SumbuY check bom
+		 for (int j = 0; j < KANAN; j++) {
 			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
 				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
 					 horizontal = 2;
-					// map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
 				 }
 				 if (map[i+2][j] == map[i+2][j + 1] && map[i+2][j + 1] == map[i+2][j + 2]) {
 					 horizontal = 2;
-					// map[i+2][j] = map[i+2][j + 1] = map[i+2][j + 2] = 5;
 				 }
 				 if (map[i][j] == map[i][j - 1] && map[i][j - 1] == map[i][j - 2]) {
 					 horizontal = 2;
-					 // map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
 				 }
 				 if (map[i + 2][j] == map[i + 2][j - 1] && map[i + 2][j - 1] == map[i + 2][j - 2]) {
 					 horizontal = 2;
-					 // map[i+2][j] = map[i+2][j + 1] = map[i+2][j + 2] = 5;
 				 }
-				// map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
 			 }
 		 }
 	 if (horizontal == 1) {
-		 for (int i = 0; i < 5; i++) //horizontal
-			 for (int j = 0; j < 6; j++) {
+		 for (int i = 0; i < KIRI; i++) //horizontal
+			 for (int j = 0; j < KANAN-2; j++) {
 				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
 					 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-						 map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
+						 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
 					 }
 					 if (map[i][j + 2] == map[i + 1][j + 2] && map[i + 1][j + 2] == map[i + 2][j + 2]) {
-						 map[i][j+2] = map[i + 1][j+2] = map[i + 2][j+2] = 5;
+						 map[i][j+2] = map[i + 1][j+2] = map[i + 2][j+2] = 0;
 					 }
-					 map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
+					 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
 				 }
 			 }
 	 }
 	 else if (horizontal == 2) {
-		 for (int i = 0; i < 3; i++)//vertical
-			 for (int j = 0; j < 8; j++) {
+		 for (int i = 0; i < KIRI-2; i++)//vertical
+			 for (int j = 0; j < KANAN; j++) {
 				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
 					 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
 						// horizontal = FALSE;
-						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
+						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
 					 }
 					 if (map[i + 2][j] == map[i + 2][j + 1] && map[i + 2][j + 1] == map[i + 2][j + 2]) {
 						// horizontal = FALSE;
-						 map[i+2][j] = map[i+2][j + 1] = map[i+2][j + 2] = 5;
+						 map[i+2][j] = map[i+2][j + 1] = map[i+2][j + 2] = 0;
 					 }
 					 if (map[i][j] == map[i][j - 1] && map[i][j - 1] == map[i][j - 2]) {
 						 horizontal = 2;
-						 map[i][j] = map[i][j - 1] = map[i][j - 2] = 5;
+						 map[i][j] = map[i][j - 1] = map[i][j - 2] = 0;
 					 }
 					 if (map[i + 2][j] == map[i + 2][j - 1] && map[i + 2][j - 1] == map[i + 2][j - 2]) {
 						 horizontal = 2;
-						 map[i+2][j] = map[i+2][j - 1] = map[i+2][j - 2] = 5;
+						 map[i+2][j] = map[i+2][j - 1] = map[i+2][j - 2] = 0;
 					 }
-					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
+					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
 				 }
 			 }
 	 }
-	 else {
-		 for (int i = 0; i < 5; i++) //horizontal
-			 for (int j = 0; j < 6; j++) {
+	 else {//no bom
+		 for (int i = 0; i < KIRI; i++) //horizontal
+			 for (int j = 0; j < KANAN-2; j++) {
 				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-					 map[i][j] = map[i][j + 1] = map[i][j + 2] = 5;
+					 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
 				 }
 			 }
-		 for (int i = 0; i < 3; i++)//vertical
-			 for (int j = 0; j < 8; j++) {
+		 for (int i = 0; i < KIRI; i++)//vertical
+			 for (int j = 0; j < KANAN; j++) {
 				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 5;
+					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
 				 }
 			 }
 	 }
-	 dropcandy(map);
+	 int yes = dropcandy(map);
+	 return yes;
  }
 
- void CGameMap::fourcandy(int map[5][8]) {
-	 for (int i = 0; i < 5; i++)
-		 for (int j = 0; j < 5; j++) {
-			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j+2]== map[i][j + 3]) {
-				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] =5;
+bool CGameMap::fourcandy(int map[KIRI][KANAN]) {
+	 for (int i = 0; i < KIRI; i++)//sumbuX
+		 for (int j = 0; j < KANAN-3; j++) {
+				if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j+2]== map[i][j + 3]) {//nopower
+				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] =0;
 			 }
 		 }
-	 for (int i = 0; i < 2; i++)
-		 for (int j = 0; j < 8; j++) {
-			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i+2][j]== map[i+3][j]) {
-				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i+3][j]=5;
+	 for (int i = 0; i < KIRI-3; i++)//sumbuY
+		 for (int j = 0; j < KANAN; j++) {
+			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i+2][j]== map[i+3][j]) {//nopower
+				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i+3][j]=0;
 			 }
 		 }
-	 dropcandy(map);
+	 int yes = dropcandy(map);
+	 return yes;
  }
 
- void CGameMap::fivecandy(int map[5][8]) {
-	 for (int i = 0; i < 5; i++)
-		 for (int j = 0; j < 4; j++) {
+bool CGameMap::fivecandy(int map[KIRI][KANAN]) {
+	 for (int i = 0; i < KIRI; i++)
+		 for (int j = 0; j < KANAN-4; j++) {
 			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j + 2] == map[i][j + 3] && map[i][j + 3] == map[i][j + 4]) {
-				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] = map[i][j + 4] = 5;
+				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] = map[i][j + 4] = 0;
 			 }
 		 }
-	 for (int i = 0; i < 1; i++)
-		 for (int j = 0; j < 8; j++) {
+	 for (int i = 0; i < KIRI-4; i++)
+		 for (int j = 0; j < KANAN; j++) {
 			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i + 2][j] == map[i + 3][j] && map[i + 3][j] == map[i + 4][j]) {
-				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i + 3][j] = map[i + 4][j] = 5;
+				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i + 3][j] = map[i + 4][j] = 0;
 			 }
 		 }
-	 dropcandy(map);
+	 int yes = dropcandy(map);
+	 return yes;
  }
 
- void CGameMap::dropcandy(int map[5][8]) {
-	 for (int i = 0; i < 5; i++)
-		 for (int j = 0; j < 8; j++) {
-			 if (map[i][j] == 5) {
+bool CGameMap::dropcandy(int map[KIRI][KANAN]) {
+	 int yes = false;
+	 for (int i = 0; i < KIRI; i++)
+		 for (int j = 0; j < KANAN; j++) {
+			 if (map[i][j] == 0) {
+				 yes = true;
 				 for (int k = i; k > 0; k--) {
 					 map[k][j] = map[k - 1][j];
 				 }
-				 map[0][j] = rand() % 5;
+				 map[0][j] = 1+ rand() % 5;
 			 }
 		 }
+	 return yes;
  }
 
 void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 	int j= (point.x - X) / MW;
 	int i= (point.y - Y) / MH;
+
 	if (TotalCandy == 0) {
 		TotalCandy = 1;
 		ii = i;
@@ -661,14 +643,30 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 			int temp = map[ii][jj];
 			map[ii][jj] =map[i][j];
 			map[i][j] = temp;
+			int a = fivecandy(map);
+			int b = fourcandy(map);
+			int c = threecandy(map);
+			if (b == 1) {
+				map[i][j] = temp*10;
+			}
+			if (((a || b )||(b|| c)||(a||c)) == false) {
+				int temp = map[ii][jj];
+				map[ii][jj] = map[i][j];
+				map[i][j] = temp;
+			}
 			ii, jj = 0;
 			TotalCandy = 0;
-			fivecandy(map);
-			fourcandy(map);
-			threecandy(map);
 		}
 
 	} 
+	while (true) {
+		int a = fivecandy(map);
+		int b = fourcandy(map);
+		int c = threecandy(map);
+		if (((a || b) || (b || c) || (a || c)) == false) {
+			break;
+		}
+	}
 
 }
 void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
@@ -678,14 +676,12 @@ void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
 void CGameMap::OnShow()
 {
 	if (swap) {
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 5; j++) {
+		for (int i = 0; i < KANAN; i++)
+			for (int j = 0; j < KIRI; j++) {
 				box.SetTopLeft(X + (MW*i), Y + (MH*j));
 				box.ShowBitmap();
 				switch (map[j][i]) {
 				case 0:
-					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow.ShowBitmap();
 					break;
 				case 1:
 					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
@@ -704,6 +700,28 @@ void CGameMap::OnShow()
 					purple.ShowBitmap();
 					break;
 				case 5:
+					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow.ShowBitmap();
+					break;
+				case 10:
+					blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					blue_ver.ShowBitmap();
+					break;
+				case 20:
+					green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					green_ver.ShowBitmap();
+					break;
+				case 30:
+					orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					orange_ver.ShowBitmap();
+					break;
+				case 40:
+					purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					purple_ver.ShowBitmap();
+					break;
+				case 50:
+					yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow_ver.ShowBitmap();
 					break;
 				default:
 					ASSERT(0);
