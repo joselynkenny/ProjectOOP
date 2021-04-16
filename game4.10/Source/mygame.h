@@ -151,12 +151,12 @@ namespace game_framework {
 		
 	private:
 		//vector<StagePlay*> TotalCandy;
-		CMovingBitmap box, green, red, blue, orange, purple, yellow,blue_ver,green_ver,red_ver,orange_ver,purple_ver,yellow_ver;
+		CMovingBitmap box, green, red, blue, orange, purple, yellow,
+					  blue_clicked, green_clicked, red_clicked, orange_clicked, purple_clicked, yellow_clicked,
+					  blue_ver, green_ver, red_ver, orange_ver, purple_ver, yellow_ver;
 		int map[5][8];
-		int TotalCandy,ii,jj;
-		bool on,swap;
-		
-		
+		int TotalCandy, ii, jj;
+		bool on, swap, candyClicked;	
 	};
 	class CBouncingBall;
 

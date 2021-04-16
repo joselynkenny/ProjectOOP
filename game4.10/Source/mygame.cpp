@@ -469,6 +469,8 @@ CGameMap::CGameMap()
 	for (int i = 0; i < KIRI; i++)
 		for (int j = 0; j < KANAN; j++)
 			map[i][j] = 1+ rand()%5;
+
+	candyClicked = false;
 	bballs = NULL;
 }
 
@@ -481,6 +483,13 @@ void CGameMap::LoadBitmaps()
 	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
 	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
 
+	blue_clicked.LoadBitmap(IDB_BLUE_CLICKED, RGB(255, 255, 255));
+	green_clicked.LoadBitmap(IDB_GREEN_CLICKED, RGB(255, 255, 255));
+	orange_clicked.LoadBitmap(IDB_ORANGE_CLICKED, RGB(255, 255, 255));
+	purple_clicked.LoadBitmap(IDB_PURPLE_CLICKED, RGB(255, 255, 255));
+	red_clicked.LoadBitmap(IDB_RED_CLICKED, RGB(255, 255, 255));
+	yellow_clicked.LoadBitmap(IDB_YELLOW_CLICKED, RGB(255, 255, 255));
+	
 	blue_ver.LoadBitmap(IDB_BLUE_VER, RGB(255, 255, 255));
 	green_ver.LoadBitmap(IDB_GREEN_VER, RGB(255, 255, 255));
 	orange_ver.LoadBitmap(IDB_ORANGE_VER, RGB(255, 255, 255));
@@ -635,9 +644,11 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 		TotalCandy = 1;
 		ii = i;
 		jj = j;
+		candyClicked = true;
 	}
 	else if (TotalCandy == 1)
 	{
+		candyClicked = false;
 		if (((ii - 1 == i || ii + 1 == i) &&(jj==j))|| ((ii==i)&&(jj - 1 == j || jj + 1 == j)))
 		{
 			int temp = map[ii][jj];
@@ -684,25 +695,60 @@ void CGameMap::OnShow()
 				case 0:
 					break;
 				case 1:
-					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue.ShowBitmap();
-					break;
+					if (candyClicked) {
+						blue_clicked.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_clicked.ShowBitmap();
+						break;
+					}
+					else {
+						blue.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue.ShowBitmap();
+						break;
+					}
 				case 2:
-					green.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green.ShowBitmap();
-					break;
+					if (candyClicked) {
+						green_clicked.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_clicked.ShowBitmap();
+						break;
+					}
+					else {
+						green.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green.ShowBitmap();
+						break;
+					}
 				case 3:
-					orange.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange.ShowBitmap();
-					break;
+					if (candyClicked) {
+						orange_clicked.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_clicked.ShowBitmap();
+						break;
+					}
+					else {
+						orange.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange.ShowBitmap();
+						break;
+					}
 				case 4:
-					purple.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple.ShowBitmap();
-					break;
+					if (candyClicked) {
+						purple_clicked.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_clicked.ShowBitmap();
+						break;
+					}
+					else {
+						purple.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple.ShowBitmap();
+						break;
+					}
 				case 5:
-					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow.ShowBitmap();
-					break;
+					if (candyClicked) {
+						yellow_clicked.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_clicked.ShowBitmap();
+						break;
+					}
+					else {
+						yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow.ShowBitmap();
+						break;
+					}
 				case 10:
 					blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
 					blue_ver.ShowBitmap();
