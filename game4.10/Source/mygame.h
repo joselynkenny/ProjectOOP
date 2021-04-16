@@ -138,6 +138,7 @@ namespace game_framework {
 		int  Max(int a,int b,int c,int d,int e);
 		void powerVERX(int map[KIRI][KANAN], int i);
 		void powerVERY(int map[KIRI][KANAN], int i);
+		void PowerActive(int map[KIRI][KANAN],int i,int k);
 		bool threecandy(int map[5][8]);
 		bool fourcandy(int map[5][8]);
 		bool fivecandy(int map[5][8]);

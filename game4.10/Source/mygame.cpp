@@ -519,10 +519,54 @@ int CGameMap::Max(int a, int b, int c, int d, int e) {
 	return max;
 }
 void CGameMap::powerVERX(int map[KIRI][KANAN],int i) {
-	
+	for (int j = 0; j < KIRI; j++) {
+		map[j][i] = 0;
+		power[j][i] = 0;
+	}
+}
+void CGameMap::powerVERY(int map[KIRI][KANAN], int i) {
+	for (int j = 0; j < KANAN; j++) {
+		map[i][j] = 0;
+		power[i][j] = 0;
+	}
+}
+void CGameMap::PowerActive(int map[KIRI][KANAN],int i,int k) {
+	TRACE("PowerActive\n");
+	if (power[i][k] == 2) { //Xpower
+		power[i][k] = 0;
+		map[i][k] = 0;
+		for (int l = 0; l < KANAN; l++) {
+			if ((l != k) && (power[i][l] > 0)) { //dlmnya masi ada power
+				TRACE("RETURN Xpower\n");
+				return PowerActive(map, i, l);
+			}
+			else {
+				TRACE("ELSE Xpower\n");
+				map[i][l] = 0;
+				power[i][l] = 0;
+			}
+		}
+	}
+	if (power[i][k] == 1) { //Ypower
+		power[i][k] = 0;
+		map[i][k] = 0;
+		for (int l = 0; l < KIRI; l++) {
+			if ((l != i) && (power[l][k] > 0)) { //dlmnya masi ada power
+				TRACE("RETURN Ypower\n");
+				return PowerActive(map, l, k);
+			}
+			else {
+				TRACE("ELSE Ypower\n");
+				map[l][k] = 0;
+				power[l][k] = 0;
+			}
+		}
+	}
+
 }
 bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 	 int horizontal=0;
+	 int typepower = 0;
 	 for (int i = 0; i < KIRI; i++) //SumbuX check bom
 		 for (int j = 0; j < KANAN-2; j++) {
 			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
@@ -590,55 +634,63 @@ bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 			 }
 	 }
 	 else {//no bom
-		 for (int i = 0; i < KIRI; i++) //horizontal
-			 for (int j = 0; j < KANAN-2; j++) {
+		 TRACE("THREE\n");
+		 for (int i = 0; i < KIRI; i++) {//SumbuX
+			 for (int j = 0; j < KANAN - 2; j++) {
 				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-					 /*int typepower = power[i][j]+power[i][j + 1]+ power[i][j + 2];
+					 typepower = power[i][j] + power[i][j + 1] + power[i][j + 2];
+					 TRACE("THREE-TYPEPOWER-POWER1%d\n", typepower);
 					 if (typepower > 0) {
 						 for (int k = j; k < j + 3; k++) {
-							 if (power[i][k] == 1) { //verpower
-								 for (int l = 0; l < KANAN; l++) {
-									 if ((l != k)&&(power[i][l] > 0)) {
-										 if (power[i][l] == 1) {
-											 powerVERX(map, i);
-										 }
-									 }
-								 }
+							 if (power[i][k] > 0) {
+								 TRACE("THREE-POWER1 %d\n", k);
+								 PowerActive(map, i, k);
+								 TRACE("OUTTHREE-POWER1\n");
 							 }
-						 }
-
-					 }
-					 //int typepower = Max(power[i][j],power[i][j + 1],power[i][j + 2],0,0);
-					 if (typepower>0) {//have power
-						 if (typepower == 1) {//verticalpower
-							 for (int k = 0; k < KANAN; k++) {
+							 else {
+								 TRACE("THREE-POWER1 %d\n", k);
 								 map[i][k] = 0;
 								 power[i][k] = 0;
+								 TRACE("OUTTHREE-POWER1\n");
 							 }
-							 power[i][KANAN - 1] = 1;
 						 }
 					 }
-					 else//nopower*/
-					map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
+					 //int typepower = Max(power[i][j],power[i][j + 1],power[i][j + 2],0,0);
+					 else {//nopower*/
+						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
+						 power[i][j] = power[i][j+1] = power[i][j+2] = 0;
+						 TRACE("NOPOWER");
+					 }
 				 }
 			 }
-		 for (int i = 0; i < KIRI; i++)//vertical
+		 }
+		 for (int i = 0; i < KIRI; i++) {//SumbuY
 			 for (int j = 0; j < KANAN; j++) {
 				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-					 /*int typepower = power[i][j] + power[i+1][j] + power[i+2][j];
-					 if (typepower > 0) {//have power
-						 if (typepower == 1) {//verticalpower
-							 for (int k = 0; k < KIRI; k++) {
+					 typepower = power[i + 1][j] + power[i][j] + power[i + 2][j];
+					 TRACE("THREE-TYPEPOWER-POWER2 %d\n", typepower);
+					 if (typepower > 0) {
+						 for (int k = i; k < i + 3; k++) {
+							 if (power[k][j] > 0) {
+								 TRACE("THREE-POWER2 %d\n", k);
+								 PowerActive(map, j, k);
+								 TRACE("OUTTHREE-POWER2\n");
+							 }
+							 else {
 								 map[k][j] = 0;
 								 power[k][j] = 0;
 							 }
-							 power[KIRI - 1][j] = 1;
 						 }
 					 }
-					 else//nopower*/
-					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
+
+					 else {
+						 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
+						 power[i][j] = power[i + 1][j] = power[i + 2][j] = 0;
+						 TRACE("NOPOWER");
+					 }
 				 }
 			 }
+		 }
 	 }
 	 int yes = dropcandy(map);
 	 return yes;
@@ -648,32 +700,15 @@ bool CGameMap::fourcandy(int map[KIRI][KANAN]) {
 	 for (int i = 0; i < KIRI; i++)//sumbuX
 		 for (int j = 0; j < KANAN-3; j++) {
 				if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j+2]== map[i][j + 3]) {
-					/*int typepower = std::max(std::max(power[i][j] ,power[i][j + 1]) ,std::max(power[i][j + 2],power[i][j+3]));
-					if (typepower > 0) {//have power
-						if (typepower == 1) {//verticalpower
-							for (int k = 0; k < KANAN; k++) {
-								map[i][k] = 0;
-								power[i][k] = 0;
-							}
-							power[i][KANAN - 1] = 1;
-						}
-					}
-					else//nopower*/
-					map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] =0;
+					map[i][j] = map[i][j + 1] = map[i][j + 2] =map[i][j + 3]  =0;
 			 }
 		 }
 	 for (int i = 0; i < KIRI-3; i++)//sumbuY
 		 for (int j = 0; j < KANAN; j++) {
 			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i+2][j]== map[i+3][j]) {
-				 /*if ((power[i][j] || power[i + 1][j]) || (power[i + 1][j] || power[i + 2][j])) {//Power
-					 for (int k = 0; k < KIRI; k++) {
-						 map[k][j] = 0;
-						 power[k][j] = 0;
-					 }
-					 power[KIRI - 1][j] = 1;
-				 }
-				 else*/
-				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i+3][j]=0;
+				 map[i][j] = map[i + 1][j] = map[i + 2][j] =0;
+				 power[i + 3][j] = 1;
+				 return false;
 			 }
 		 }
 	 int yes = dropcandy(map);
@@ -699,48 +734,62 @@ bool CGameMap::fivecandy(int map[KIRI][KANAN]) {
 
 bool CGameMap::dropcandy(int map[KIRI][KANAN]) {
 	 int yes = false;
-	 for (int i = 0; i < KIRI; i++)
+	 int check = 0;
+	 for (int i = 0; i < KIRI; i++) {
+		 TRACE("\n==========\n");
 		 for (int j = 0; j < KANAN; j++) {
+			 TRACE("%d", map[i][j]);
 			 if (map[i][j] == 0) {
 				 yes = true;
 				 for (int k = i; k > 0; k--) {
+					 if (map[k - 1][j] == 0) {
+						 map[k - 1][j] = 1 + rand() % 6;
+					 }
 					 map[k][j] = map[k - 1][j];
+					 power[k][j] = power[k - 1][j];
 				 }
-				 map[0][j] = 1+ rand() % 6;
+				 map[0][j] = 1 + rand() % 6;
+				 power[0][j] = 0;
+				 
 			 }
 		 }
+	 }
 	 return yes;
  }
 
 void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 	int j= (point.x - X) / MW;
 	int i= (point.y - Y) / MH;
-
+	TRACE("abc");
 	if (TotalCandy == 0) {
+		TRACE("CANDYTOTAL0\n");
 		TotalCandy = 1;
 		ii = i;
 		jj = j;
 	}
 	else if (TotalCandy == 1)
 	{
+		TRACE("CANDYTOTAL1\n");
 		if (((ii - 1 == i || ii + 1 == i) &&(jj==j))|| ((ii==i)&&(jj - 1 == j || jj + 1 == j)))
 		{
 			int temp = map[ii][jj];
 			map[ii][jj] =map[i][j];
 			map[i][j] = temp;
+			int temp1= power[ii][jj];
+			power[ii][jj] = power[i][j];
+			power[i][j] = temp1;
 			int a = fivecandy(map);
 			int b = fourcandy(map);
 			int c = threecandy(map);
 
-			if (((a || b )||(b|| c)||(a||c)) == false) {
+			/*if (((a || b )||(b|| c)||(a||c)) == false) {
 				int temp = map[ii][jj];
 				map[ii][jj] = map[i][j];
 				map[i][j] = temp;
-			}
+			}*/
 			if (b == 1) {
 				map[i][j] = temp;
 				if (jj + 1 == j || jj - 1 == j) {
-					
 					power[i][j] = 1; // sumbuY
 				}
 				else
@@ -749,6 +798,8 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 			ii, jj = 0;
 			TotalCandy = 0;
 		}
+		ii, jj = 0;
+		TotalCandy = 0;
 
 	} 
 	while (true) {
@@ -767,105 +818,103 @@ void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
 
 void CGameMap::OnShow()
 {
-	if (swap) {
-		for (int i = 0; i < KANAN; i++) {
-			for (int j = 0; j < KIRI; j++) {
-				box.SetTopLeft(X + (MW*i), Y + (MH*j));
-				box.ShowBitmap();
-				switch (map[j][i]) {
-				case 0:
-					break;
-				case 1:
-					if (power[j][i] == 1){
-						blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						blue_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue_hor.ShowBitmap();
-					}
-					else {
-						blue.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue.ShowBitmap();
-					}
-					break;
-				case 2:
-					if (power[j][i] == 1) {
-						green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						green_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green_hor.ShowBitmap();
-					}
-					else {
-						green.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green.ShowBitmap();
-					}
-					break;
-				case 3:
-					if (power[j][i] == 1) {
-						orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						orange_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange_hor.ShowBitmap();
-					}
-					else {
-						orange.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange.ShowBitmap();
-					}
-					break;
-				case 4:
-					if (power[j][i] == 1) {
-						purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						purple_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple_hor.ShowBitmap();
-					}
-					else {
-						purple.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple.ShowBitmap();
-					}
-					break;
-				case 5:
-					if (power[j][i] == 1) {
-						yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						yellow_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow_hor.ShowBitmap();
-					}
-					else {
-						yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow.ShowBitmap();
-					}
-					break;
-				case 6:
-					if (power[j][i] == 1) {
-						red_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red_ver.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						red_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red_hor.ShowBitmap();
-					}
-					else {
-						red.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red.ShowBitmap();
-					}
-					break;
-				default:
-					ASSERT(0);
+
+	for (int i = 0; i < KANAN; i++) {
+		for (int j = 0; j < KIRI; j++) {
+			box.SetTopLeft(X + (MW*i), Y + (MH*j));
+			box.ShowBitmap();
+			switch (map[j][i]) {
+			case 0:
+				break;
+			case 1:
+				if (power[j][i] == 1){
+					blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					blue_ver.ShowBitmap();
 				}
+				else if (power[j][i] == 2) {
+					blue_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					blue_hor.ShowBitmap();
+				}
+				else {
+					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
+					blue.ShowBitmap();
+				}
+				break;
+			case 2:
+				if (power[j][i] == 1) {
+					green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					green_ver.ShowBitmap();
+				}
+				else if (power[j][i] == 2) {
+					green_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					green_hor.ShowBitmap();
+				}
+				else {
+					green.SetTopLeft(X + (MW*i), Y + (MH*j));
+					green.ShowBitmap();
+				}
+				break;
+			case 3:
+				if (power[j][i] == 1) {
+					orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					orange_ver.ShowBitmap();
+				}
+				else if (power[j][i] == 2) {
+					orange_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					orange_hor.ShowBitmap();
+				}
+				else {
+					orange.SetTopLeft(X + (MW*i), Y + (MH*j));
+					orange.ShowBitmap();
+				}
+				break;
+			case 4:
+				if (power[j][i] == 1) {
+					purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					purple_ver.ShowBitmap();
+				}
+				else if (power[j][i] == 2) {
+				purple_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					purple_hor.ShowBitmap();
+				}
+				else {
+					purple.SetTopLeft(X + (MW*i), Y + (MH*j));
+					purple.ShowBitmap();
+				}
+				break;
+			case 5:
+				if (power[j][i] == 1) {
+					yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow_ver.ShowBitmap();
+				}
+				else if (power[j][i] == 2) {
+					yellow_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow_hor.ShowBitmap();
+				}
+				else {
+					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+					yellow.ShowBitmap();
+				}
+				break;
+			case 6:
+				if (power[j][i] == 1) {
+					red_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+					red_ver.ShowBitmap();
+				}
+				else if (power[j][i] == 2) {
+					red_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+					red_hor.ShowBitmap();
+				}
+				else {
+					red.SetTopLeft(X + (MW*i), Y + (MH*j));
+					red.ShowBitmap();
+				}
+				break;
+			default:
+				ASSERT(0);
 			}
 		}
-	}
-			
+	}		
 }
 
 void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
