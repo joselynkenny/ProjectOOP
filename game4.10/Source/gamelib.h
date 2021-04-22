@@ -258,21 +258,41 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 
 class CInteger {
+	friend int operator+(const CInteger& lhs, const CInteger& rhs);
+	friend int operator-(const CInteger& lhs, const CInteger& rhs);
+	friend int operator*(const CInteger& lhs, const CInteger& rhs);
+	friend int operator/(const CInteger& lhs, const CInteger& rhs);
+	friend bool operator==(const CInteger& lhs, const CInteger& rhs);
+	friend bool operator<(const CInteger& lhs, const CInteger& rhs);
+	friend bool operator<=(const CInteger& lhs, const CInteger& rhs);
+	friend bool operator>(const CInteger& lhs, const CInteger& rhs);
+	friend bool operator>=(const CInteger& lhs, const CInteger& rhs);
 public:
-	CInteger(int=5);			// default 5 digits
-	void Add(int n);			// ¼W¥[¾ã¼Æ­È
-	int  GetInteger();			// ¦^¶Ç¾ã¼Æ­È
-	void LoadBitmap();			// ¸ü¤J0..9¤Î­t¸¹¤§¹Ï§Î
-	void SetInteger(int);		// ³]©w¾ã¼Æ­È
-	void SetType(int);
-	void SetTopLeft(int,int);	// ±N°Êµeªº¥ª¤W¨¤®y¼Ð²¾¦Ü (x,y)
-	void ShowBitmap();			// ±N°Êµe¶K¨ì¿Ã¹õ
+	CInteger();
+	CInteger(int);
+	CInteger(double);
+	int  GetInteger();			// 回傳整數值
+	void LoadBitmap();			// 載入0..9及負號之圖形
+	void operator+=(const int rhs);
+	void operator++(int);
+	void operator++();
+	void operator-=(const int rhs);
+	void operator--(int);
+	void operator--();
+	void operator*=(const int rhs);
+	void operator/=(const int rhs);
+	void operator=(const int rhs);
+	void SetInteger(int);		// 設定整數值
+	void SetTopLeft(int, int);	// 將動畫的左上角座標移至 (x,y)
+	void ShowBitmap();			// 將動畫貼到螢幕	
+	void SetDigit(int digit);   // set the size of the number
+	void SetType(int Type);
 private:
-	const int NUMDIGITS;			// ¦@Åã¥ÜNUMDIGITS­Ó¦ì¼Æ
-	static CMovingBitmap digit[11]; // Àx¦s0..9¤Î­t¸¹¤§¹Ï§Î(bitmap)
-	int x, y;						// Åã¥Üªº®y¼Ð
-	int n;							// ¾ã¼Æ­È
-	bool isBmpLoaded;				// ¬O§_¤w¸g¸ü¤J¹Ï§Î
+	int NUMDIGITS;			// 共顯示NUMDIGITS個位數
+	static CMovingBitmap digit[44]; // 儲存0..9及負號之圖形(bitmap)
+	int x, y;						// 顯示的座標
+	int n;							// 整數值
+	bool isBmpLoaded;				// 是否已經載入圖形
 	int type;
 };
 
