@@ -282,6 +282,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Source\ScoreBoard.cpp" />
     <ClCompile Include="Source\StagePlay.cpp" />
     <ClCompile Include="Source\StdAfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -315,6 +316,7 @@
     <ClInclude Include="Source\IdAudio.h" />
     <ClInclude Include="Source\MainFrm.h" />
     <ClInclude Include="Source\Resource.h" />
+    <ClInclude Include="Source\ScoreBoard.h" />
     <ClInclude Include="Source\StagePlay.h" />
     <ClInclude Include="Source\StdAfx.h" />
     <ClInclude Include="Source\gamelib.h" />
@@ -328,6 +330,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Bitmaps\bmp_5.bmp" />
     <Image Include="..\..\..\Downloads\HengWeiBin-oopProject2020-master\HengWeiBin-oopProject2020-master\game4.10.1\Bitmaps\PlayButton1.bmp" />
     <Image Include="..\..\game4.10\RES\monsterinc (1).bmp" />
     <Image Include="bitmaps\bitmap10.bmp" />
@@ -337,7 +340,48 @@
     <Image Include="bitmaps\bitmap7.bmp" />
     <Image Include="bitmaps\bitmap8.bmp" />
     <Image Include="bitmaps\bitmap9.bmp" />
+    <Image Include="Bitmaps\blackbar.bmp" />
     <Image Include="Bitmaps\BlueCandy.bmp" />
+    <Image Include="Bitmaps\bmp1_0.bmp" />
+    <Image Include="Bitmaps\bmp1_1.bmp" />
+    <Image Include="Bitmaps\bmp1_2.bmp" />
+    <Image Include="Bitmaps\bmp1_3.bmp" />
+    <Image Include="Bitmaps\bmp1_4.bmp" />
+    <Image Include="Bitmaps\bmp1_5.bmp" />
+    <Image Include="Bitmaps\bmp1_6.bmp" />
+    <Image Include="Bitmaps\bmp1_7.bmp" />
+    <Image Include="Bitmaps\bmp1_8.bmp" />
+    <Image Include="Bitmaps\bmp1_9.bmp" />
+    <Image Include="Bitmaps\bmp2_0.bmp" />
+    <Image Include="Bitmaps\bmp2_1.bmp" />
+    <Image Include="Bitmaps\bmp2_2.bmp" />
+    <Image Include="Bitmaps\bmp2_3.bmp" />
+    <Image Include="Bitmaps\bmp2_4.bmp" />
+    <Image Include="Bitmaps\bmp2_5.bmp" />
+    <Image Include="Bitmaps\bmp2_6.bmp" />
+    <Image Include="Bitmaps\bmp2_7.bmp" />
+    <Image Include="Bitmaps\bmp2_8.bmp" />
+    <Image Include="Bitmaps\bmp2_9.bmp" />
+    <Image Include="Bitmaps\bmp3_0.bmp" />
+    <Image Include="Bitmaps\bmp3_1.bmp" />
+    <Image Include="Bitmaps\bmp3_2.bmp" />
+    <Image Include="Bitmaps\bmp3_3.bmp" />
+    <Image Include="Bitmaps\bmp3_4.bmp" />
+    <Image Include="Bitmaps\bmp3_5.bmp" />
+    <Image Include="Bitmaps\bmp3_6.bmp" />
+    <Image Include="Bitmaps\bmp3_7.bmp" />
+    <Image Include="Bitmaps\bmp3_8.bmp" />
+    <Image Include="Bitmaps\bmp3_9.bmp" />
+    <Image Include="Bitmaps\bmp_0.bmp" />
+    <Image Include="Bitmaps\bmp_1.bmp" />
+    <Image Include="Bitmaps\bmp_2.bmp" />
+    <Image Include="Bitmaps\bmp_3.bmp" />
+    <Image Include="Bitmaps\bmp_4.bmp" />
+    <Image Include="Bitmaps\bmp_5.bmp" />
+    <Image Include="Bitmaps\bmp_6.bmp" />
+    <Image Include="Bitmaps\bmp_7.bmp" />
+    <Image Include="Bitmaps\bmp_8.bmp" />
+    <Image Include="Bitmaps\bmp_9.bmp" />
     <Image Include="Bitmaps\candy_crush (1).bmp" />
     <Image Include="Bitmaps\candy_crush (10).bmp" />
     <Image Include="Bitmaps\candy_crush (11).bmp" />
@@ -449,6 +493,7 @@
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\bmp00002.bmp" />
     <Image Include="RES\monsterinc (1).bmp" />
+    <Image Include="Source\Bitmaps\bmp3_3.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -154,12 +154,19 @@ namespace game_framework {
 		int random_num;
 		
 	private:
+		void DropCandy();
+		int DropCandyStraight();
+		int DropCandySide();
 		//vector<StagePlay*> TotalCandy;
-		CMovingBitmap box, green, red, blue, orange, purple, yellow, blue_ver, green_ver, red_ver, orange_ver, purple_ver, yellow_ver,
-			blue_hor, green_hor, red_hor, orange_hor, purple_hor, yellow_hor;
+		CMovingBitmap box, green, red, blue, orange, purple, yellow, 
+					  blue_ver, green_ver, red_ver, orange_ver, purple_ver, yellow_ver,
+			          blue_hor, green_hor, red_hor, orange_hor, purple_hor, yellow_hor,
+					  blue_click, green_click, red_click, orange_click, purple_click, yellow_click,
+					  blue_ver_click, green_ver_click, red_ver_click, orange_ver_click, purple_ver_click, yellow_ver_click,
+					  blue_hor_click, green_hor_click, red_hor_click, orange_hor_click, purple_hor_click, yellow_hor_click;
 		int map[KIRI][KANAN],power[KIRI][KANAN];
 		int TotalCandy,ii,jj;
-		bool on,swap;
+		bool on, swap, candyClicked;
 		
 		
 	};

@@ -469,7 +469,7 @@ CGameMap::CGameMap()
 	jj = 0;
 	for (int i = 0; i < KIRI; i++)
 		for (int j = 0; j < KANAN; j++)
-			map[i][j] = 1+ rand()%6;
+			map[i][j] = 1 + rand()%6;
 	for (int i = 0; i < KIRI; i++)
 		for (int j = 0; j < KANAN; j++)
 			power[i][j] = 0;
@@ -481,6 +481,7 @@ CGameMap::CGameMap()
 			break;
 		}
 	}
+	candyClicked = false;
 	bballs = NULL;
 }
 
@@ -507,9 +508,30 @@ void CGameMap::LoadBitmaps()
 	red_hor.LoadBitmap(IDB_RED_HOR, RGB(255, 255, 255));
 	yellow_hor.LoadBitmap(IDB_YELLOW_HOR, RGB(255, 255, 255));
 
+	blue_click.LoadBitmap(IDB_BLUE_CLICKED, RGB(255, 255, 255));
+	green_click.LoadBitmap(IDB_GREEN_CLICKED, RGB(255, 255, 255));
+	orange_click.LoadBitmap(IDB_ORANGE_CLICKED, RGB(255, 255, 255));
+	purple_click.LoadBitmap(IDB_PURPLE_CLICKED, RGB(255, 255, 255));
+	red_click.LoadBitmap(IDB_RED_CLICKED, RGB(255, 255, 255));
+	yellow_click.LoadBitmap(IDB_YELLOW_CLICKED, RGB(255, 255, 255));
+
+	blue_hor_click.LoadBitmap(IDB_BLUE_HOR_C, RGB(255, 255, 255));
+	green_hor_click.LoadBitmap(IDB_GREEN_HOR_C, RGB(255, 255, 255));
+	orange_hor_click.LoadBitmap(IDB_ORANGE_HOR_C, RGB(255, 255, 255));
+	purple_hor_click.LoadBitmap(IDB_PURPLE_HOR_C, RGB(255, 255, 255));
+	red_hor_click.LoadBitmap(IDB_RED_HOR_C, RGB(255, 255, 255));
+	yellow_hor_click.LoadBitmap(IDB_YELLOW_HOR_C, RGB(255, 255, 255));
+
+	blue_ver_click.LoadBitmap(IDB_BLUE_VER_C, RGB(255, 255, 255));
+	green_ver_click.LoadBitmap(IDB_GREEN_VER_C, RGB(255, 255, 255));
+	orange_ver_click.LoadBitmap(IDB_ORANGE_VER_C, RGB(255, 255, 255));
+	purple_ver_click.LoadBitmap(IDB_PURPLE_VER_C, RGB(255, 255, 255));
+	red_ver_click.LoadBitmap(IDB_RED_VER_C, RGB(255, 255, 255));
+	yellow_ver_click.LoadBitmap(IDB_YELLOW_VER_C, RGB(255, 255, 255));
 
 	box.LoadBitmap("Bitmaps\\box.bmp");
 }
+
 int CGameMap::Max(int a, int b, int c, int d, int e) {
 	int arr[5] = { a,b,c,d,e };
 	int max = 0;
@@ -518,6 +540,7 @@ int CGameMap::Max(int a, int b, int c, int d, int e) {
 	}
 	return max;
 }
+
 void CGameMap::powerVERX(int map[KIRI][KANAN],int i) {
 	for (int j = 0; j < KIRI; j++) {
 		map[j][i] = 0;
@@ -766,6 +789,7 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 		TotalCandy = 1;
 		ii = i;
 		jj = j;
+		candyClicked = true;
 	}
 	else if (TotalCandy == 1)
 	{
@@ -827,89 +851,188 @@ void CGameMap::OnShow()
 			case 0:
 				break;
 			case 1:
-				if (power[j][i] == 1){
-					blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue_ver.ShowBitmap();
+				if(candyClicked) {
+					if (power[j][i] == 1) {
+						blue_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						blue_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_hor_click.ShowBitmap();
+					}
+					else {
+						blue_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_click.ShowBitmap();
+					}
+					break;
+				} else {
+					if (power[j][i] == 1) {
+						blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						blue_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue_hor.ShowBitmap();
+					}
+					else {
+						blue.SetTopLeft(X + (MW*i), Y + (MH*j));
+						blue.ShowBitmap();
+					}
+					break;
 				}
-				else if (power[j][i] == 2) {
-					blue_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue_hor.ShowBitmap();
-				}
-				else {
-					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue.ShowBitmap();
-				}
-				break;
 			case 2:
-				if (power[j][i] == 1) {
-					green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green_ver.ShowBitmap();
+				if(candyClicked) {
+					if (power[j][i] == 1) {
+						green_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						green_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_hor_click.ShowBitmap();
+					}
+					else {
+						green_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_click.ShowBitmap();
+					}
+					break;
+				} else {
+					if (power[j][i] == 1) {
+						green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						green_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green_hor.ShowBitmap();
+					}
+					else {
+						green.SetTopLeft(X + (MW*i), Y + (MH*j));
+						green.ShowBitmap();
+					}
+					break;
 				}
-				else if (power[j][i] == 2) {
-					green_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green_hor.ShowBitmap();
-				}
-				else {
-					green.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green.ShowBitmap();
-				}
-				break;
 			case 3:
-				if (power[j][i] == 1) {
-					orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange_ver.ShowBitmap();
+				if(candyClicked) {
+					if (power[j][i] == 1) {
+						orange_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						orange_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_hor_click.ShowBitmap();
+					}
+					else {
+						orange_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_click.ShowBitmap();
+					}
+					break;
+				} else {
+					if (power[j][i] == 1) {
+						orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						orange_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange_hor.ShowBitmap();
+					}
+					else {
+						orange.SetTopLeft(X + (MW*i), Y + (MH*j));
+						orange.ShowBitmap();
+					}
+					break;
 				}
-				else if (power[j][i] == 2) {
-					orange_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange_hor.ShowBitmap();
-				}
-				else {
-					orange.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange.ShowBitmap();
-				}
-				break;
 			case 4:
-				if (power[j][i] == 1) {
-					purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-				purple_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple_hor.ShowBitmap();
+				if (candyClicked) {
+					if (power[j][i] == 1) {
+						purple_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						purple_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_hor_click.ShowBitmap();
+					}
+					else {
+						purple_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_click.ShowBitmap();
+					}
+					break;
 				}
 				else {
-					purple.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple.ShowBitmap();
+					if (power[j][i] == 1) {
+						purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						purple_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple_hor.ShowBitmap();
+					}
+					else {
+						purple.SetTopLeft(X + (MW*i), Y + (MH*j));
+						purple.ShowBitmap();
+					}
+					break;
 				}
-				break;
 			case 5:
-				if (power[j][i] == 1) {
-					yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					yellow_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow_hor.ShowBitmap();
+				if (candyClicked) {
+					if (power[j][i] == 1) {
+						yellow_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						yellow_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_hor_click.ShowBitmap();
+					}
+					else {
+						yellow_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_click.ShowBitmap();
+					}
+					break;
 				}
 				else {
-					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow.ShowBitmap();
+					if (power[j][i] == 1) {
+						yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						yellow_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow_hor.ShowBitmap();
+					}
+					else {
+						yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
+						yellow.ShowBitmap();
+					}
+					break;
 				}
-				break;
 			case 6:
-				if (power[j][i] == 1) {
-					red_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					red_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red_hor.ShowBitmap();
+				if (candyClicked) {
+					if (power[j][i] == 1) {
+						red_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red_ver_click.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						red_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red_hor_click.ShowBitmap();
+					}
+					else {
+						red_click.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red_click.ShowBitmap();
+					}
+					break;
 				}
 				else {
-					red.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red.ShowBitmap();
+					if (power[j][i] == 1) {
+						red_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red_ver.ShowBitmap();
+					}
+					else if (power[j][i] == 2) {
+						red_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red_hor.ShowBitmap();
+					}
+					else {
+						red.SetTopLeft(X + (MW*i), Y + (MH*j));
+						red.ShowBitmap();
+					}
+					break;
 				}
-				break;
 			default:
 				ASSERT(0);
 			}

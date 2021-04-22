@@ -70,26 +70,6 @@ IDB_BACKGROUND          BITMAP                  "..\\res\\ntutcsie.bmp"
 
 IDB_CORNER              BITMAP                  "..\\res\\corner.bmp"
 
-IDB_0                   BITMAP                  "..\\res\\bmp0.bmp"
-
-IDB_1                   BITMAP                  "..\\res\\bmp1.bmp"
-
-IDB_2                   BITMAP                  "..\\res\\bmp2.bmp"
-
-IDB_3                   BITMAP                  "..\\res\\bmp3.bmp"
-
-IDB_4                   BITMAP                  "..\\res\\bmp4.bmp"
-
-IDB_5                   BITMAP                  "..\\res\\bmp5.bmp"
-
-IDB_6                   BITMAP                  "..\\res\\bmp6.bmp"
-
-IDB_7                   BITMAP                  "..\\res\\bmp7.bmp"
-
-IDB_8                   BITMAP                  "..\\res\\bmp8.bmp"
-
-IDB_9                   BITMAP                  "..\\res\\bmp9.bmp"
-
 IDB_MINUS               BITMAP                  "..\\res\\bmp10.bmp"
 
 IDB_CENTER              BITMAP                  "..\\res\\center.bmp"
@@ -233,6 +213,88 @@ IDB_PURPLE_PACK_C       BITMAP                  "..\\Bitmaps\\ClickedP3PurpleCan
 IDB_RED_PACK_C          BITMAP                  "..\\Bitmaps\\ClickedP3RedCandy.bmp"
 
 IDB_YELLOW_PACK_C       BITMAP                  "..\\Bitmaps\\ClickedP3YellowCandy.bmp"
+
+IDB_BLACKBAR            BITMAP                  "..\\Bitmaps\\blackbar.bmp"
+
+IDB_0                   BITMAP                  "..\\Bitmaps\\bmp_0.bmp"
+
+IDB_1                   BITMAP                  "..\\Bitmaps\\bmp_1.bmp"
+
+IDB_2                   BITMAP                  "..\\Bitmaps\\bmp_2.bmp"
+
+IDB_3                   BITMAP                  "..\\Bitmaps\\bmp_3.bmp"
+
+IDB_4                   BITMAP                  "..\\Bitmaps\\bmp_4.bmp"
+
+IDB_5                   BITMAP                  "\\Bitmaps\\bmp_5.bmp"
+
+IDB_6                   BITMAP                  "..\\Bitmaps\\bmp_6.bmp"
+
+IDB_7                   BITMAP                  "..\\Bitmaps\\bmp_7.bmp"
+
+IDB_8                   BITMAP                  "..\\Bitmaps\\bmp_8.bmp"
+
+IDB_9                   BITMAP                  "..\\Bitmaps\\bmp_9.bmp"
+
+IDB1_0                  BITMAP                  "..\\Bitmaps\\bmp1_0.bmp"
+
+IDB1_1                  BITMAP                  "..\\Bitmaps\\bmp1_1.bmp"
+
+IDB1_2                  BITMAP                  "..\\Bitmaps\\bmp1_2.bmp"
+
+IDB1_3                  BITMAP                  "..\\Bitmaps\\bmp1_3.bmp"
+
+IDB1_4                  BITMAP                  "..\\Bitmaps\\bmp1_4.bmp"
+
+IDB1_5                  BITMAP                  "..\\Bitmaps\\bmp1_5.bmp"
+
+IDB1_6                  BITMAP                  "..\\Bitmaps\\bmp1_6.bmp"
+
+IDB1_7                  BITMAP                  "..\\Bitmaps\\bmp1_7.bmp"
+
+IDB1_8                  BITMAP                  "..\\Bitmaps\\bmp1_8.bmp"
+
+IDB1_9                  BITMAP                  "..\\Bitmaps\\bmp1_9.bmp"
+
+IDB2_0                  BITMAP                  "..\\Bitmaps\\bmp2_0.bmp"
+
+IDB2_1                  BITMAP                  "..\\Bitmaps\\bmp2_1.bmp"
+
+IDB2_2                  BITMAP                  "..\\Bitmaps\\bmp2_2.bmp"
+
+IDB2_3                  BITMAP                  "..\\Bitmaps\\bmp2_3.bmp"
+
+IDB2_4                  BITMAP                  "..\\Bitmaps\\bmp2_4.bmp"
+
+IDB2_5                  BITMAP                  "..\\Bitmaps\\bmp2_5.bmp"
+
+IDB2_6                  BITMAP                  "..\\Bitmaps\\bmp2_6.bmp"
+
+IDB2_7                  BITMAP                  "..\\Bitmaps\\bmp2_7.bmp"
+
+IDB2_8                  BITMAP                  "..\\Bitmaps\\bmp2_8.bmp"
+
+IDB2_9                  BITMAP                  "..\\Bitmaps\\bmp2_9.bmp"
+
+IDB3_0                  BITMAP                  "..\\Bitmaps\\bmp3_0.bmp"
+
+IDB3_1                  BITMAP                  "..\\Bitmaps\\bmp3_1.bmp"
+
+IDB3_2                  BITMAP                  "..\\Bitmaps\\bmp3_2.bmp"
+
+IDB3_3                  BITMAP                  ".\\Bitmaps\\bmp3_3.bmp"
+
+IDB3_4                  BITMAP                  "..\\Bitmaps\\bmp3_4.bmp"
+
+IDB3_5                  BITMAP                  "..\\Bitmaps\\bmp3_5.bmp"
+
+IDB3_6                  BITMAP                  "..\\Bitmaps\\bmp3_6.bmp"
+
+IDB3_7                  BITMAP                  "..\\Bitmaps\\bmp3_7.bmp"
+
+IDB3_8                  BITMAP                  "..\\Bitmaps\\bmp3_8.bmp"
+
+IDB3_9                  BITMAP                  "..\\Bitmaps\\bmp3_9.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
