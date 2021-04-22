@@ -473,7 +473,7 @@ CGameMap::CGameMap()
 	for (int i = 0; i < KIRI; i++)
 		for (int j = 0; j < KANAN; j++)
 			power[i][j] = 0;
-	while (true) {
+	/*while (true) {
 		int a = fivecandy(map);
 		int b = fourcandy(map);
 		int c = threecandy(map);
@@ -481,7 +481,7 @@ CGameMap::CGameMap()
 			break;
 		}
 	}
-	bballs = NULL;
+	bballs = NULL;*/
 }
 
 void CGameMap::LoadBitmaps()
@@ -506,6 +506,8 @@ void CGameMap::LoadBitmaps()
 	purple_hor.LoadBitmap(IDB_PURPLE_HOR, RGB(255, 255, 255));
 	red_hor.LoadBitmap(IDB_RED_HOR, RGB(255, 255, 255));
 	yellow_hor.LoadBitmap(IDB_YELLOW_HOR, RGB(255, 255, 255));
+
+	chocolate.LoadBitmap(IDB_SUPER, RGB(255, 255, 255));
 
 
 	box.LoadBitmap("Bitmaps\\box.bmp");
@@ -567,7 +569,7 @@ void CGameMap::PowerActive(int map[KIRI][KANAN],int i,int k) {
 bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 	 int horizontal=0;
 	 int typepower = 0;
-	 for (int i = 0; i < KIRI; i++) //SumbuX check bom
+	 /**for (int i = 0; i < KIRI; i++) //SumbuX check bom
 		 for (int j = 0; j < KANAN-2; j++) {
 			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
 				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
@@ -632,12 +634,15 @@ bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
 				 }
 			 }
+	 }*/
+	 if (horizontal == 1){
+		 
 	 }
 	 else {//no bom
 		 TRACE("THREE\n");
 		 for (int i = 0; i < KIRI; i++) {//SumbuX
-			 for (int j = 0; j < KANAN - 2; j++) {
-				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
+			 for (int j = 0; j < KANAN; j++) {
+				 if ((map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) && map[i][j] != 0){
 					 typepower = power[i][j] + power[i][j + 1] + power[i][j + 2];
 					 TRACE("THREE-TYPEPOWER-POWER1%d\n", typepower);
 					 if (typepower > 0) {
@@ -655,7 +660,6 @@ bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 							 }
 						 }
 					 }
-					 //int typepower = Max(power[i][j],power[i][j + 1],power[i][j + 2],0,0);
 					 else {//nopower*/
 						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
 						 power[i][j] = power[i][j+1] = power[i][j+2] = 0;
@@ -666,14 +670,14 @@ bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 		 }
 		 for (int i = 0; i < KIRI; i++) {//SumbuY
 			 for (int j = 0; j < KANAN; j++) {
-				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
+				 if ((map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) && map[i][j] != 0){
 					 typepower = power[i + 1][j] + power[i][j] + power[i + 2][j];
 					 TRACE("THREE-TYPEPOWER-POWER2 %d\n", typepower);
 					 if (typepower > 0) {
 						 for (int k = i; k < i + 3; k++) {
 							 if (power[k][j] > 0) {
 								 TRACE("THREE-POWER2 %d\n", k);
-								 PowerActive(map, j, k);
+								 PowerActive(map, k, j);
 								 TRACE("OUTTHREE-POWER2\n");
 							 }
 							 else {
@@ -692,40 +696,143 @@ bool CGameMap::threecandy(int map[KIRI][KANAN]) {
 			 }
 		 }
 	 }
-	 int yes = dropcandy(map);
-	 return yes;
+	 //int yes = dropcandy(map);
+	 return true;
  }
 
-bool CGameMap::fourcandy(int map[KIRI][KANAN]) {
+bool CGameMap::fourcandy(int map[KIRI][KANAN],int a,int b) {
 	 for (int i = 0; i < KIRI; i++)//sumbuX
-		 for (int j = 0; j < KANAN-3; j++) {
-				if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j+2]== map[i][j + 3]) {
-					map[i][j] = map[i][j + 1] = map[i][j + 2] =map[i][j + 3]  =0;
-			 }
-		 }
-	 for (int i = 0; i < KIRI-3; i++)//sumbuY
 		 for (int j = 0; j < KANAN; j++) {
-			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i+2][j]== map[i+3][j]) {
-				 map[i][j] = map[i + 1][j] = map[i + 2][j] =0;
-				 power[i + 3][j] = 1;
-				 return false;
-			 }
+			 bool notsame = false;
+				if ((((map[i][j] == map[i][j + 1] )&& (map[i][j + 1] == map[i][j + 2])) && (map[i][j+2]== map[i][j + 3]))&& map[i][j]!=0) {
+					int typepower = power[i][j] + power[i][j + 1] + power[i][j + 2]+power[i][j + 3];
+					TRACE("FOUR-TYPEPOWER-POWER1%d\n", typepower);
+					if (typepower > 0) {
+						int temp = map[i][j];
+						bool in = true;
+						if (power[i][b] == 2) {
+							in = false;
+							if (b + 1 < 8) {
+								power[i][b+1] = power[i][b];
+								power[i][b] = 1;
+							}
+							if (b + 1 > 8) {
+								power[i][b-1] = power[i][b];
+								power[i][b] = 1;
+							}
+						}
+						else if (power[i][j] ==2|| power[i][j + 1] ==2|| power[i][j + 2] ==2|| power[i][j + 3]==2) {
+							in = false;
+							map[i][b] = temp;
+							power[i][b] = 1;
+						}
+						if (power[i][b] > 0) {
+							in = false;
+						}
+						for (int k = j; k < j + 4; k++) {
+							if (power[i][k] > 0) {
+								TRACE("FOUR-POWER1 %d\n", k);
+								PowerActive(map, i, k);
+								TRACE("OUTFOUR-POWER1\n");
+							}
+							else {
+								TRACE("FOUR-POWER1 %d\n", k);
+								map[i][k] = 0;
+								power[i][k] = 0;
+								TRACE("OUTFOUR-POWER1\n");
+							}
+
+						}
+						if (in == true) {
+							map[i][b] = temp;
+							power[i][b] = 1;
+						}
+
+					}
+					else {
+						int temp = map[i][j];
+						map[i][j] = map[i][j+1] = map[i][j+2]= map[i][j+3] = 0;
+						power[i][j] = power[i][j+1] = power[i][j+2] = power[i][j+3]=0;
+						map[i][b] = temp;
+						power[i][b] = 1;
+					}
+			    }
 		 }
-	 int yes = dropcandy(map);
-	 return yes;
+	  for (int i = 0; i < KIRI; i++)//sumbuY
+		  for (int j = 0; j < KANAN; j++) {
+			  if ((((map[i][j] == map[i + 1][j]) && (map[i + 1][j] == map[i + 2][j])) && (map[i + 2][j] == map[i + 3][j])) && map[i][j] != 0) {
+				  int typepower = power[i][j] + power[i+1][j] + power[i+2][j]+power[i+3][j];
+				  TRACE("FOUR-TYPEPOWER-POWER1%d\n", typepower);
+				  if (typepower > 0) {
+					  bool in = true;
+					  int temp = map[i][j];
+					  if (power[a][j] == 1) {
+						  in = false;
+						  if (a + 1 < 5) {
+							  power[a + 1][j] = power[a][j];
+							  power[a][j] = 2;
+						  }
+						  if (a + 1 > 5) {
+							  power[a -1][j] = power[a][j];
+							  power[a][j] = 2;
+						  }
+					  }
+					  else if (power[i][j] == 1 || power[i+1][j] == 1 || power[i+2][j] == 1 || power[i+3][j] == 1) {
+						  in = false;
+						  map[a][j] = temp;
+						  power[a][j] = 2;
+					  }
+					  if (power[a][j] > 0) {
+						  in = false;
+					  }
+					  for (int k = i; k < i + 4; k++) {
+						  if (power[k][j] > 0) {
+							  TRACE("FOUR-POWER1 %d\n", k);
+							  PowerActive(map, k, j);
+							  TRACE("OUTFOUR-POWER1\n");
+						  }
+						  else {
+							  TRACE("FOUR-POWER1 %d\n", k);
+							  map[k][j] = 0;
+							  power[k][j] = 0;
+							  TRACE("OUTFOUR-POWER1\n");
+						  }
+
+					  }
+					  if (in == true) {
+						  map[i + 3][j] = temp;
+						  power[i + 3][j] = 2;
+
+					  }
+
+
+				  }
+				  else {
+					  map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
+					  power[i][j] = power[i + 1][j] = power[i + 2][j] = 0;
+					  power[i + 3][j] = 2;
+				  }
+			  }
+		  }
+	// int yes = dropcandy(map);
+		 return true;
  }
 
 bool CGameMap::fivecandy(int map[KIRI][KANAN]) {
 	 for (int i = 0; i < KIRI; i++)
-		 for (int j = 0; j < KANAN-4; j++) {
+		 for (int j = 0; j < KANAN; j++) {
 			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j + 2] == map[i][j + 3] && map[i][j + 3] == map[i][j + 4]) {
 				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] = map[i][j + 4] = 0;
+				 map[i][j+2] = 10;
+				 power[i][j + 2] = 4;
 			 }
 		 }
-	 for (int i = 0; i < KIRI-4; i++)
+	 for (int i = 0; i < KIRI; i++)
 		 for (int j = 0; j < KANAN; j++) {
 			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i + 2][j] == map[i + 3][j] && map[i + 3][j] == map[i + 4][j]) {
 				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i + 3][j] = map[i + 4][j] = 0;
+				 map[i+2][j] = 10;
+				 power[i+2][j] = 4;
 			 }
 		 }
 	 int yes = dropcandy(map);
@@ -779,7 +886,7 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 			power[ii][jj] = power[i][j];
 			power[i][j] = temp1;
 			int a = fivecandy(map);
-			int b = fourcandy(map);
+			int b = fourcandy(map,i,j);
 			int c = threecandy(map);
 
 			/*if (((a || b )||(b|| c)||(a||c)) == false) {
@@ -787,14 +894,14 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 				map[ii][jj] = map[i][j];
 				map[i][j] = temp;
 			}*/
-			if (b == 1) {
+			/*if (b == 1) {
 				map[i][j] = temp;
 				if (jj + 1 == j || jj - 1 == j) {
 					power[i][j] = 1; // sumbuY
 				}
 				else
 					power[i][j] = 2; //sumbuX
-			}
+			}*/
 			ii, jj = 0;
 			TotalCandy = 0;
 		}
@@ -802,20 +909,18 @@ void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
 		TotalCandy = 0;
 
 	} 
-	while (true) {
+	/*while (true) {
 		int a = fivecandy(map);
 		int b = fourcandy(map);
 		int c = threecandy(map);
 		if (((a || b) || (b || c) || (a || c)) == false) {
 			break;
 		}
-	}
+	}*/
 
 }
 void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
-
 }
-
 void CGameMap::OnShow()
 {
 
@@ -910,6 +1015,12 @@ void CGameMap::OnShow()
 					red.ShowBitmap();
 				}
 				break;
+			case 10:
+				if (power[j][i] == 4) {
+					chocolate.SetTopLeft(X + (MW*i), Y + (MH*j));
+					chocolate.ShowBitmap();
+				}
+				break;
 			default:
 				ASSERT(0);
 			}
@@ -934,7 +1045,7 @@ void CGameMap::RandomBouncingBall()
 	const int MAX_RAND_NUM = 10;
 	random_num = (rand() % MAX_RAND_NUM) + 1;
 
-	delete [] bballs;
+	//delete [] bballs;
 	bballs = new CBouncingBall[random_num];
 	int ini_index = 0;
 	for(int row=0;row<4;row++)
@@ -965,7 +1076,7 @@ void CGameMap::OnMove()
 
 CGameMap::~CGameMap()
 {
-	delete[]bballs;
+	//delete[]bballs;
 }
 
 CGameStateRun::CGameStateRun(CGame *g)

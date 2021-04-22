@@ -140,7 +140,7 @@ namespace game_framework {
 		void powerVERY(int map[KIRI][KANAN], int i);
 		void PowerActive(int map[KIRI][KANAN],int i,int k);
 		bool threecandy(int map[5][8]);
-		bool fourcandy(int map[5][8]);
+		bool fourcandy(int map[5][8],int a,int b);
 		bool fivecandy(int map[5][8]);
 		bool dropcandy(int map[5][8]);
 		void InitializeBouncingBall(int, int, int);
@@ -156,7 +156,7 @@ namespace game_framework {
 	private:
 		//vector<StagePlay*> TotalCandy;
 		CMovingBitmap box, green, red, blue, orange, purple, yellow, blue_ver, green_ver, red_ver, orange_ver, purple_ver, yellow_ver,
-			blue_hor, green_hor, red_hor, orange_hor, purple_hor, yellow_hor;
+			blue_hor, green_hor, red_hor, orange_hor, purple_hor, yellow_hor,chocolate;
 		int map[KIRI][KANAN],power[KIRI][KANAN];
 		int TotalCandy,ii,jj;
 		bool on,swap;
