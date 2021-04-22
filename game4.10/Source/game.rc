@@ -226,8 +226,6 @@ IDB_3                   BITMAP                  "..\\Bitmaps\\bmp_3.bmp"
 
 IDB_4                   BITMAP                  "..\\Bitmaps\\bmp_4.bmp"
 
-IDB_5                   BITMAP                  "\\Bitmaps\\bmp_5.bmp"
-
 IDB_6                   BITMAP                  "..\\Bitmaps\\bmp_6.bmp"
 
 IDB_7                   BITMAP                  "..\\Bitmaps\\bmp_7.bmp"
