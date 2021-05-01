@@ -1,12 +1,15 @@
-#ifndef STAGE_PLAY
-#define STAGE_PLAY
-namespace game_framework {
+#pragma once
+#ifndef STAGE_H
+#define STAGE_H
 
-	class StagePlay
+namespace game_framework
+{
+	class Stage
 	{
+		friend class Area;
 	public:
-		StagePlay(int);
-		~StagePlay();
+		Stage(int);
+		~Stage();
 		void LoadStage();							
 		double GetScoreOne();						
 		double GetScoreTwo();						
@@ -21,7 +24,6 @@ namespace game_framework {
 		int GetCurrentScore();
 		int GetCurrentStage();
 		void SetCurrentScore(int score);
-
 	private:
 		int map[13][20];
 		double scoreOne, scoreTwo, scoreThree;		
@@ -37,7 +39,7 @@ namespace game_framework {
 		int currentStage;
 		int currentScore;
 		bool hasPortal;								
-		vector<pair<CPoint, CPoint>> portalList;
+		vector<pair<CPoint, CPoint>> portalList;	
 	};
 }
 #endif

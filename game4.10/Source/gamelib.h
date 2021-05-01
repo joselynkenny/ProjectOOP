@@ -96,8 +96,8 @@ enum GAME_STATES {
 #include <list>
 #include <vector>
 #include <map>
-#include <string>
 using namespace std;
+#include "Stage.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -224,32 +224,31 @@ protected:
 
 class CAnimation {
 public:
-	CAnimation(int=10);				// Constructor (¹w³]°Êµe¼½©ñÀW²v¨C1/3¬í´«¤@±i¹Ï)
-	void  AddBitmap(int,COLORREF=CLR_INVALID);
-									// ¼W¥[¤@±i¹Ï§Î¦Ü°Êµe(¹Ïªº½s¸¹¤Î³z©ú¦â)
-	void  AddBitmap(char *,COLORREF=CLR_INVALID);
-									// ¼W¥[¤@±i¹Ï§Î¦Ü°Êµe(¹Ïªº½s¸¹¤Î³z©ú¦â)
-	int   GetCurrentBitmapNumber();	// ¨ú±o¥¿¦b¼·©ñªºbitmap¬O²Ä´X­Óbitmap
-	int   Height();					// ¨ú±o°Êµeªº°ª«×
-	bool  IsFinalBitmap();			// ¦^¶Ç¥¿¦b¼·©ñªºbitmap¬O§_¬°³Ì«á¤@­Óbitmap
-	int   Left();					// ¨ú±o°Êµeªº¥ª¤W¨¤ªº x ®y¼Ð
-	void  OnMove();					// ¨ÌÀW²v§ó´«bitmap
-	void  OnShow();					// ±N°Êµe¶K¨ì¿Ã¹õ
-	void  Reset();					// ­«³]¼½©ñ¶¶§Ç¦^¨ì²Ä¤@±i¹Ï§Î
+	CAnimation(int = 10, bool cycle = true);				// Constructor (預設動畫播放頻率每1/3秒換一張圖)
+	void  AddBitmap(int, COLORREF = CLR_INVALID);
+	// 增加一張圖形至動畫(圖的編號及透明色)
+	void  AddBitmap(char *, COLORREF = CLR_INVALID);
+	// 增加一張圖形至動畫(圖的編號及透明色)
+	int   GetCurrentBitmapNumber();	// 取得正在撥放的bitmap是第幾個bitmap
+	int   Height();					// 取得動畫的高度
+	bool  IsFinalBitmap();			// 回傳正在撥放的bitmap是否為最後一個bitmap
+	int   Left();					// 取得動畫的左上角的 x 座標
+	void  OnMove();					// 依頻率更換bitmap
+	void  OnShow();					// 將動畫貼到螢幕
+	void  Reset();					// 重設播放順序回到第一張圖形
 	void  SetCycle(bool);
-	void  SetDelayCount(int);		// ³]©w°Êµe¼½©ñ³t«×ªº±`¼Æ(¶V¤j¶VºC)
-	void  SetTopLeft(int,int);		// ±N°Êµeªº¥ª¤W¨¤®y¼Ð²¾¦Ü (x,y)
-	int   Top();					// ¨ú±o°Êµeªº¥ª¤W¨¤ªº y ®y¼Ð
-	int   Width();					// ¨ú±o°Êµeªº¼e«×
+	void  SetDelayCount(int);		// 設定動畫播放速度的常數(越大越慢)
+	void  SetTopLeft(int, int);		// 將動畫的左上角座標移至 (x,y)
+	int   Top();					// 取得動畫的左上角的 y 座標
+	int   Width();					// 取得動畫的寬度
 private:
 	list<CMovingBitmap>				bmp;			// list of CMovingBitmap
 	list<CMovingBitmap>::iterator	bmp_iter;		// list iterator
-	int								bmp_counter;	// Àx¦sbmp_iter¬°²Än­Óbmp
-	bool							cycle;
-	int								delay_counter;	// ©µ½w°Êµe¼½©ñ³t«×ªº­p¼Æ¾¹
-	int								delay_count;	// °Êµe¼½©ñ³t«×ªº±`¼Æ
-	int								x, y;			// °Êµeªº®y¼Ð
-
+	int								bmp_counter;	// 儲存bmp_iter為第n個bmp
+	int								delay_counter;	// 延緩動畫播放速度的計數器
+	int								delay_count;	// 動畫播放速度的常數
+	int								x, y;			// 動畫的座標
+	bool							cycle;			// Animation will stop at last bmp if cycle = false
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -271,8 +270,8 @@ public:
 	CInteger();
 	CInteger(int);
 	CInteger(double);
-	int  GetInteger();			// 回傳整數值
-	void LoadBitmap();			// 載入0..9及負號之圖形
+	int  GetInteger();			
+	void LoadBitmap();			
 	void operator+=(const int rhs);
 	void operator++(int);
 	void operator++();
@@ -282,10 +281,10 @@ public:
 	void operator*=(const int rhs);
 	void operator/=(const int rhs);
 	void operator=(const int rhs);
-	void SetInteger(int);		// 設定整數值
-	void SetTopLeft(int, int);	// 將動畫的左上角座標移至 (x,y)
-	void ShowBitmap();			// 將動畫貼到螢幕	
-	void SetDigit(int digit);   // set the size of the number
+	void SetInteger(int);		
+	void SetTopLeft(int, int);	
+	void ShowBitmap();			
+	void SetDigit(int digit);   
 	void SetType(int Type);
 private:
 	int NUMDIGITS;			// 共顯示NUMDIGITS個位數
@@ -337,18 +336,16 @@ protected:
 	void ShowInitProgress(int percent);						// Åã¥Üªì©l¤Æªº¶i«×
 	bool ButtonOnClick(const CPoint& point, CMovingBitmap& button);
 	bool ButtonOnClick(const CPoint& point, CAnimation& button);
-															//
-	// virtual functions, ¥ÑÄ~©ÓªÌ´£¨Ñimplementation
-	//
+
 	virtual void OnMove() {}								// ²¾°Ê³o­Óª¬ºAªº¹CÀ¸¤¸¯À
 	virtual void OnShow() = 0;								// Åã¥Ü³o­Óª¬ºAªº¹CÀ¸µe­±
 	virtual void SetMusic(bool) {};
 	
 	CGame *game;
-	//static GameArea gameArea;								// 游戲的主要控制
-	//static vector<Stage*> stages;							// 游戲中所有關卡資料
-	//static int current_stage;								// 當前/上一次玩過的關卡
-	//static int MAX_STAGE;
+	static Area gameArea;								// 游戲的主要控制
+	static vector<Stage*> stages;							// 游戲中所有關卡資料
+	static int current_stage;								// 當前/上一次玩過的關卡
+	static int MAX_STAGE;
 
 };
 

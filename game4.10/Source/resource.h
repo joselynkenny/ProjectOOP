@@ -26,7 +26,6 @@
 #define IDB_BITMAP2                     156
 #define IDB_LOADING                     156
 #define IDB_MONSTER                     157
-#define IDB_TESTAJ                      160
 #define IDB_BLUE                        163
 #define IDB_BITMAP3                     164
 #define IDB_RED                         164
@@ -148,8 +147,6 @@
 #define IDB_3                           335
 #define IDB_4                           336
 #define IDB_5                           337
-#define IDB_6                           339
-#define IDB_7                           342
 #define IDB_8                           343
 #define IDB_9                           345
 #define IDB1_0                          346
@@ -183,6 +180,31 @@
 #define IDB3_8                          377
 #define IDB_BITMAP7                     378
 #define IDB3_9                          378
+#define IDB_CONTAINER                   381
+#define IDB_INGAME_LOADING              382
+#define IDB_6                           385
+#define IDB_7                           386
+#define IDB_NEXTBTN_0                   387
+#define IDB_NEXTBTN_1                   388
+#define IDB_NEXTBTN_2                   389
+#define IDB_NEXTBTN_3                   390
+#define IDB_NEXTBTN_4                   391
+#define IDB_NEXTBTN_5                   392
+#define IDB_NEXTBTN_6                   393
+#define IDB_NEXTBTN_7                   395
+#define IDB_NEXTBTN_8                   396
+#define IDB_NEXTBTN_9                   397
+#define IDB_RETRYBTN_0                  398
+#define IDB_RETRYBTN_1                  399
+#define IDB_RETRYBTN_2                  400
+#define IDB_RETRYBTN_3                  401
+#define IDB_RETRYBTN_4                  403
+#define IDB_RETRYBTN_5                  404
+#define IDB_RETRYBTN_6                  405
+#define IDB_RETRYBTN_7                  407
+#define IDB_RETRYBTN_8                  409
+#define IDB_BITMAP8                     410
+#define IDB_RETRYBTN_9                  410
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -195,7 +217,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        379
+#define _APS_NEXT_RESOURCE_VALUE        411
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

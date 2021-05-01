@@ -121,6 +121,7 @@
 #include <ddraw.h>
 #include <direct.h>
 #include <string.h>
+#include <set>
 #include "audio.h"
 #include "gamelib.h"
 #include "mygame.h"
@@ -135,109 +136,110 @@ namespace game_framework {
 //    ¤£­nª½±µ§ïCAnimation¡C
 /////////////////////////////////////////////////////////////////////////////
 
-CAnimation::CAnimation(int count)
-{
-	delay_count = count;
-	delay_counter = delay_count;
-	x = y = bmp_counter = 0;
-}
-
-void CAnimation::AddBitmap(int IDB_BITMAP, COLORREF colorkey) 
-{
-	CMovingBitmap add_bmp;
-	add_bmp.LoadBitmap(IDB_BITMAP, colorkey);
-	bmp.insert(bmp.end(), add_bmp);
-	Reset();
-}
-
-void CAnimation::AddBitmap(char *filename, COLORREF colorkey) 
-{
-	CMovingBitmap add_bmp;
-	add_bmp.LoadBitmap(filename, colorkey);
-	bmp.insert(bmp.end(), add_bmp);
-	Reset();
-}
-
-int CAnimation::GetCurrentBitmapNumber()
-{
-	return bmp_counter;
-}
-
-int CAnimation::Height()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	return bmp_iter->Height();
-}
-
-bool CAnimation::IsFinalBitmap()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	return bmp_counter == (bmp.size()-1);
-}
-
-int CAnimation::Left()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	return x;
-}
-
-void CAnimation::OnMove()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	if (--delay_counter <= 0)  {
+	CAnimation::CAnimation(int count, bool cycle) :cycle(cycle)
+	{
+		delay_count = count;
 		delay_counter = delay_count;
-		bmp_iter++;
-		bmp_counter++;
-		if (bmp_iter == bmp.end()) {
-			bmp_iter = bmp.begin();
-			bmp_counter = 0;
+		x = y = bmp_counter = 0;
+	}
+
+	void CAnimation::AddBitmap(int IDB_BITMAP, COLORREF colorkey)
+	{
+		CMovingBitmap add_bmp;
+		add_bmp.LoadBitmap(IDB_BITMAP, colorkey);
+		bmp.insert(bmp.end(), add_bmp);
+		Reset();
+	}
+
+	void CAnimation::AddBitmap(char *filename, COLORREF colorkey)
+	{
+		CMovingBitmap add_bmp;
+		add_bmp.LoadBitmap(filename, colorkey);
+		bmp.insert(bmp.end(), add_bmp);
+		Reset();
+	}
+
+	int CAnimation::GetCurrentBitmapNumber()
+	{
+		return bmp_counter;
+	}
+
+	int CAnimation::Height()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		return bmp_iter->Height();
+	}
+
+	bool CAnimation::IsFinalBitmap()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		return bmp_counter == (bmp.size() - 1);
+	}
+
+	int CAnimation::Left()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		return x;
+	}
+
+	void CAnimation::OnMove()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		if (--delay_counter <= 0) {
+			delay_counter = delay_count;
+			bmp_iter++;
+			bmp_counter++;
+			if (bmp_iter == bmp.end()) {
+				if (cycle) bmp_iter = bmp.begin();
+				else bmp_iter = --bmp.end();
+				bmp_counter = 0;
+			}
 		}
 	}
-}
 
-void CAnimation::Reset()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	delay_counter = delay_count;
-	bmp_iter = bmp.begin();
-	bmp_counter = 0;
-}
+	void CAnimation::Reset()
+	{
+		//GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		delay_counter = delay_count;
+		bmp_iter = bmp.begin();
+		bmp_counter = 0;
+	}
 
-void CAnimation::SetCycle(bool cycle)
-{
-	this->cycle = cycle;
-}
+	void CAnimation::SetCycle(bool cycle)
+	{
+		this->cycle = cycle;
+	}
 
-void CAnimation::SetDelayCount(int dc)
-{
-	GAME_ASSERT(dc > 0, "CAnimation: Delay count must be >= 1");
-	delay_count = dc;
-}
+	void CAnimation::SetDelayCount(int dc)
+	{
+		GAME_ASSERT(dc > 0, "CAnimation: Delay count must be >= 1");
+		delay_count = dc;
+	}
 
-void CAnimation::SetTopLeft(int nx, int ny)
-{
-	x = nx, y = ny;
-	bmp_iter->SetTopLeft(x, y);
-}
+	void CAnimation::SetTopLeft(int nx, int ny)
+	{
+		x = nx, y = ny;
+		bmp_iter->SetTopLeft(x, y);
+	}
 
-void CAnimation::OnShow()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded before they are shown.");
-	bmp_iter->SetTopLeft(x,y);
-	bmp_iter->ShowBitmap();
-}
+	void CAnimation::OnShow()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded before they are shown.");
+		bmp_iter->SetTopLeft(x, y);
+		bmp_iter->ShowBitmap();
+	}
 
-int CAnimation::Top()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	return y;
-}
+	int CAnimation::Top()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		return y;
+	}
 
-int CAnimation::Width()
-{
-	GAME_ASSERT(bmp.size() != 0,"CAnimation: Bitmaps must be loaded first.");
-	return bmp_iter->Width();
-}
+	int CAnimation::Width()
+	{
+		GAME_ASSERT(bmp.size() != 0, "CAnimation: Bitmaps must be loaded first.");
+		return bmp_iter->Width();
+	}
 
 /////////////////////////////////////////////////////////////////////////////
 // CInteger: ³o­Óclass´£¨ÑÅã¥Ü¾ã¼Æ¹Ï§Îªº¯à¤O
@@ -246,20 +248,23 @@ int CAnimation::Width()
 /////////////////////////////////////////////////////////////////////////////
 CMovingBitmap CInteger::digit[44];
 
+
 int GetDigit(int n)
 {
 	n = abs(n);
 	int digit = 0;
+
 	while (n > 0)
 	{
 		digit++;
 		n /= 10;
 	}
+
 	return digit == 0 ? 1 : digit;
 }
 
 CInteger::CInteger()
-: NUMDIGITS(1), n(0), type(0)
+	: NUMDIGITS(1), n(0), type(0)
 {
 	isBmpLoaded = false;
 }
@@ -283,11 +288,14 @@ int CInteger::GetInteger()
 	return n;
 }
 
+void CInteger::SetDigit(int digit)
+{
+	NUMDIGITS = digit;
+}
 void CInteger::SetType(int Type)
 {
 	type = Type;
 }
-
 void CInteger::LoadBitmap()
 {
 	//
@@ -308,11 +316,6 @@ void CInteger::LoadBitmap()
 
 		isBmpLoaded = true;
 	}
-}
-
-void CInteger::SetDigit(int digit)
-{
-	NUMDIGITS = digit;
 }
 
 void CInteger::operator+=(int rhs)
@@ -372,9 +375,10 @@ void CInteger::operator=(int rhs)
 void CInteger::SetInteger(int i)
 {
 	n = i;
+	SetDigit(GetDigit(n));
 }
 
-void CInteger::SetTopLeft(int nx, int ny)		// ±N°Êµeªº¥ª¤W¨¤®y¼Ð²¾¦Ü (x,y)
+void CInteger::SetTopLeft(int nx, int ny)		// 將動畫的左上角座標移至 (x,y)
 {
 	x = nx; y = ny;
 }
@@ -382,24 +386,25 @@ void CInteger::SetTopLeft(int nx, int ny)		// ±N°Êµeªº¥ª¤W¨¤®y¼Ð²
 void CInteger::ShowBitmap()
 {
 	int Type = type * 11;
-	GAME_ASSERT(isBmpLoaded, "CInteger: ½Ð¥ý°õ¦æLoadBitmap¡AµM«á¤~¯àShowBitmap");
-	int nx;		// «ÝÅã¥Ü¦ì¼Æªº x ®y¼Ð
-	int MSB;	// ³Ì¥ªÃä(§t²Å¸¹)ªº¦ì¼Æªº¼Æ­È
+	GAME_ASSERT(NUMDIGITS, "CInteger: ½Ð¥ý°õ¦æLoadBitmap¡AµM«á¤~¯àShowBitmap");
+	int nx;		// 待顯示位數的 x 座標
+	int MSB;	// 最左邊(含符號)的位數的數值
 	if (n >= 0) {
 		MSB = n;
-		nx = x + digit[0 + Type].Width()*(NUMDIGITS-1);
-	} else {
+		nx = x + digit[0 + Type].Width()*(NUMDIGITS - 1);
+	}
+	else {
 		MSB = -n;
 		nx = x + digit[0 + Type].Width()*NUMDIGITS;
 	}
-	for (int i=0; i < NUMDIGITS; i++) {
+	for (int i = 0; i < NUMDIGITS; i++) {
 		int d = MSB % 10;
 		MSB /= 10;
 		digit[d + Type].SetTopLeft(nx, y);
 		digit[d + Type].ShowBitmap();
 		nx -= digit[d + Type].Width();
 	}
-	if (n < 0) { // ¦pªG¤p©ó0¡A«hÅã¥Ü­t¸¹
+	if (n < 0) { // 如果小於0，則顯示負號
 		digit[10 + Type].SetTopLeft(nx, y);
 		digit[10 + Type].ShowBitmap();
 	}
@@ -561,10 +566,9 @@ int CMovingBitmap::Width()
 	return location.right - location.left;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// stage
-/////////////////////////////////////////////////////////////////////////////
-
+Area CGameState::gameArea;
+vector<Stage*> CGameState::stages;
+int CGameState::current_stage, CGameState::MAX_STAGE;
 bool CGameState::sound, CGameState::music;
 
 CGameState::CGameState(CGame *g)
@@ -572,7 +576,7 @@ CGameState::CGameState(CGame *g)
 
 	game = g; 	// ³]©wgameªºpointer
 	sound = music = true;
-	//MAX_STAGE = 15;
+	MAX_STAGE = 15;
 }
 
 void CGameState::GotoGameState(int state)

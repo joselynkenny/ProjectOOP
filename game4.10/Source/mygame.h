@@ -38,11 +38,11 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 
-#include "CEraser.h"
-#include "CBall.h"
-#include "CBouncingBall.h"
-#include "StagePlay.h"
-
+#include <set>
+#include "Candy.h"
+#include "Stage.h"
+#include "ScoreBoard.h"
+#include "Area.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -93,17 +93,21 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);
 		void SetUp(bool status);
 		void SetDown(bool status);
+		int GetDigit(int n);
 		
 	protected:
 		void OnShow();	
 		void OnMove();
+		
 	private:
 		void ShowStageButton(int, int, int, int);
+		void ShowStars(int, int, int);
+		CMovingBitmap star1, star2, star3, comingSoon;
+		CInteger stageNum;
 		CMovingBitmap StageStart, stageButton[5];
-		int scroll_Y,area,Level[2][2];;
+		int scroll_Y, area, Level[2][2];;
 		bool scroll,TapUp,TapDown;
 		int StagePos[15][2];
-		CInteger stageNum;
 		LONG clickVertical, clickHorizontal, clickScroll;
 		int mouseDisplayment, inertia;
 	};
@@ -112,97 +116,23 @@ namespace game_framework {
 	// �o��class���C�����C�����檫��A�D�n���C���{�����b�o��
 	// �C��Member function��Implementation���n����
 	/////////////////////////////////////////////////////////////////////////////
-	class CPractice {
-	public:
-		CPractice();
-		void LoadBitmap();
-		void OnMove();
-		void OnShow();
-	private:
-		CMovingBitmap pic;
-		int x, y;
-	};
-
-	class CGameMap
-	{
-	public:
-		CGameMap();
-		CGameMap* CGameMap::Click();
-		void LoadBitmaps();
-		void OnShow();
-		void OnMove();
-		void OnKeyDown(UINT);
-		void OnLButtonDown(UINT nFlags, CPoint point);
-		void OnLButtonUp(UINT nFlags, CPoint point);
-		void RandomBouncingBall();
-		int  Max(int a,int b,int c,int d,int e);
-		void powerVERX(int map[KIRI][KANAN], int i);
-		void powerVERY(int map[KIRI][KANAN], int i);
-		void PowerActive(int map[KIRI][KANAN],int i,int k);
-		bool threecandy(int map[5][8]);
-		bool fourcandy(int map[5][8],int a,int b);
-		bool fivecandy(int map[5][8]);
-		bool dropcandy(int map[5][8]);
-		void InitializeBouncingBall(int, int, int);
-		bool Friend(int ii, int jj, int i, int j);
-		bool OnClick(const CPoint& point, CMovingBitmap& button);
-		~CGameMap();
-	protected:
-		const int X, Y;
-		const int MW, MH;
-		CBouncingBall* bballs;
-		int random_num;
-		
-	private:
-		//void DropCandy();
-		//int DropCandyStraight();
-		//int DropCandySide();
-		//vector<StagePlay*> TotalCandy;
-		CMovingBitmap box, green, red, blue, orange, purple, yellow, 
-					  blue_ver, green_ver, red_ver, orange_ver, purple_ver, yellow_ver,
-			          blue_hor, green_hor, red_hor, orange_hor, purple_hor, yellow_hor, chocolate;
-		/**blue_click, green_click, red_click, orange_click, purple_click, yellow_click,
-					  blue_ver_click, green_ver_click, red_ver_click, orange_ver_click, purple_ver_click, yellow_ver_click,
-					  blue_hor_click, green_hor_click, red_hor_click, orange_hor_click, purple_hor_click, yellow_hor_click,**/
-
-		int map[KIRI][KANAN],power[KIRI][KANAN];
-		int TotalCandy,ii,jj;
-		bool on, swap, candyClicked;
-		
-		
-	};
-	class CBouncingBall;
-
+	
 	class CGameStateRun : public CGameState {
 	public:
-		CGameStateRun(CGame *g);
+		CGameStateRun(CGame *g);						
 		~CGameStateRun();
-		void OnBeginState();							// �]�w�C�������һݪ��ܼ�
-		void OnInit();  								// �C������Ȥιϧγ]�w
+		void OnBeginState();							
+		void OnInit();  								
 		void OnKeyDown(UINT, UINT, UINT);
 		void OnKeyUp(UINT, UINT, UINT);
-		void OnLButtonDown(UINT nFlags, CPoint point);  // �B�z�ƹ����ʧ@
-		void OnLButtonUp(UINT nFlags, CPoint point);	// �B�z�ƹ����ʧ@
-		void OnMouseMove(UINT nFlags, CPoint point);	// �B�z�ƹ����ʧ@ 
-		void OnRButtonDown(UINT nFlags, CPoint point);  // �B�z�ƹ����ʧ@
-		void OnRButtonUp(UINT nFlags, CPoint point);	// �B�z�ƹ����ʧ@
+		void OnLButtonDown(UINT nFlags, CPoint point);  
+		void OnLButtonUp(UINT nFlags, CPoint point);	
 	protected:
-		void OnMove();									// ���ʹC������
-		void OnShow();									// ��ܳo�Ӫ��A���C���e��
-	private:
-		const int		NUMBALLS;	// �y���`��
-		CPractice		c_practice;
-		CGameMap		gamemap;
-		CMovingBitmap	backgrounds,box;	// �I����
-		CMovingBitmap	practice;	// �I����
-		int				picX, picY;
-		CMovingBitmap	help;		// ������
-		CBall			*ball;		// �y���}�C
-		CMovingBitmap	corner;		// ������
-		CEraser			eraser;		// ��l
-		CInteger		hits_left;	// �ѤU��������
-		CBouncingBall   bball;		// ���мu�����y
+		void OnMove();									
+		void OnShow();									
 
+	private:
+		CMovingBitmap	background;	
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -213,13 +143,28 @@ namespace game_framework {
 	class CGameStateOver : public CGameState {
 	public:
 		CGameStateOver(CGame *g);
-		void OnBeginState();							// �]�w�C�������һݪ��ܼ�
+		void OnBeginState();
+		void OnLButtonDown(UINT nFlags, CPoint point);			
+		void OnLButtonUp(UINT nFlags, CPoint point);			
 		void OnInit();
 	protected:
-		void OnMove();									// ���ʹC������
-		void OnShow();									// ��ܳo�Ӫ��A���C���e��
+		void OnMove();									
+		void OnShow();									
+		int GetDigit(int);								
 	private:
-		int counter;	// �˼Ƥ��p�ƾ�
+		void ShowButtons();
+		void ShowStars(int, int, int);
+
+		int counter, stageNum;	
+		bool isFail;
+		CMovingBitmap backgroundOver;	
+		CMovingBitmap scoreBoardOver;
+		CInteger currentScore;
+		CInteger currentStage;
+		CMovingBitmap redStar, greenStar, yellowStar, emptyStar, failed;
+		CMovingBitmap exitButtonClicked, nextButtonClicked, retryButtonClicked;
+		CAnimation exitButton, nextButton, retryButton;
+		bool exitBtnClicked, nextBtnClicked, retryBtnClicked;
 	};
 
 }

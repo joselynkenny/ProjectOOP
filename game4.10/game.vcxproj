@@ -23,6 +23,8 @@
     <RootNamespace>game</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>
+    </ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="Configuration">
@@ -258,10 +260,9 @@
     <None Include="res\Toolbar.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Area.cpp" />
     <ClCompile Include="Source\audio.cpp" />
-    <ClCompile Include="Source\CBall.cpp" />
-    <ClCompile Include="Source\CBouncingBall.cpp" />
-    <ClCompile Include="Source\CEraser.cpp" />
+    <ClCompile Include="Source\Candy.cpp" />
     <ClCompile Include="Source\game.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -283,7 +284,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="Source\ScoreBoard.cpp" />
-    <ClCompile Include="Source\StagePlay.cpp" />
+    <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\StdAfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -306,10 +307,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Area.h" />
     <ClInclude Include="Source\audio.h" />
-    <ClInclude Include="Source\CBall.h" />
-    <ClInclude Include="Source\CBouncingBall.h" />
-    <ClInclude Include="Source\CEraser.h" />
+    <ClInclude Include="Source\Candy.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gameDoc.h" />
     <ClInclude Include="Source\gameView.h" />
@@ -317,7 +317,7 @@
     <ClInclude Include="Source\MainFrm.h" />
     <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\ScoreBoard.h" />
-    <ClInclude Include="Source\StagePlay.h" />
+    <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\StdAfx.h" />
     <ClInclude Include="Source\gamelib.h" />
     <ClInclude Include="Source\mygame.h" />
@@ -430,7 +430,19 @@
     <Image Include="Bitmaps\ClickedRedCandy.bmp" />
     <Image Include="Bitmaps\ClickedSuperCandy.bmp" />
     <Image Include="Bitmaps\ClickedYellowCandy.bmp" />
+    <Image Include="Bitmaps\container.bmp" />
     <Image Include="Bitmaps\GreenCandy.bmp" />
+    <Image Include="Bitmaps\inGameLoading.bmp" />
+    <Image Include="Bitmaps\NextButton-0.bmp" />
+    <Image Include="Bitmaps\NextButton-1.bmp" />
+    <Image Include="Bitmaps\NextButton-2.bmp" />
+    <Image Include="Bitmaps\NextButton-3.bmp" />
+    <Image Include="Bitmaps\NextButton-4.bmp" />
+    <Image Include="Bitmaps\NextButton-5.bmp" />
+    <Image Include="Bitmaps\NextButton-6.bmp" />
+    <Image Include="Bitmaps\NextButton-7.bmp" />
+    <Image Include="Bitmaps\NextButton-8.bmp" />
+    <Image Include="Bitmaps\NextButton-9.bmp" />
     <Image Include="Bitmaps\OrangeCandy.bmp" />
     <Image Include="Bitmaps\P1BlueCandy.bmp" />
     <Image Include="Bitmaps\P1GreenCandy.bmp" />
@@ -465,6 +477,16 @@
     <Image Include="Bitmaps\PlayButtonClicked.bmp" />
     <Image Include="Bitmaps\PurpleCandy.bmp" />
     <Image Include="Bitmaps\RedCandy.bmp" />
+    <Image Include="Bitmaps\RetryButton-0.bmp" />
+    <Image Include="Bitmaps\RetryButton-1.bmp" />
+    <Image Include="Bitmaps\RetryButton-2.bmp" />
+    <Image Include="Bitmaps\RetryButton-3.bmp" />
+    <Image Include="Bitmaps\RetryButton-4.bmp" />
+    <Image Include="Bitmaps\RetryButton-5.bmp" />
+    <Image Include="Bitmaps\RetryButton-6.bmp" />
+    <Image Include="Bitmaps\RetryButton-7.bmp" />
+    <Image Include="Bitmaps\RetryButton-8.bmp" />
+    <Image Include="Bitmaps\RetryButton-9.bmp" />
     <Image Include="Bitmaps\Stage_Button_Blue.bmp" />
     <Image Include="Bitmaps\Stage_Button_Green.bmp" />
     <Image Include="Bitmaps\Stage_Button_Grey.bmp" />

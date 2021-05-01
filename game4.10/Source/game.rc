@@ -226,10 +226,6 @@ IDB_3                   BITMAP                  "..\\Bitmaps\\bmp_3.bmp"
 
 IDB_4                   BITMAP                  "..\\Bitmaps\\bmp_4.bmp"
 
-IDB_6                   BITMAP                  "..\\Bitmaps\\bmp_6.bmp"
-
-IDB_7                   BITMAP                  "..\\Bitmaps\\bmp_7.bmp"
-
 IDB_8                   BITMAP                  "..\\Bitmaps\\bmp_8.bmp"
 
 IDB_9                   BITMAP                  "..\\Bitmaps\\bmp_9.bmp"
@@ -294,6 +290,56 @@ IDB3_8                  BITMAP                  "..\\Bitmaps\\bmp3_8.bmp"
 
 IDB3_9                  BITMAP                  "..\\Bitmaps\\bmp3_9.bmp"
 
+IDB_5                   BITMAP                  "..\\Bitmaps\\bmp_5.bmp"
+
+IDB_CONTAINER           BITMAP                  "..\\Bitmaps\\container.bmp"
+
+IDB_INGAME_LOADING      BITMAP                  "..\\Bitmaps\\inGameLoading.bmp"
+
+IDB_6                   BITMAP                  "..\\Bitmaps\\bmp_6.bmp"
+
+IDB_7                   BITMAP                  "..\\Bitmaps\\bmp_7.bmp"
+
+IDB_NEXTBTN_0           BITMAP                  "..\\Bitmaps\\NextButton-0.bmp"
+
+IDB_NEXTBTN_1           BITMAP                  "..\\Bitmaps\\NextButton-1.bmp"
+
+IDB_NEXTBTN_2           BITMAP                  "..\\Bitmaps\\NextButton-2.bmp"
+
+IDB_NEXTBTN_3           BITMAP                  "..\\Bitmaps\\NextButton-3.bmp"
+
+IDB_NEXTBTN_4           BITMAP                  "..\\Bitmaps\\NextButton-4.bmp"
+
+IDB_NEXTBTN_5           BITMAP                  "..\\Bitmaps\\NextButton-5.bmp"
+
+IDB_NEXTBTN_6           BITMAP                  "..\\Bitmaps\\NextButton-6.bmp"
+
+IDB_NEXTBTN_7           BITMAP                  "..\\Bitmaps\\NextButton-7.bmp"
+
+IDB_NEXTBTN_8           BITMAP                  "..\\Bitmaps\\NextButton-8.bmp"
+
+IDB_NEXTBTN_9           BITMAP                  "..\\Bitmaps\\NextButton-9.bmp"
+
+IDB_RETRYBTN_0          BITMAP                  "..\\Bitmaps\\RetryButton-0.bmp"
+
+IDB_RETRYBTN_1          BITMAP                  "..\\Bitmaps\\RetryButton-1.bmp"
+
+IDB_RETRYBTN_2          BITMAP                  "..\\Bitmaps\\RetryButton-2.bmp"
+
+IDB_RETRYBTN_3          BITMAP                  "..\\Bitmaps\\RetryButton-3.bmp"
+
+IDB_RETRYBTN_4          BITMAP                  "..\\Bitmaps\\RetryButton-4.bmp"
+
+IDB_RETRYBTN_5          BITMAP                  "..\\Bitmaps\\RetryButton-5.bmp"
+
+IDB_RETRYBTN_6          BITMAP                  "..\\Bitmaps\\RetryButton-6.bmp"
+
+IDB_RETRYBTN_7          BITMAP                  "..\\Bitmaps\\RetryButton-7.bmp"
+
+IDB_RETRYBTN_8          BITMAP                  "..\\Bitmaps\\RetryButton-8.bmp"
+
+IDB_RETRYBTN_9          BITMAP                  "..\\Bitmaps\\RetryButton-9.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -319,8 +365,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 IDR_MAINFRAME           BITMAP                  "..\\res\\Toolbar.bmp"
-
-IDB_TESTAJ              BITMAP                  "..\\res\\bitmap3.bmp"
 
 IDB_RED                 BITMAP                  "..\\res\\bmp00002.bmp"
 

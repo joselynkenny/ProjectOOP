@@ -42,9 +42,9 @@ namespace game_framework
 	{
 		switch (mode)
 		{
-		case 1:	//Target reached when score higher than target
+		case 1:
 			if (score >= target) return true;
-		case 2:	//Target reached when all jelly cleared
+		case 2:
 			if (!target.GetInteger()) return true;
 		default:
 			return false;
@@ -53,7 +53,6 @@ namespace game_framework
 
 	void ScoreBoard::ShowStars()
 	{
-		//Show empty star if score is lower than each relative score
 		CMovingBitmap *thirdStar = score >= threeStar ? &yellowStar : &emptyStar2;
 		CMovingBitmap *secondStar = score >= twoStar ? &greenStar : &emptyStar1;
 		CMovingBitmap *firstStar = score >= oneStar ? &redStar : &emptyStar1;
@@ -72,11 +71,13 @@ namespace game_framework
 	{
 		int CurrentMoves = moves.GetInteger();
 		int size = 1;
+
 		while (CurrentMoves > 9)
 		{
 			CurrentMoves /= 10;
 			size++;
 		}
+
 		if (size <= 7)
 		{
 			moves.SetDigit(size);
@@ -110,11 +111,13 @@ namespace game_framework
 	{
 		int CurrentScore = score.GetInteger();
 		int size = 1;
+
 		while (CurrentScore > 9)
 		{
 			CurrentScore /= 10;
 			size++;
 		}
+
 		if (size <= 7)
 		{
 			score.SetDigit(size);

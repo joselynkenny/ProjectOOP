@@ -56,10 +56,12 @@
 #include <mmsystem.h>
 #include <stdlib.h>
 #include <ddraw.h>
+#include <set>
+#include <string.h>
+#include <string>
 #include "audio.h"
 #include "gamelib.h"
 #include "mygame.h"
-#include "StagePlay.h"
 #include <iostream>
 #include <algorithm>
 
@@ -87,6 +89,7 @@ void CGameStateInit::OnInit()
 	int playBtnBmp[] = { IDB_PLAYBUTTON_1, IDB_PLAYBUTTON_2, IDB_PLAYBUTTON_3, IDB_PLAYBUTTON_4,
 						 IDB_PLAYBUTTON_5, IDB_PLAYBUTTON_6, IDB_PLAYBUTTON_7, IDB_PLAYBUTTON_8,
 						 IDB_PLAYBUTTON_9, IDB_PLAYBUTTON_10, IDB_PLAYBUTTON_11, IDB_PLAYBUTTON_12};
+
 	for (int i = 0; i < 12; i++) {
 		playButton.AddBitmap(playBtnBmp[i], RGB(0, 0, 0));
 	}
@@ -97,17 +100,21 @@ void CGameStateInit::OnInit()
 	//LogoTiffy
 	int LogoTiffy_list[] = { IDB_LOGOTIFFY0, IDB_LOGOTIFFY1, IDB_LOGOTIFFY2, IDB_LOGOTIFFY3, IDB_LOGOTIFFY4, IDB_LOGOTIFFY5, IDB_LOGOTIFFY6, IDB_LOGOTIFFY7, IDB_LOGOTIFFY8,IDB_LOGOTIFFY9,
 		IDB_LOGOTIFFY8, IDB_LOGOTIFFY7, IDB_LOGOTIFFY6, IDB_LOGOTIFFY5, IDB_LOGOTIFFY4, IDB_LOGOTIFFY3, IDB_LOGOTIFFY2, IDB_LOGOTIFFY1, IDB_LOGOTIFFY0 };
+	
 	for (int i = 0; i < 19; i++) {
 		LogoTiffy.AddBitmap(LogoTiffy_list[i], RGB(255, 255, 255));
 	}
+
 	LogoTiffy.SetDelayCount(4);
 
 	//LogoToffee
 	int LogoToffee_list[] = { IDB_LOGOTOFFEE1, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE6,
 		IDB_LOGOTOFFEE5, IDB_LOGOTOFFEE4, IDB_LOGOTOFFEE3, IDB_LOGOTOFFEE2, IDB_LOGOTOFFEE1};
+	
 	for (int i = 0; i < 11; i++) {
 		LogoToffee.AddBitmap(LogoToffee_list[i], RGB(255, 255, 255));
 	}
+
 	LogoToffee.SetDelayCount(3);
 	Sleep(300);	
 
@@ -132,8 +139,8 @@ void CGameStateInit::OnInit()
 void CGameStateInit::OnBeginState()
 {
 	if (finishLoaded) {
-		LogoCandy.Reset();	//reset animation of candy crush logo
-		playBtnClicked = false;	//reset playbutton state
+		LogoCandy.Reset();
+		playBtnClicked = false;	
 		if (music) {
 			CAudio::Instance()->Play(AUDIO_STAGE, true);
 		}
@@ -144,10 +151,10 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
 	const char KEY_SPACE = ' ';
-	if (nChar == KEY_SPACE)
-		GotoGameState(GAME_STATE_RUN);						// ������GAME_STATE_RUN
-	else if (nChar == KEY_ESC)								// Demo �����C������k
-		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0);	// �����C��
+	//if (nChar == KEY_SPACE)
+		//GotoGameState(GAME_STATE_RUN);						// ������GAME_STATE_RUN
+	//else if (nChar == KEY_ESC)								// Demo �����C������k
+		//PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0);	// �����C��
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -170,7 +177,10 @@ void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
 
 void CGameStateInit::OnMove() {
 	LogoCandy.OnMove();
-	if (!playBtnClicked) playButton.OnMove();
+
+	if (!playBtnClicked)
+		playButton.OnMove();
+
 	LogoTiffy.OnMove();
 	LogoToffee.OnMove();
 }
@@ -208,6 +218,7 @@ void CGameStateInit::OnShow()
 void CGameStateInit::SetMusic(bool music)
 {
 	this->music = music;
+
 	if (music)
 		CAudio::Instance()->Play(AUDIO_STAGE, true);
 	else
@@ -217,6 +228,7 @@ void CGameStateInit::SetMusic(bool music)
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateStart
 /////////////////////////////////////////////////////////////////////////////
+
 CGameStateStart::CGameStateStart(CGame *g)
 	: CGameState(g),scroll(false),area(0),mouseDisplayment(0), inertia(0)
 {
@@ -237,11 +249,13 @@ CGameStateStart::CGameStateStart(CGame *g)
 
 CGameStateStart::~CGameStateStart()
 {
+	for (unsigned i = 0; i < stages.size(); i++) {
+		delete stages[i];
+	}
 }
 
 void CGameStateStart::OnInit()
 {
-	//Stages
 	StageStart.LoadBitmap("Bitmaps\\Stage.bmp");
 	stageNum.SetType(1);
 
@@ -249,6 +263,15 @@ void CGameStateStart::OnInit()
 
 	for (int i = 0; i < 5; i++) {
 		stageButton[i].LoadBitmap(StageButton[i], RGB(255, 255, 255));
+	}
+
+	star1.LoadBitmap("Bitmaps\\SmallRedStar.bmp", RGB(255, 255, 255));
+	star2.LoadBitmap("Bitmaps\\SmallGreenStar.bmp", RGB(255, 255, 255));
+	star3.LoadBitmap("Bitmaps\\SmallYellowStar.bmp", RGB(255, 255, 255));
+
+	for (int i = 0; i < MAX_STAGE + 1; i++) {
+		stages.push_back(new Stage(i + 1));
+		stages[i]->LoadStage();
 	}
 
 }
@@ -275,16 +298,18 @@ void CGameStateStart::SetDown(bool status)
 
 void CGameStateStart::OnMove()
 {
-		if (area > 0) 
-			scroll_Y += area--;
-		else if (area < 0)
-			scroll_Y += area++;
+	if (area > 0) 
+		scroll_Y += area--;
+	else if (area < 0)
+		scroll_Y += area++;
 	
 	SetUp(TapUp);
 	SetDown(TapDown);
-	if (!scroll && inertia > 0) scroll_Y += inertia--;
-	else if (!scroll && inertia < 0) scroll_Y += inertia++;
-	//OnMouseMove(1);
+
+	if (!scroll && inertia > 0)
+		scroll_Y += inertia--;
+	else if (!scroll && inertia < 0)
+		scroll_Y += inertia++;
 }
 
 void CGameStateStart::OnBeginState()
@@ -293,10 +318,11 @@ void CGameStateStart::OnBeginState()
 
 void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	const char KEY_LEFT = 0x25; // keyboard���b�Y
-	const char KEY_UP = 0x26; // keyboard�W�b�Y
-	const char KEY_RIGHT = 0x27; // keyboard�k�b�Y
-	const char KEY_DOWN = 0x28; // keyboard�U�b�Y
+	const char KEY_LEFT = 0x25; 
+	const char KEY_UP = 0x26; 
+	const char KEY_RIGHT = 0x27; 
+	const char KEY_DOWN = 0x28; 
+
 	if (nChar == KEY_UP) {
 		TapUp = true;
 		TapDown = false;
@@ -313,6 +339,7 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	const char KEY_SPACE = ' ';
 	const char KEY_UP = 0x26;
 	const char KEY_DOWN = 0x28;
+
 	if (nChar == KEY_UP) TapUp = false;
 	if (nChar == KEY_DOWN) TapDown =false;
 	if (nChar == KEY_SPACE)
@@ -332,18 +359,84 @@ void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
 void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)	
 {
 	scroll = false;
+	int x = point.x;
+	int y = point.y - scroll_Y;
+
+	for (int i = 0; i < MAX_STAGE; i++) {
+		if (StagePos[i][0] < x && x < (StagePos[i][0] + 60) && StagePos[i][1] < y && (y < StagePos[i][1] + 60))
+		{
+			if (stages[i]->IsUnlock())
+			{
+				current_stage = i;
+				gameArea.LoadStage(stages, i);
+				GotoGameState(GAME_STATE_RUN);
+			}
+		}
+	}
+}
+
+int CGameStateStart::GetDigit(int n)
+{
+	n = abs(n);
+	int digit = 0;
+
+	while (n > 0)
+	{
+		digit++;
+		n /= 10;
+	}
+
+	return digit == 0 ? 1 : digit;
 }
 
 void CGameStateStart::OnShow()
 {
-	//Stage
 	StageStart.SetTopLeft(0, scroll_Y);
 	StageStart.ShowBitmap();
 
 	if (scroll_Y < 0 && scroll_Y < -3600)
 		scroll_Y = -3600;
+
 	if (scroll_Y > 0 && scroll_Y > -3600)
 		scroll_Y = 0;
+
+	if (scroll_Y > -3000)
+	{
+		comingSoon.SetTopLeft(SIZE_X / 2 - comingSoon.Width() / 2, SIZE_Y / 2 - comingSoon.Height() / 2);
+		comingSoon.ShowBitmap();
+	}
+
+	for (int i = 0; i < MAX_STAGE; i++)
+	{
+		int xStar = StagePos[i][0] - 10, xButton = StagePos[i][0] - 5;
+		int yStar = StagePos[i][1] + scroll_Y + 65, yButton = StagePos[i][1] - 3 + scroll_Y;
+		stageNum.SetInteger(i + 1);
+
+		if (stages[i]->IsUnlock())
+		{
+			if (stages[i]->GetLastScoreHistory() >= stages[i]->GetScoreThree())
+			{
+				ShowStageButton(3, i, xButton, yButton);
+				ShowStars(3, xStar, yStar);
+			}
+			else if (stages[i]->GetLastScoreHistory() >= stages[i]->GetScoreTwo())
+			{
+				ShowStageButton(2, i, xButton, yButton);
+				ShowStars(2, xStar, yStar);
+			}
+			else if (stages[i]->GetLastScoreHistory() >= stages[i]->GetScoreOne())
+			{
+				ShowStageButton(1, i, xButton, yButton);
+				ShowStars(1, xStar, yStar);
+			}
+			else if (stages[i]->GetLastScoreHistory() < stages[i]->GetScoreOne())
+			{
+				ShowStageButton(0, i, xButton, yButton);
+			}
+		}
+		else
+			ShowStageButton(4, i, xButton, yButton);
+	}
 }
 
 void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int yButton)
@@ -351,14 +444,95 @@ void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int 
 	stageButton[stageBtn].SetTopLeft(xButton, yButton);
 	stageButton[stageBtn].ShowBitmap();
 
-	/*
+	
 	if (stages[stage]->IsUnlock())
 	{
 		stageNum.SetTopLeft(xButton + ((stageButton[stageBtn].Width() / 2) - (10 * GetDigit(stage) / 2)), yButton + (stageButton[stageBtn].Height() / 4));
 		stageNum.ShowBitmap();
 	}
-	*/
 }
+
+void CGameStateStart::ShowStars(int amount, int xStar, int yStar)
+{
+	if (amount == 3)
+	{
+		star3.SetTopLeft(xStar, yStar);
+		star3.ShowBitmap();
+		star3.SetTopLeft(xStar + 30, yStar + 5);
+		star3.ShowBitmap();
+		star3.SetTopLeft(xStar + 60, yStar);
+		star3.ShowBitmap();
+	}
+	else if (amount >= 1)
+	{
+		star1.SetTopLeft(xStar, yStar);
+		star1.ShowBitmap();
+
+		if (amount == 2)
+		{
+			star2.SetTopLeft(xStar + 30, yStar + 5);
+			star2.ShowBitmap();
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CGameStateRun
+/////////////////////////////////////////////////////////////////////////////
+
+CGameStateRun::CGameStateRun(CGame* g) : CGameState(g)
+{}
+
+CGameStateRun::~CGameStateRun()
+{}
+
+void CGameStateRun::OnBeginState()
+{
+	background.SetTopLeft(0, 0);
+}
+
+void CGameStateRun::OnMove()
+{
+	gameArea.OnMove();
+
+	if (gameArea.IsGameOver())
+	{
+		//GotoGameState(GAME_STATE_OVER);
+	}
+}
+
+void CGameStateRun::OnInit()
+{
+	background.LoadBitmap("Bitmaps\\Play.bmp");
+	gameArea.LoadBitmap();
+}
+
+void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	gameArea.OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	gameArea.OnKeyUp(nChar, nRepCnt, nFlags);
+}
+
+void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	gameArea.OnLButtonDown(nFlags, point);
+}
+
+void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	gameArea.OnLButtonUp(nFlags, point);
+}
+
+void CGameStateRun::OnShow()
+{
+	background.ShowBitmap();
+	gameArea.OnShow();
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateOver
 /////////////////////////////////////////////////////////////////////////////
@@ -366,1057 +540,244 @@ void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int 
 CGameStateOver::CGameStateOver(CGame *g)
 : CGameState(g)
 {
+	currentScore.SetType(2);
+	currentScore.SetType(3);
+	nextBtnClicked = retryBtnClicked = exitBtnClicked = false;
 }
 
 void CGameStateOver::OnMove()
 {
-	counter--;
-	if (counter < 0)
-		GotoGameState(GAME_STATE_INIT);
+	exitButton.OnMove();
+	nextButton.OnMove();
+	retryButton.OnMove();
 }
 
 void CGameStateOver::OnBeginState()
 {
-	counter = 30 * 5; // 5 seconds
+	currentStage = current_stage + 1;
+	currentScore = (int)stages[current_stage]->GetCurrentScore();
+	isFail = stages[current_stage]->IsFail();
+	nextBtnClicked = retryBtnClicked = false;
 }
 
 void CGameStateOver::OnInit()
 {
-	//
-	// ���ϫܦh�ɡAOnInit���J�Ҧ����ϭn��ܦh�ɶ��C���קK���C�����H
-	//     �������@�СA�C���|�X�{�uLoading ...�v�A���Loading���i�סC
-	//
-	ShowInitProgress(66);	// ���ӫe�@�Ӫ��A���i�סA���B�i�׵���66%
-	//
-	// �}�l���J���
-	//
-	Sleep(300);				// ��C�A�H�K�ݲM���i�סA��ڹC���ЧR����Sleep
-	//
-	// �̲׶i�׬�100%
-	//
-	ShowInitProgress(100);
+	backgroundOver.LoadBitmap("Bitmaps/Play.bmp");
+
+	scoreBoardOver.LoadBitmap("Bitmaps/score_state_over.bmp", RGB(0, 0, 0));
+
+	redStar.LoadBitmap("Bitmaps/RedStar.bmp", RGB(251, 230, 239));
+	greenStar.LoadBitmap("Bitmaps/GreenStar.bmp", RGB(251, 230, 239));
+	yellowStar.LoadBitmap("Bitmaps/YellowStar.bmp", RGB(251, 230, 239));
+	emptyStar.LoadBitmap("Bitmaps/ContainerStar.bmp", RGB(251, 230, 239));
+	failed.LoadBitmap("Bitmaps/Failed.bmp", RGB(251, 230, 239));
+
+	exitButton.AddBitmap("Bitmaps/ExitButton-0.bmp", RGB(255, 255, 255));
+	exitButton.AddBitmap("Bitmaps/ExitButton-1.bmp", RGB(255, 255, 255));
+	exitButton.AddBitmap("Bitmaps/ExitButton-2.bmp", RGB(255, 255, 255));
+	exitButton.AddBitmap("Bitmaps/ExitButton-1.bmp", RGB(255, 255, 255));
+	exitButton.SetDelayCount(8);
+	exitButtonClicked.LoadBitmap("Bitmaps\\ExitButtonClicked.bmp", RGB(255, 255, 255));
+
+	int nextBtn[] = { IDB_NEXTBTN_0, IDB_NEXTBTN_1, IDB_NEXTBTN_2, IDB_NEXTBTN_3, IDB_NEXTBTN_4,
+					  IDB_NEXTBTN_5, IDB_NEXTBTN_6, IDB_NEXTBTN_7, IDB_NEXTBTN_8, IDB_NEXTBTN_9 };
+
+	int retryBtn[] = { IDB_RETRYBTN_0, IDB_RETRYBTN_1, IDB_RETRYBTN_2, IDB_RETRYBTN_3, IDB_RETRYBTN_4,
+					   IDB_RETRYBTN_5, IDB_RETRYBTN_6, IDB_RETRYBTN_7, IDB_RETRYBTN_8, IDB_RETRYBTN_9 };
+	
+
+	for (int i = 0; i < 10; i++)
+	{
+		nextButton.AddBitmap(nextBtn[i], RGB(251, 230, 239));
+		retryButton.AddBitmap(retryBtn[i], RGB(251, 230, 239));
+	}
+
+	nextButton.SetDelayCount(4);
+	retryButton.SetDelayCount(4);
+
+	nextButtonClicked.LoadBitmap("Bitmaps\\NextButtonClicked.bmp", RGB(251, 230, 239));
+	retryButtonClicked.LoadBitmap("Bitmaps\\RetryButtonClicked.bmp", RGB(251, 230, 239));
+}
+
+void CGameStateOver::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	if (ButtonOnClick(point, exitButton))
+	{
+		exitBtnClicked = true;
+	}
+
+	if (ButtonOnClick(point, retryButton))
+	{
+		retryBtnClicked = true;
+	}
+
+	if (ButtonOnClick(point, nextButton) && !isFail)
+	{
+		nextBtnClicked = true;
+	}
+}
+
+void CGameStateOver::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	if (ButtonOnClick(point, exitButton))
+	{
+		GotoGameState(GAME_STATE_START);		
+	}
+
+	if (ButtonOnClick(point, retryButton))
+	{
+		gameArea.LoadStage(stages, current_stage);
+		GotoGameState(GAME_STATE_RUN);	
+	}
+
+	if (ButtonOnClick(point, nextButton) && !isFail && currentStage.GetInteger() != MAX_STAGE)
+	{
+		current_stage += 1;
+		gameArea.LoadStage(stages, current_stage);
+		GotoGameState(GAME_STATE_RUN);		
+	}
+
+	nextBtnClicked = retryBtnClicked = exitBtnClicked = false;
+}
+
+int CGameStateOver::GetDigit(int n)
+{
+	n = abs(n);
+	int digit = 0;
+
+	while (n > 0)
+	{
+		digit++;
+		n /= 10;
+	}
+
+	return digit == 0 ? 1 : digit;
+}
+
+void CGameStateOver::ShowButtons()
+{
+	int exitBtnTopLX = scoreBoardOver.Left() + scoreBoardOver.Width() - exitButton.Width();
+	int exitBtnTopLY = scoreBoardOver.Top() + 30;
+	int retryBtnTopLX = (backgroundOver.Width() / 2) + (isFail || (current_stage + 1 == 15) ? -nextButton.Width() / 2 : 20 - nextButton.Width());
+	int retryBtnTopLY = (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 530;
+	int nextBtnTopLX = (backgroundOver.Width() / 2) - 20;
+	int nextBtnTopLY = (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 530;
+
+	if (exitBtnClicked)
+	{
+		exitButtonClicked.SetTopLeft(exitBtnTopLX, exitBtnTopLY);
+		exitButtonClicked.ShowBitmap();
+	}
+	else
+	{
+		exitButton.SetTopLeft(exitBtnTopLX, exitBtnTopLY);
+		exitButton.OnShow();
+	}
+
+	if (retryBtnClicked)
+	{
+		retryButtonClicked.SetTopLeft(retryBtnTopLX, retryBtnTopLY);
+		retryButtonClicked.ShowBitmap();
+	}
+	else
+	{
+		retryButton.SetTopLeft(retryBtnTopLX, retryBtnTopLY);
+		retryButton.OnShow();
+	}
+
+	if (isFail)
+	{
+		failed.SetTopLeft((backgroundOver.Width() / 2) - (failed.Width() / 2), (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 180);
+		failed.ShowBitmap();
+	}
+	else if (current_stage + 1 != 15)
+	{
+		if (nextBtnClicked)
+		{
+			nextButtonClicked.SetTopLeft(nextBtnTopLX, nextBtnTopLY);
+			nextButtonClicked.ShowBitmap();
+		}
+		else
+		{
+			nextButton.SetTopLeft(nextBtnTopLX, nextBtnTopLY);
+			nextButton.OnShow();
+		}
+	}
+
+}
+
+void CGameStateOver::ShowStars(int amount, int xStar, int yStar)
+{
+	if (amount == 3)
+	{
+		yellowStar.SetTopLeft(xStar, yStar);
+		yellowStar.ShowBitmap();
+		yellowStar.SetTopLeft(xStar + 110 + 20, yStar - 20);
+		yellowStar.ShowBitmap();
+		yellowStar.SetTopLeft(xStar + 220 + 40, yStar);
+		yellowStar.ShowBitmap();
+	}
+	else if (amount >= 1)
+	{
+		redStar.SetTopLeft(xStar, yStar);
+		redStar.ShowBitmap();
+
+		if (amount == 2)
+		{
+			greenStar.SetTopLeft(xStar + 110 + 20, yStar - 20);
+			greenStar.ShowBitmap();
+		}
+		else {
+			emptyStar.SetTopLeft(xStar + 110 + 20, yStar - 20);
+			emptyStar.ShowBitmap();
+		}
+		emptyStar.SetTopLeft(xStar + 220 + 40, yStar);
+		emptyStar.ShowBitmap();
+	}
+	else {
+		emptyStar.SetTopLeft(xStar, yStar);
+		emptyStar.ShowBitmap();
+		emptyStar.SetTopLeft(xStar + 110 + 20, yStar - 20);
+		emptyStar.ShowBitmap();
+		emptyStar.SetTopLeft(xStar + 220 + 40, yStar);
+		emptyStar.ShowBitmap();
+	}
 }
 
 void CGameStateOver::OnShow()
 {
-	CDC *pDC = CDDraw::GetBackCDC();			// ���o Back Plain �� CDC 
-	CFont f,*fp;
-	f.CreatePointFont(160,"Times New Roman");	// ���� font f; 160����16 point���r
-	fp=pDC->SelectObject(&f);					// ��� font f
-	pDC->SetBkColor(RGB(0,0,0));
-	pDC->SetTextColor(RGB(255,255,0));
-	char str[80];								// Demo �Ʀr��r�ꪺ�ഫ
-	sprintf(str, "Game Over ! (%d)", counter / 30);
-	pDC->TextOut(240,210,str);
-	pDC->SelectObject(fp);						// �� font f (�d�U���n�|�F��)
-	CDDraw::ReleaseBackCDC();					// �� Back Plain �� CDC
-}
+	backgroundOver.SetTopLeft(0, 0);
+	backgroundOver.ShowBitmap();
 
-/////////////////////////////////////////////////////////////////////////////
-// �o��class���C�����C�����檫��A�D�n���C���{�����b�o��
-/////////////////////////////////////////////////////////////////////////////
+	scoreBoardOver.SetTopLeft((backgroundOver.Width() / 2) - (scoreBoardOver.Width() / 2), (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2));
+	scoreBoardOver.ShowBitmap();
 
-CPractice::CPractice()
-{
-	x = y = 0;
-}
+	currentStage.SetTopLeft((backgroundOver.Width() / 2) + 60, (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 55);
+	currentStage.ShowBitmap();
 
-void CPractice::OnMove()
-{
-	if (y <= SIZE_Y) {
-		x += 3;
-		y += 3;
+	int xStar = (backgroundOver.Width() / 2) - (370 / 2);
+	int yStar = (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 180;
+
+	if (stages[current_stage]->GetCurrentScore() >= stages[current_stage]->GetScoreThree() && !isFail)
+	{	
+		ShowStars(3, xStar, yStar);
 	}
-	else {
-		x = y = 0;
+	else if (stages[current_stage]->GetCurrentScore() >= stages[current_stage]->GetScoreTwo() && !isFail)
+	{	
+		ShowStars(2, xStar, yStar);
 	}
-}
-
-void CPractice::LoadBitmap()
-{
-	pic.LoadBitmapA(IDB_TESTAJ);
-}
-
-void CPractice::OnShow()
-{
-	pic.SetTopLeft(x, y);
-	pic.ShowBitmap();
-}
-
-
-void CBouncingBall::SetXY(int x, int y) 
-{
-	this->x = x;
-	this->y = y;
-}
-
-void CBouncingBall::SetFloor(int floor)
-{
-	this->floor = floor;
-}
-
-void CBouncingBall::SetVelocity(int velocity)
-{
-	this->velocity = velocity;
-	this->initial_velocity = velocity;
-}
-
-CGameMap::CGameMap()
-	:X(500), Y(200), MW(50), MH(50) ,swap(true)
-{
-	TotalCandy = 0;
-	ii = 0;
-	jj = 0;
-	for (int i = 0; i < KIRI; i++)
-		for (int j = 0; j < KANAN; j++)
-			map[i][j] = 1 + rand()%6;
-	for (int i = 0; i < KIRI; i++)
-		for (int j = 0; j < KANAN; j++)
-			power[i][j] = 0;
-	/*while (true) {
-		int a = fivecandy(map);
-		int b = fourcandy(map);
-		int c = threecandy(map);
-		if (((a || b) || (b || c) || (a || c)) == false) {
-			break;
-		}
+	else if (stages[current_stage]->GetCurrentScore() >= stages[current_stage]->GetScoreOne() && !isFail)
+	{	
+		ShowStars(1, xStar, yStar);
 	}
-<<<<<<< HEAD
-	bballs = NULL;*/
-/**=======
-	candyClicked = false;
-	bballs = NULL;
->>>>>>> 5cd373cda2d7e38793b82f12e3c9ce56b5e1b7d6**/
-}
-
-void CGameMap::LoadBitmaps()
-{
-	blue.LoadBitmap(IDB_BLUE_C, RGB(255, 255, 255));
-	green.LoadBitmap(IDB_GREEN_C, RGB(255, 255, 255));
-	orange.LoadBitmap(IDB_ORANGE_C, RGB(255, 255, 255));
-	purple.LoadBitmap(IDB_PURPLE_C, RGB(255, 255, 255));
-	red.LoadBitmap(IDB_RED_C, RGB(255, 255, 255));
-	yellow.LoadBitmap(IDB_YELLOW_C, RGB(255, 255, 255));
-
-	blue_ver.LoadBitmap(IDB_BLUE_VER, RGB(255, 255, 255));
-	green_ver.LoadBitmap(IDB_GREEN_VER, RGB(255, 255, 255));
-	orange_ver.LoadBitmap(IDB_ORANGE_VER, RGB(255, 255, 255));
-	purple_ver.LoadBitmap(IDB_PURPLE_VER, RGB(255, 255, 255));
-	red_ver.LoadBitmap(IDB_RED_VER, RGB(255, 255, 255));
-	yellow_ver.LoadBitmap(IDB_YELLOW_VER, RGB(255, 255, 255));
-
-	blue_hor.LoadBitmap(IDB_BLUE_HOR, RGB(255, 255, 255));
-	green_hor.LoadBitmap(IDB_GREEN_HOR, RGB(255, 255, 255));
-	orange_hor.LoadBitmap(IDB_ORANGE_HOR, RGB(255, 255, 255));
-	purple_hor.LoadBitmap(IDB_PURPLE_HOR, RGB(255, 255, 255));
-	red_hor.LoadBitmap(IDB_RED_HOR, RGB(255, 255, 255));
-	yellow_hor.LoadBitmap(IDB_YELLOW_HOR, RGB(255, 255, 255));
-
-	chocolate.LoadBitmap(IDB_SUPER, RGB(255, 255, 255));
-	/**blue_click.LoadBitmap(IDB_BLUE_CLICKED, RGB(255, 255, 255));
-	green_click.LoadBitmap(IDB_GREEN_CLICKED, RGB(255, 255, 255));
-	orange_click.LoadBitmap(IDB_ORANGE_CLICKED, RGB(255, 255, 255));
-	purple_click.LoadBitmap(IDB_PURPLE_CLICKED, RGB(255, 255, 255));
-	red_click.LoadBitmap(IDB_RED_CLICKED, RGB(255, 255, 255));
-	yellow_click.LoadBitmap(IDB_YELLOW_CLICKED, RGB(255, 255, 255));
-
-	blue_hor_click.LoadBitmap(IDB_BLUE_HOR_C, RGB(255, 255, 255));
-	green_hor_click.LoadBitmap(IDB_GREEN_HOR_C, RGB(255, 255, 255));
-	orange_hor_click.LoadBitmap(IDB_ORANGE_HOR_C, RGB(255, 255, 255));
-	purple_hor_click.LoadBitmap(IDB_PURPLE_HOR_C, RGB(255, 255, 255));
-	red_hor_click.LoadBitmap(IDB_RED_HOR_C, RGB(255, 255, 255));
-	yellow_hor_click.LoadBitmap(IDB_YELLOW_HOR_C, RGB(255, 255, 255));
-
-	blue_ver_click.LoadBitmap(IDB_BLUE_VER_C, RGB(255, 255, 255));
-	green_ver_click.LoadBitmap(IDB_GREEN_VER_C, RGB(255, 255, 255));
-	orange_ver_click.LoadBitmap(IDB_ORANGE_VER_C, RGB(255, 255, 255));
-	purple_ver_click.LoadBitmap(IDB_PURPLE_VER_C, RGB(255, 255, 255));
-	red_ver_click.LoadBitmap(IDB_RED_VER_C, RGB(255, 255, 255));
-	yellow_ver_click.LoadBitmap(IDB_YELLOW_VER_C, RGB(255, 255, 255));**/
-
-
-	box.LoadBitmap("Bitmaps\\box.bmp");
-}
-
-int CGameMap::Max(int a, int b, int c, int d, int e) {
-	int arr[5] = { a,b,c,d,e };
-	int max = 0;
-	for (int i = 0; i < 5; i++) {
-		if (arr[i] > max) max = arr[i];
-	}
-	return max;
-}
-
-void CGameMap::powerVERX(int map[KIRI][KANAN],int i) {
-	for (int j = 0; j < KIRI; j++) {
-		map[j][i] = 0;
-		power[j][i] = 0;
-	}
-}
-void CGameMap::powerVERY(int map[KIRI][KANAN], int i) {
-	for (int j = 0; j < KANAN; j++) {
-		map[i][j] = 0;
-		power[i][j] = 0;
-	}
-}
-void CGameMap::PowerActive(int map[KIRI][KANAN],int i,int k) {
-	TRACE("PowerActive\n");
-	if (power[i][k] == 2) { //Xpower
-		power[i][k] = 0;
-		map[i][k] = 0;
-		for (int l = 0; l < KANAN; l++) {
-			if ((l != k) && (power[i][l] > 0)) { //dlmnya masi ada power
-				TRACE("RETURN Xpower\n");
-				return PowerActive(map, i, l);
-			}
-			else {
-				TRACE("ELSE Xpower\n");
-				map[i][l] = 0;
-				power[i][l] = 0;
-			}
-		}
-	}
-	if (power[i][k] == 1) { //Ypower
-		power[i][k] = 0;
-		map[i][k] = 0;
-		for (int l = 0; l < KIRI; l++) {
-			if ((l != i) && (power[l][k] > 0)) { //dlmnya masi ada power
-				TRACE("RETURN Ypower\n");
-				return PowerActive(map, l, k);
-			}
-			else {
-				TRACE("ELSE Ypower\n");
-				map[l][k] = 0;
-				power[l][k] = 0;
-			}
-		}
+	else if (stages[current_stage]->GetCurrentScore() < stages[current_stage]->GetScoreOne() && !isFail)
+	{	
+		ShowStars(0, xStar, yStar);
 	}
 
-}
-bool CGameMap::threecandy(int map[KIRI][KANAN]) {
-	 int horizontal=0;
-	 int typepower = 0;
-	 /**for (int i = 0; i < KIRI; i++) //SumbuX check bom
-		 for (int j = 0; j < KANAN-2; j++) {
-			 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-					 horizontal = 1;
-				 }
-				 if (map[i][j + 2] == map[i + 1][j + 2] && map[i + 1][j + 2] == map[i + 2][j + 2]) {
-					 horizontal = 1;
-				 }
-			 }
-		 }
-	 for (int i = 0; i < KIRI-2; i++)//SumbuY check bom
-		 for (int j = 0; j < KANAN; j++) {
-			 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-					 horizontal = 2;
-				 }
-				 if (map[i+2][j] == map[i+2][j + 1] && map[i+2][j + 1] == map[i+2][j + 2]) {
-					 horizontal = 2;
-				 }
-				 if (map[i][j] == map[i][j - 1] && map[i][j - 1] == map[i][j - 2]) {
-					 horizontal = 2;
-				 }
-				 if (map[i + 2][j] == map[i + 2][j - 1] && map[i + 2][j - 1] == map[i + 2][j - 2]) {
-					 horizontal = 2;
-				 }
-			 }
-		 }
-	 if (horizontal == 1) {
-		 for (int i = 0; i < KIRI; i++) //horizontal for bom
-			 for (int j = 0; j < KANAN-2; j++) {
-				 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-					 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-						 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
-					 }
-					 if (map[i][j + 2] == map[i + 1][j + 2] && map[i + 1][j + 2] == map[i + 2][j + 2]) {
-						 map[i][j+2] = map[i + 1][j+2] = map[i + 2][j+2] = 0;
-					 }
-					 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
-				 }
-			 }
-	 }
-	 else if (horizontal == 2) {
-		 for (int i = 0; i < KIRI-2; i++)//vertical for bom
-			 for (int j = 0; j < KANAN; j++) {
-				 if (map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) {
-					 if (map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) {
-						// horizontal = FALSE;
-						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
-					 }
-					 if (map[i + 2][j] == map[i + 2][j + 1] && map[i + 2][j + 1] == map[i + 2][j + 2]) {
-						// horizontal = FALSE;
-						 map[i+2][j] = map[i+2][j + 1] = map[i+2][j + 2] = 0;
-					 }
-					 if (map[i][j] == map[i][j - 1] && map[i][j - 1] == map[i][j - 2]) {
-						 horizontal = 2;
-						 map[i][j] = map[i][j - 1] = map[i][j - 2] = 0;
-					 }
-					 if (map[i + 2][j] == map[i + 2][j - 1] && map[i + 2][j - 1] == map[i + 2][j - 2]) {
-						 horizontal = 2;
-						 map[i+2][j] = map[i+2][j - 1] = map[i+2][j - 2] = 0;
-					 }
-					 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
-				 }
-			 }
-	 }*/
-	 if (horizontal == 1){
-		 
-	 }
-	 else {//no bom
-		 TRACE("THREE\n");
-		 for (int i = 0; i < KIRI; i++) {//SumbuX
-			 for (int j = 0; j < KANAN; j++) {
-				 if ((map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2]) && map[i][j] != 0){
-					 typepower = power[i][j] + power[i][j + 1] + power[i][j + 2];
-					 TRACE("THREE-TYPEPOWER-POWER1%d\n", typepower);
-					 if (typepower > 0) {
-						 for (int k = j; k < j + 3; k++) {
-							 if (power[i][k] > 0) {
-								 TRACE("THREE-POWER1 %d\n", k);
-								 PowerActive(map, i, k);
-								 TRACE("OUTTHREE-POWER1\n");
-							 }
-							 else {
-								 TRACE("THREE-POWER1 %d\n", k);
-								 map[i][k] = 0;
-								 power[i][k] = 0;
-								 TRACE("OUTTHREE-POWER1\n");
-							 }
-						 }
-					 }
-					 else {//nopower*/
-						 map[i][j] = map[i][j + 1] = map[i][j + 2] = 0;
-						 power[i][j] = power[i][j+1] = power[i][j+2] = 0;
-						 TRACE("NOPOWER");
-					 }
-				 }
-			 }
-		 }
-		 for (int i = 0; i < KIRI; i++) {//SumbuY
-			 for (int j = 0; j < KANAN; j++) {
-				 if ((map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j]) && map[i][j] != 0){
-					 typepower = power[i + 1][j] + power[i][j] + power[i + 2][j];
-					 TRACE("THREE-TYPEPOWER-POWER2 %d\n", typepower);
-					 if (typepower > 0) {
-						 for (int k = i; k < i + 3; k++) {
-							 if (power[k][j] > 0) {
-								 TRACE("THREE-POWER2 %d\n", k);
-								 PowerActive(map, k, j);
-								 TRACE("OUTTHREE-POWER2\n");
-							 }
-							 else {
-								 map[k][j] = 0;
-								 power[k][j] = 0;
-							 }
-						 }
-					 }
-
-					 else {
-						 map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
-						 power[i][j] = power[i + 1][j] = power[i + 2][j] = 0;
-						 TRACE("NOPOWER");
-					 }
-				 }
-			 }
-		 }
-	 }
-	 //int yes = dropcandy(map);
-	 return true;
- }
-
-bool CGameMap::fourcandy(int map[KIRI][KANAN],int a,int b) {
-	 for (int i = 0; i < KIRI; i++)//sumbuX
-		 for (int j = 0; j < KANAN; j++) {
-			 bool notsame = false;
-				if ((((map[i][j] == map[i][j + 1] )&& (map[i][j + 1] == map[i][j + 2])) && (map[i][j+2]== map[i][j + 3]))&& map[i][j]!=0) {
-					int typepower = power[i][j] + power[i][j + 1] + power[i][j + 2]+power[i][j + 3];
-					TRACE("FOUR-TYPEPOWER-POWER1%d\n", typepower);
-					if (typepower > 0) {
-						int temp = map[i][j];
-						bool in = true;
-						if (power[i][b] == 2) {
-							in = false;
-							if (b + 1 < 8) {
-								power[i][b+1] = power[i][b];
-								power[i][b] = 1;
-							}
-							if (b + 1 > 8) {
-								power[i][b-1] = power[i][b];
-								power[i][b] = 1;
-							}
-						}
-						else if (power[i][j] ==2|| power[i][j + 1] ==2|| power[i][j + 2] ==2|| power[i][j + 3]==2) {
-							in = false;
-							map[i][b] = temp;
-							power[i][b] = 1;
-						}
-						if (power[i][b] > 0) {
-							in = false;
-						}
-						for (int k = j; k < j + 4; k++) {
-							if (power[i][k] > 0) {
-								TRACE("FOUR-POWER1 %d\n", k);
-								PowerActive(map, i, k);
-								TRACE("OUTFOUR-POWER1\n");
-							}
-							else {
-								TRACE("FOUR-POWER1 %d\n", k);
-								map[i][k] = 0;
-								power[i][k] = 0;
-								TRACE("OUTFOUR-POWER1\n");
-							}
-
-						}
-						if (in == true) {
-							map[i][b] = temp;
-							power[i][b] = 1;
-						}
-
-					}
-					else {
-						int temp = map[i][j];
-						map[i][j] = map[i][j+1] = map[i][j+2]= map[i][j+3] = 0;
-						power[i][j] = power[i][j+1] = power[i][j+2] = power[i][j+3]=0;
-						map[i][b] = temp;
-						power[i][b] = 1;
-					}
-			    }
-		 }
-	  for (int i = 0; i < KIRI; i++)//sumbuY
-		  for (int j = 0; j < KANAN; j++) {
-			  if ((((map[i][j] == map[i + 1][j]) && (map[i + 1][j] == map[i + 2][j])) && (map[i + 2][j] == map[i + 3][j])) && map[i][j] != 0) {
-				  int typepower = power[i][j] + power[i+1][j] + power[i+2][j]+power[i+3][j];
-				  TRACE("FOUR-TYPEPOWER-POWER1%d\n", typepower);
-				  if (typepower > 0) {
-					  bool in = true;
-					  int temp = map[i][j];
-					  if (power[a][j] == 1) {
-						  in = false;
-						  if (a + 1 < 5) {
-							  power[a + 1][j] = power[a][j];
-							  power[a][j] = 2;
-						  }
-						  if (a + 1 > 5) {
-							  power[a -1][j] = power[a][j];
-							  power[a][j] = 2;
-						  }
-					  }
-					  else if (power[i][j] == 1 || power[i+1][j] == 1 || power[i+2][j] == 1 || power[i+3][j] == 1) {
-						  in = false;
-						  map[a][j] = temp;
-						  power[a][j] = 2;
-					  }
-					  if (power[a][j] > 0) {
-						  in = false;
-					  }
-					  for (int k = i; k < i + 4; k++) {
-						  if (power[k][j] > 0) {
-							  TRACE("FOUR-POWER1 %d\n", k);
-							  PowerActive(map, k, j);
-							  TRACE("OUTFOUR-POWER1\n");
-						  }
-						  else {
-							  TRACE("FOUR-POWER1 %d\n", k);
-							  map[k][j] = 0;
-							  power[k][j] = 0;
-							  TRACE("OUTFOUR-POWER1\n");
-						  }
-
-					  }
-					  if (in == true) {
-						  map[i + 3][j] = temp;
-						  power[i + 3][j] = 2;
-
-					  }
-
-
-				  }
-				  else {
-					  map[i][j] = map[i + 1][j] = map[i + 2][j] = 0;
-					  power[i][j] = power[i + 1][j] = power[i + 2][j] = 0;
-					  power[i + 3][j] = 2;
-				  }
-			  }
-		  }
-	// int yes = dropcandy(map);
-		 return true;
- }
-
-bool CGameMap::fivecandy(int map[KIRI][KANAN]) {
-	 for (int i = 0; i < KIRI; i++)
-		 for (int j = 0; j < KANAN; j++) {
-			 if ((map[i][j] == map[i][j + 1] && map[i][j + 1] == map[i][j + 2] && map[i][j + 2] == map[i][j + 3] && map[i][j + 3] == map[i][j + 4]) && map[i][j] != 0) {
-				 map[i][j] = map[i][j + 1] = map[i][j + 2] = map[i][j + 3] = map[i][j + 4] = 0;
-				 map[i][j+2] = 10;
-				 power[i][j + 2] = 4;
-			 }
-		 }
-	 for (int i = 0; i < KIRI; i++)
-		 for (int j = 0; j < KANAN; j++) {
-			 if ((map[i][j] == map[i + 1][j] && map[i + 1][j] == map[i + 2][j] && map[i + 2][j] == map[i + 3][j] && map[i + 3][j] == map[i + 4][j]) && map[i][j] != 0){
-				 map[i][j] = map[i + 1][j] = map[i + 2][j] = map[i + 3][j] = map[i + 4][j] = 0;
-				 map[i+2][j] = 10;
-				 power[i+2][j] = 4;
-			 }
-		 }
-	 int yes = dropcandy(map);
-	 return yes;
- }
-
-bool CGameMap::dropcandy(int map[KIRI][KANAN]) {
-	 int yes = false;
-	 int check = 0;
-	 for (int i = 0; i < KIRI; i++) {
-		 TRACE("\n==========\n");
-		 for (int j = 0; j < KANAN; j++) {
-			 TRACE("%d", map[i][j]);
-			 if (map[i][j] == 0) {
-				 yes = true;
-				 for (int k = i; k > 0; k--) {
-					 if (map[k - 1][j] == 0) {
-						 map[k - 1][j] = 1 + rand() % 6;
-					 }
-					 map[k][j] = map[k - 1][j];
-					 power[k][j] = power[k - 1][j];
-				 }
-				 map[0][j] = 1 + rand() % 6;
-				 power[0][j] = 0;
-				 
-			 }
-		 }
-	 }
-	 return yes;
- }
-
-void CGameMap::OnLButtonDown(UINT nFlags, CPoint point) {
-	int j= (point.x - X) / MW;
-	int i= (point.y - Y) / MH;
-	TRACE("abc");
-	if (TotalCandy == 0) {
-		TRACE("CANDYTOTAL0\n");
-		TotalCandy = 1;
-		ii = i;
-		jj = j;
-		candyClicked = true;
-	}
-	else if (TotalCandy == 1)
-	{
-		TRACE("CANDYTOTAL1\n");
-		if (((ii - 1 == i || ii + 1 == i) &&(jj==j))|| ((ii==i)&&(jj - 1 == j || jj + 1 == j)))
-		{
-			int temp = map[ii][jj];
-			map[ii][jj] =map[i][j];
-			map[i][j] = temp;
-			int temp1= power[ii][jj];
-			power[ii][jj] = power[i][j];
-			power[i][j] = temp1;
-			int a = fivecandy(map);
-			int b = fourcandy(map,i,j);
-			int c = threecandy(map);
-
-			/*if (((a || b )||(b|| c)||(a||c)) == false) {
-				int temp = map[ii][jj];
-				map[ii][jj] = map[i][j];
-				map[i][j] = temp;
-			}*/
-			/*if (b == 1) {
-				map[i][j] = temp;
-				if (jj + 1 == j || jj - 1 == j) {
-					power[i][j] = 1; // sumbuY
-				}
-				else
-					power[i][j] = 2; //sumbuX
-			}*/
-			ii, jj = 0;
-			TotalCandy = 0;
-		}
-		ii, jj = 0;
-		TotalCandy = 0;
-
-	} 
-	/*while (true) {
-		int a = fivecandy(map);
-		int b = fourcandy(map);
-		int c = threecandy(map);
-		if (((a || b) || (b || c) || (a || c)) == false) {
-			break;
-		}
-	}*/
-
-}
-void CGameMap::OnLButtonUp(UINT nFlags, CPoint point) {
-}
-void CGameMap::OnShow()
-{
-
-	for (int i = 0; i < KANAN; i++) {
-		for (int j = 0; j < KIRI; j++) {
-			box.SetTopLeft(X + (MW*i), Y + (MH*j));
-			box.ShowBitmap();
-			switch (map[j][i]) {
-			case 0:
-				break;
-			case 1:
-				/*if(candyClicked) {
-					if (power[j][i] == 1) {
-						blue_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						blue_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue_hor_click.ShowBitmap();
-					}
-					else {
-						blue_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						blue_click.ShowBitmap();
-					}
-					break;
-				} else {*/
-				if (power[j][i] == 1) {
-					blue_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					blue_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue_hor.ShowBitmap();
-				}
-				else {
-					blue.SetTopLeft(X + (MW*i), Y + (MH*j));
-					blue.ShowBitmap();
-				}
-				break;
-				
-			case 2:
-				/*if(candyClicked) {
-					if (power[j][i] == 1) {
-						green_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						green_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green_hor_click.ShowBitmap();
-					}
-					else {
-						green_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						green_click.ShowBitmap();
-					}
-					break;
-				} else {*/
-				if (power[j][i] == 1) {
-					green_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					green_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green_hor.ShowBitmap();
-				}
-				else {
-					green.SetTopLeft(X + (MW*i), Y + (MH*j));
-					green.ShowBitmap();
-				}
-				break;
-			case 3:
-				/*if(candyClicked) {
-					if (power[j][i] == 1) {
-						orange_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						orange_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange_hor_click.ShowBitmap();
-					}
-					else {
-						orange_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						orange_click.ShowBitmap();
-					}
-					break;
-				} */
-				if (power[j][i] == 1) {
-					orange_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					orange_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange_hor.ShowBitmap();
-				}
-				else {
-					orange.SetTopLeft(X + (MW*i), Y + (MH*j));
-					orange.ShowBitmap();
-				}
-				break;
-			case 4:
-				/*if (candyClicked) {
-					if (power[j][i] == 1) {
-						purple_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						purple_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple_hor_click.ShowBitmap();
-					}
-					else {
-						purple_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						purple_click.ShowBitmap();
-					}
-					break;
-				}*/
-				
-				if (power[j][i] == 1) {
-					purple_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					purple_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple_hor.ShowBitmap();
-				}
-				else {
-					purple.SetTopLeft(X + (MW*i), Y + (MH*j));
-					purple.ShowBitmap();
-				}
-				break;
-				
-			case 5:
-				/*if (candyClicked) {
-					if (power[j][i] == 1) {
-						yellow_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						yellow_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow_hor_click.ShowBitmap();
-					}
-					else {
-						yellow_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						yellow_click.ShowBitmap();
-					}
-					break;
-				}
-				else {*/
-				if (power[j][i] == 1) {
-					yellow_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow_ver.ShowBitmap();
-				}
-				else if(power[j][i] == 2) {
-					yellow_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow_hor.ShowBitmap();
-				}
-				else {
-					yellow.SetTopLeft(X + (MW*i), Y + (MH*j));
-					yellow.ShowBitmap();
-				}
-				break;
-			case 6:
-				/*if (candyClicked) {
-					if (power[j][i] == 1) {
-						red_ver_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red_ver_click.ShowBitmap();
-					}
-					else if (power[j][i] == 2) {
-						red_hor_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red_hor_click.ShowBitmap();
-					}
-					else {
-						red_click.SetTopLeft(X + (MW*i), Y + (MH*j));
-						red_click.ShowBitmap();
-					}
-					break;
-				}
-				else {*/
-				if (power[j][i] == 1) {
-					red_ver.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red_ver.ShowBitmap();
-				}
-				else if (power[j][i] == 2) {
-					red_hor.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red_hor.ShowBitmap();
-				}
-				else {
-					red.SetTopLeft(X + (MW*i), Y + (MH*j));
-					red.ShowBitmap();
-				}
-				break;
-			case 10:
-				if (power[j][i] == 4) {
-					chocolate.SetTopLeft(X + (MW*i), Y + (MH*j));
-					chocolate.ShowBitmap();
-				}
-				break;
-			default:
-				ASSERT(0);
-			}
-		}
-	}		
+	currentScore.SetTopLeft((backgroundOver.Width() / 2) - (60 * GetDigit(currentScore.GetInteger()) / 2), (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 390);
+	currentScore.ShowBitmap();
+	ShowButtons();
 }
 
-void CGameMap::InitializeBouncingBall(int ini_index, int row, int col)
-{
-	const int VELOCITY = 10;
-	const int BALL_PIC_HEIGHT = 15;
-	int floor = Y + (row + 1)*MH - BALL_PIC_HEIGHT;
-
-	bballs[ini_index].LoadBitmap();
-	bballs[ini_index].SetFloor(floor);
-	bballs[ini_index].SetVelocity(VELOCITY + col);
-	bballs[ini_index].SetXY(X + col * MW + MW / 2, floor);
-}
-
-void CGameMap::RandomBouncingBall()
-{
-	const int MAX_RAND_NUM = 10;
-	random_num = (rand() % MAX_RAND_NUM) + 1;
-
-	//delete [] bballs;
-	bballs = new CBouncingBall[random_num];
-	int ini_index = 0;
-	for(int row=0;row<4;row++)
-		for(int col=0;col<5;col++)
-		{
-			if (map[row][col] != 0 && ini_index < random_num)
-			{
-				InitializeBouncingBall(ini_index, row, col);
-				ini_index++;
-			}
-		}
-}
-
-void CGameMap::OnKeyDown(UINT nChar)
-{
-	const int KEY_SPACE = 0x20;
-	if (nChar == KEY_SPACE)
-		RandomBouncingBall();
-}
-
-void CGameMap::OnMove()
-{
-	for (int i = 0; i < random_num; i++) 
-	{
-		bballs[i].OnMove();
-	}
-}
-
-CGameMap::~CGameMap()
-{
-	//delete[]bballs;
-}
-
-CGameStateRun::CGameStateRun(CGame *g)
-: CGameState(g), NUMBALLS(28)
-{
-	ball = new CBall [NUMBALLS];
-	picX = picY = 0;
-}
-
-CGameStateRun::~CGameStateRun()
-{
-	delete [] ball;
-}
-
-void CGameStateRun::OnBeginState()
-{
-	const int BALL_GAP = 90;
-	const int BALL_XY_OFFSET = 45;
-	const int BALL_PER_ROW = 7;
-	const int HITS_LEFT = 10;
-	const int HITS_LEFT_X = 590;
-	const int HITS_LEFT_Y = 0;
-//	const int BACKGROUND_X = 60;
-	const int ANIMATION_SPEED = 15;
-	for (int i = 0; i < NUMBALLS; i++) {				// �]�w�y���_�l�y��
-		int x_pos = i % BALL_PER_ROW;
-		int y_pos = i / BALL_PER_ROW;
-		ball[i].SetXY(x_pos * BALL_GAP + BALL_XY_OFFSET, y_pos * BALL_GAP + BALL_XY_OFFSET);
-		ball[i].SetDelay(x_pos);
-		ball[i].SetIsAlive(true);
-	}
-	//eraser.Initialize();
-	//background.SetTopLeft(0,0);				// �]�w�I�����_�l�y��
-	//help.SetTopLeft(0, SIZE_Y - help.Height());			// �]�w�����Ϫ��_�l�y��
-	//hits_left.SetInteger(HITS_LEFT);					// ���w�ѤU��������
-	//hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// ���w�ѤU�����ƪ��y��
-	//CAudio::Instance()->Play(AUDIO_LAKE, true);			// ���� WAVE
-	//CAudio::Instance()->Play(AUDIO_DING, false);		// ���� WAVE
-	//CAudio::Instance()->Play(AUDIO_NTUT, true);			// ���� MIDI
-}
-
-void CGameStateRun::OnMove()							// ���ʹC������
-{
-
-	////if (background.Top() > SIZE_Y)
-		//background.SetTopLeft(60 ,-background.Height());
-	//background.SetTopLeft(background.Left(),background.Top()+1);
-	//practice.SetTopLeft(10, 10);
-	if (picX <= SIZE_Y) {
-		picX += 5;
-		picY += 5;
-	}
-	else {
-		picX = picY = 0;
-	}
-	//practice.SetTopLeft(picX, picY);
-	//c_practice.OnMove();
-	gamemap.OnMove();
-	//
-	// ���ʲy
-	//
-	//int i;
-	//for (i=0; i < NUMBALLS; i++)
-	//	ball[i].OnMove();
-	//
-	// �������l
-	//
-	//eraser.OnMove();
-	//
-	// �P�_���l�O�_�I��y
-	//
-	/*for (i=0; i < NUMBALLS; i++)
-		if (ball[i].IsAlive() && ball[i].HitEraser(&eraser)) {
-			ball[i].SetIsAlive(false);
-			CAudio::Instance()->Play(AUDIO_DING);
-			hits_left.Add(-1);
-			//
-			// �Y�Ѿl�I�����Ƭ�0�A�h����Game Over���A
-			//
-			if (hits_left.GetInteger() <= 0) {
-				CAudio::Instance()->Stop(AUDIO_LAKE);	// ���� WAVE
-				CAudio::Instance()->Stop(AUDIO_NTUT);	// ���� MIDI
-				GotoGameState(GAME_STATE_OVER);
-			}
-		}
-	//*/
-	// ���ʼu�����y
-	//
-	//bball.OnMove();
-}
-
-void CGameStateRun::OnInit()  								// �C������Ȥιϧγ]�w
-{
-	ShowInitProgress(33);	
-	backgrounds.LoadBitmap("Bitmaps\\Play.bmp");
-
-	//int i;
-	//for (i = 0; i < NUMBALLS; i++)	
-	//	ball[i].LoadBitmap();								
-	//eraser.LoadBitmap();					
-	//practice.LoadBitmap(IDB_TESTAJ,RGB(255,255,255));
-	//practice.LoadBitmap("Bitmaps/Nbmp.bmp");
-	//c_practice.LoadBitmap();
-
-	ShowInitProgress(50);
-	Sleep(300);
-
-	//help.LoadBitmap(IDB_HELP,RGB(255,255,255));				
-	//corner.LoadBitmap(IDB_CORNER);							
-	//corner.ShowBitmap(background);							
-	//bball.LoadBitmap();							
-	//hits_left.LoadBitmap();	
-	gamemap.LoadBitmaps();
-	
-	/*
-	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	
-	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	
-	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	
-	*/
-}
-
-
-void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	const char KEY_LEFT  = 0x25; // keyboard���b�Y
-	const char KEY_UP    = 0x26; // keyboard�W�b�Y
-	const char KEY_RIGHT = 0x27; // keyboard�k�b�Y
-	const char KEY_DOWN  = 0x28; // keyboard�U�b�Y
-	if (nChar == KEY_LEFT)
-		eraser.SetMovingLeft(true);
-	if (nChar == KEY_RIGHT)
-		eraser.SetMovingRight(true);
-	if (nChar == KEY_UP)
-		eraser.SetMovingUp(true);
-	if (nChar == KEY_DOWN)
-		eraser.SetMovingDown(true);
-	gamemap.OnKeyDown(nChar);
-}
-
-void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	const char KEY_LEFT  = 0x25; // keyboard���b�Y
-	const char KEY_UP    = 0x26; // keyboard�W�b�Y
-	const char KEY_RIGHT = 0x27; // keyboard�k�b�Y
-	const char KEY_DOWN  = 0x28; // keyboard�U�b�Y
-	if (nChar == KEY_LEFT)
-		eraser.SetMovingLeft(false);
-	if (nChar == KEY_RIGHT)
-		eraser.SetMovingRight(false);
-	if (nChar == KEY_UP)
-		eraser.SetMovingUp(false);
-	if (nChar == KEY_DOWN)
-		eraser.SetMovingDown(false);
-}
-
-void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // �B�z�ƹ����ʧ@
-{
-	eraser.SetMovingLeft(true);
-	gamemap.OnLButtonDown(nFlags, point);
-	std::cout << "click" << endl;
-}
-
-void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// �B�z�ƹ����ʧ@
-{
-	eraser.SetMovingLeft(false);
-	gamemap.OnLButtonUp(nFlags, point);
-}
-
-void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// �B�z�ƹ����ʧ@
-{
-	// �S�ơC�p�G�ݭn�B�z�ƹ����ʪ��ܡA�gcode�b�o��
-}
-
-void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // �B�z�ƹ����ʧ@
-{
-	eraser.SetMovingRight(true);
-}
-
-void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// �B�z�ƹ����ʧ@
-{
-	eraser.SetMovingRight(false);
-}
-
-void CGameStateRun::OnShow()
-{
-	//
-	//  �`�N�GShow�̭��d�U���n���ʥ��󪫥󪺮y�СA���ʮy�Ъ��u�@����Move���~��A
-	//        �_�h���������sø�Ϯ�(OnDraw)�A����N�|���ʡA�ݰ_�ӷ|�ܩǡC���ӳN�y
-	//        ���AMove�t�dMVC����Model�AShow�t�dView�A��View�������Model�C
-	//
-	//
-	//  �K�W�I���ϡB�����ơB�y�B���l�B�u�����y
-	//
-	backgrounds.SetTopLeft(0, 0);
-	backgrounds.ShowBitmap();			// �K�W�I����
-
-	//box.SetTopLeft( 3000 , 500);
-	//box.ShowBitmap();
-
-
-	/*help.ShowBitmap();					// �K�W������
-	hits_left.ShowBitmap();
-	for (int i=0; i < NUMBALLS; i++)
-		ball[i].OnShow();				// �K�W��i���y
-	bball.OnShow();						// �K�W�u�����y
-	eraser.OnShow();					// �K�W���l
-	//
-	//  �K�W���W�Υk�U��������
-	//*/
-	/*
-	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
-	corner.ShowBitmap();
-	/*
-	practice.ShowBitmap();
-	c_practice.OnShow();*/
-	gamemap.OnShow();
-	//stageplay.OnShow();*/
-
-}
 }
