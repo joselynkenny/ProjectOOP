@@ -516,14 +516,15 @@ void CMovingBitmap::LoadBitmap(char *filename, COLORREF color)
 	isBitmapLoaded = true;
 }
 
-//void CMovingBitmap::LoadBitmap(string & filename, COLORREF color)
-//{
-	//char file[50] = { 0 };
-	//for (unsigned i = 0; i < filename.size(); i++) {
-	//	file[i] = filename[i];
-	//}
-	//LoadBitmap(file, color);
-//}
+void CMovingBitmap::LoadBitmap(string & filename, COLORREF color)
+{
+	char file[50] = { 0 };
+	for (unsigned i = 0; i < filename.size(); i++) {
+		file[i] = filename[i];
+	}
+
+	LoadBitmap(file, color);
+}
 
 void CMovingBitmap::SetTopLeft(int x, int y)
 {
@@ -670,7 +671,7 @@ bool CGameState::ButtonOnClick(const CPoint& point, CAnimation& button)
 CGame CGame::instance;
 
 CGame::CGame()
-: NUM_GAME_STATES(3)
+: NUM_GAME_STATES(4)
 {
 	running = true;
 	suspended = false;
@@ -870,6 +871,7 @@ void CGame::OnSuspend()
 	CAudio::Instance()->SetPowerResume();
 }
 
+
 void CGame::SetGameState(int state)
 {
 	ASSERT(state >=0 && state < NUM_GAME_STATES);
@@ -879,6 +881,7 @@ void CGame::SetGameState(int state)
 	CSpecialEffect::SetCurrentTime();
 	running = true;
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CSpecialEffect: Specail Effect functions

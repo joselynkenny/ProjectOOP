@@ -418,9 +418,9 @@ namespace game_framework
 
 		TeleportCandy();
 
-#pragma omp parallel for
+		#pragma omp parallel for
 		for (int i = 0; i < MaxHeight; i++)
-#pragma omp parallel for
+			#pragma omp parallel for
 			for (int j = 0; j < MaxWidth; j++)
 				if (candies[i][j].GetStyle() > 0)
 					candies[i][j].OnMove(initiating);
@@ -534,11 +534,6 @@ namespace game_framework
 				}
 			}
 		}
-	}
-
-	void Area::OnMouseMove(UINT nFlags, CPoint point)
-	{
-
 	}
 
 	void Area::ShowLoading()
@@ -1053,7 +1048,7 @@ namespace game_framework
 	{
 		vector<pair<CPoint, CPoint>>* portalList = &(*stage)->portalList;
 
-#pragma omp parallel for
+		#pragma omp parallel for
 		for (int i = 0; i < (int)portalList->size(); i++)
 		{
 			Candy* from = curPosition[(*portalList)[i].first.y][(*portalList)[i].first.x];	

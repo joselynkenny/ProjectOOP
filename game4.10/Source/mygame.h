@@ -63,8 +63,7 @@ namespace game_framework {
 	public:
 		CGameStateInit(CGame *g);
 		void OnInit();  								
-		void OnBeginState();							
-		void OnKeyUp(UINT, UINT, UINT); 				
+		void OnBeginState();					
 		void OnLButtonDown(UINT nFlags, CPoint point);  
 		void OnLButtonUp(UINT nFlags, CPoint point);
 	protected:
@@ -94,11 +93,9 @@ namespace game_framework {
 		void SetUp(bool status);
 		void SetDown(bool status);
 		int GetDigit(int n);
-		
 	protected:
 		void OnShow();	
 		void OnMove();
-		
 	private:
 		void ShowStageButton(int, int, int, int);
 		void ShowStars(int, int, int);
@@ -130,7 +127,6 @@ namespace game_framework {
 	protected:
 		void OnMove();									
 		void OnShow();									
-
 	private:
 		CMovingBitmap	background;	
 	};
@@ -154,7 +150,6 @@ namespace game_framework {
 	private:
 		void ShowButtons();
 		void ShowStars(int, int, int);
-
 		int counter, stageNum;	
 		bool isFail;
 		CMovingBitmap backgroundOver;	

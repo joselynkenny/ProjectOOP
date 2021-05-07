@@ -22,8 +22,7 @@ namespace game_framework
 		void OnKeyDown(UINT, UINT, UINT);				
 		void OnKeyUp(UINT, UINT, UINT);					
 		void OnLButtonDown(UINT nFlags, CPoint point);	
-		void OnLButtonUp(UINT nFlags, CPoint point);	
-		void OnMouseMove(UINT nFlags, CPoint point);	
+		void OnLButtonUp(UINT nFlags, CPoint point);		
 	private:
 		int ClearCombo();								
 		int Compare(int, int);							
@@ -83,7 +82,6 @@ namespace game_framework
 		list<list<Candy*>*> removeList;					
 		list<Candy*> endingBonus;
 		ScoreBoard scoreBoard;
-
 	};
 }
 

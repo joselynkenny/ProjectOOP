@@ -10,7 +10,6 @@ namespace game_framework
 		void OnShow();
 		void LoadBitmap();
 		bool IsReachedTarget();
-
 	private:
 		void ShowStars();
 		void ShowMoves();

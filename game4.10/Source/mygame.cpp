@@ -147,16 +147,6 @@ void CGameStateInit::OnBeginState()
 	}
 }
 
-void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	const char KEY_ESC = 27;
-	const char KEY_SPACE = ' ';
-	//if (nChar == KEY_SPACE)
-		//GotoGameState(GAME_STATE_RUN);						// ������GAME_STATE_RUN
-	//else if (nChar == KEY_ESC)								// Demo �����C������k
-		//PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0);	// �����C��
-}
-
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if(ButtonOnClick(point, playButton)) {
@@ -335,17 +325,11 @@ void CGameStateStart::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	const char KEY_ESC = 27;
-	const char KEY_SPACE = ' ';
 	const char KEY_UP = 0x26;
 	const char KEY_DOWN = 0x28;
 
 	if (nChar == KEY_UP) TapUp = false;
 	if (nChar == KEY_DOWN) TapDown =false;
-	if (nChar == KEY_SPACE)
-		GotoGameState(GAME_STATE_RUN);						
-	else if (nChar == KEY_ESC)								
-		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	
 }
 
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
@@ -497,7 +481,7 @@ void CGameStateRun::OnMove()
 
 	if (gameArea.IsGameOver())
 	{
-		//GotoGameState(GAME_STATE_OVER);
+		GotoGameState(GAME_STATE_OVER);
 	}
 }
 
@@ -658,8 +642,10 @@ void CGameStateOver::ShowButtons()
 {
 	int exitBtnTopLX = scoreBoardOver.Left() + scoreBoardOver.Width() - exitButton.Width();
 	int exitBtnTopLY = scoreBoardOver.Top() + 30;
+
 	int retryBtnTopLX = (backgroundOver.Width() / 2) + (isFail || (current_stage + 1 == 15) ? -nextButton.Width() / 2 : 20 - nextButton.Width());
 	int retryBtnTopLY = (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 530;
+
 	int nextBtnTopLX = (backgroundOver.Width() / 2) - 20;
 	int nextBtnTopLY = (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 530;
 
@@ -777,6 +763,7 @@ void CGameStateOver::OnShow()
 
 	currentScore.SetTopLeft((backgroundOver.Width() / 2) - (60 * GetDigit(currentScore.GetInteger()) / 2), (backgroundOver.Height() / 2) - (scoreBoardOver.Height() / 2) + 390);
 	currentScore.ShowBitmap();
+
 	ShowButtons();
 }
 
