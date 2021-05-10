@@ -8,25 +8,24 @@
 #include "BlastEffect.h"
 
 
-/*
-namespace gameframework {
+namespace game_framework {
 	static int redBmp[] = { IDB_RED_EXPL1, IDB_RED_EXPL2, IDB_RED_EXPL3, IDB_RED_EXPL4, IDB_RED_EXPL5,
-						    IDB_RED_EXPL6, IDB_RED_EXPL7, IDB_RED_EXPL8, IDB_RED_EXPL9, IDB_RED_EXPL10 },
+							IDB_RED_EXPL6, IDB_RED_EXPL7, IDB_RED_EXPL8, IDB_RED_EXPL9, IDB_RED_EXPL10 },
 
-			   orangeBmp[] = { IDB_ORANGE_EXPL1, IDB_ORANGE_EXPL2, IDB_ORANGE_EXPL3, IDB_ORANGE_EXPL4, IDB_ORANGE_EXPL5,
-							 IDB_ORANGE_EXPL6, IDB_ORANGE_EXPL7, IDB_ORANGE_EXPL8, IDB_ORANGE_EXPL9, IDB_ORANGE_EXPL10 },
+		orangeBmp[] = { IDB_ORANGE_EXPL1, IDB_ORANGE_EXPL2, IDB_ORANGE_EXPL3, IDB_ORANGE_EXPL4, IDB_ORANGE_EXPL5,
+					  IDB_ORANGE_EXPL6, IDB_ORANGE_EXPL7, IDB_ORANGE_EXPL8, IDB_ORANGE_EXPL9, IDB_ORANGE_EXPL10 },
 
-			   greenBmp[] = {IDB_GREEN_EXPL1, IDB_GREEN_EXPL2, IDB_GREEN_EXPL3, IDB_GREEN_EXPL4, IDB_GREEN_EXPL5,
-							 IDB_GREEN_EXPL6, IDB_GREEN_EXPL7, IDB_GREEN_EXPL8, IDB_GREEN_EXPL9, IDB_GREEN_EXPL10 },
+		greenBmp[] = { IDB_GREEN_EXPL1, IDB_GREEN_EXPL2, IDB_GREEN_EXPL3, IDB_GREEN_EXPL4, IDB_GREEN_EXPL5,
+					  IDB_GREEN_EXPL6, IDB_GREEN_EXPL7, IDB_GREEN_EXPL8, IDB_GREEN_EXPL9, IDB_GREEN_EXPL10 },
 
-			   blueBmp[] = { IDB_BLUE_EXPL1, IDB_BLUE_EXPL2, IDB_BLUE_EXPL3, IDB_BLUE_EXPL4, IDB_BLUE_EXPL5,
-							 IDB_BLUE_EXPL6, IDB_BLUE_EXPL7, IDB_BLUE_EXPL8, IDB_BLUE_EXPL9, IDB_BLUE_EXPL10 },
+		blueBmp[] = { IDB_BLUE_EXPL1, IDB_BLUE_EXPL2, IDB_BLUE_EXPL3, IDB_BLUE_EXPL4, IDB_BLUE_EXPL5,
+					  IDB_BLUE_EXPL6, IDB_BLUE_EXPL7, IDB_BLUE_EXPL8, IDB_BLUE_EXPL9, IDB_BLUE_EXPL10 },
 
-			   yellowBmp[] = { IDB_YELLOW_EXPL1, IDB_YELLOW_EXPL2, IDB_YELLOW_EXPL3, IDB_YELLOW_EXPL4, IDB_YELLOW_EXPL5,
-					           IDB_YELLOW_EXPL6, IDB_YELLOW_EXPL7, IDB_YELLOW_EXPL8, IDB_YELLOW_EXPL9, IDB_YELLOW_EXPL10 },
+		yellowBmp[] = { IDB_YELLOW_EXPL1, IDB_YELLOW_EXPL2, IDB_YELLOW_EXPL3, IDB_YELLOW_EXPL4, IDB_YELLOW_EXPL5,
+						IDB_YELLOW_EXPL6, IDB_YELLOW_EXPL7, IDB_YELLOW_EXPL8, IDB_YELLOW_EXPL9, IDB_YELLOW_EXPL10 },
 
-			   purpleBmp[] = { IDB_PURPLE_EXPL1, IDB_PURPLE_EXPL2, IDB_PURPLE_EXPL3, IDB_PURPLE_EXPL4, IDB_PURPLE_EXPL5,
-						       IDB_PURPLE_EXPL6, IDB_PURPLE_EXPL7, IDB_PURPLE_EXPL8, IDB_PURPLE_EXPL9, IDB_PURPLE_EXPL10 },
+		purpleBmp[] = { IDB_PURPLE_EXPL1, IDB_PURPLE_EXPL2, IDB_PURPLE_EXPL3, IDB_PURPLE_EXPL4, IDB_PURPLE_EXPL5,
+						IDB_PURPLE_EXPL6, IDB_PURPLE_EXPL7, IDB_PURPLE_EXPL8, IDB_PURPLE_EXPL9, IDB_PURPLE_EXPL10 };
 
 	void BlastEffect::SetTopLeft(int x, int y)
 	{
@@ -36,18 +35,25 @@ namespace gameframework {
 
 	CMovingBitmap NormalBlast::normalBlast[6][10], NormalBlast::shatter[6][15];
 
-	NormalBlast::NormalBlast() :currentShow(0), totalShow(0) {
+	NormalBlast::NormalBlast() :currentShow(0), totalShow(0)
+	{
+	}
+
+	NormalBlast::NormalBlast(int style, int x, int y) : currentShow(0), size(1.8), totalShow(rand() % 2 + 2)
+	{
 		this->style = style;
 		SetTopLeft(x, y);
 
-		int direction[] = { -2, -1, 0, 2, 1 };
+		int direction[] = { -2, -1, 0, 2, 1 };	
 
 		#pragma omp parallel for
-		for (int i = 0; i < totalShow; i++) {
+		for (int i = 0; i < totalShow; i++)
+		{
 			shatterPosition[i][0] = x;
 			shatterPosition[i][1] = y;
 
-			shatterShow[i] = rand() % 15;				
+			shatterShow[i] = rand() % 15;	
+
 			shift[i][0] = direction[rand() % 5];	
 			shift[i][1] = direction[rand() % 2 + 3];
 			shift[i][2] = rand() % 2;				
@@ -83,10 +89,8 @@ namespace gameframework {
 
 			if (!(currentShow % 3))
 			{
-				if (shift[i][2])
-					shatterShow[i] = (shatterShow[i] - 1) < 0 ? (shatterShow[i] - 1) + 15 : (shatterShow[i] - 1);	//counter-clockwise
-				else 
-					shatterShow[i] = (shatterShow[i] + 1) % 15;	//clockwise
+				if (shift[i][2]) shatterShow[i] = (shatterShow[i] - 1) < 0 ? (shatterShow[i] - 1) + 15 : (shatterShow[i] - 1);
+				else shatterShow[i] = (shatterShow[i] + 1) % 15;
 			}
 		}
 	}
@@ -94,7 +98,7 @@ namespace gameframework {
 	void NormalBlast::OnShow()
 	{
 		if (currentShow < 10)
-		{	
+		{
 			normalBlast[style - 1][currentShow].SetTopLeft(x - (normalBlast[style - 1][currentShow].Width() / 2) + 25, y - (normalBlast[style - 1][currentShow].Height() / 2) + 25);
 			normalBlast[style - 1][currentShow].ShowBitmap();
 		}
@@ -110,9 +114,254 @@ namespace gameframework {
 		}
 	}
 
-	bool NormalBlast::End()
+	bool NormalBlast::IsEnd()
 	{
 		return (currentShow == 25);
 	}
+
+	CMovingBitmap LineBlast::horizontal[6][30], LineBlast::vertical[6][30];
+
+	LineBlast::LineBlast(int style, int x, int y, int power) :powerStyle(power), currentShow(0)
+	{
+		this->style = style;
+		SetTopLeft(x, y);
+	}
+
+	void LineBlast::LoadBitmap()
+	{
+		int *bmpID[] = { blueBmp, purpleBmp, orangeBmp, greenBmp , redBmp, yellowBmp };
+
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 30; j++)
+				horizontal[i][j].LoadBitmap(bmpID[i][j + 55], RGB(254, 191, 200));
+
+			for (int j = 0; j < 30; j++)
+				vertical[i][j].LoadBitmap(bmpID[i][j + 25], RGB(254, 191, 200));
+		}
+	}
+
+	void LineBlast::OnMove()
+	{
+		currentShow++;
+	}
+
+	void LineBlast::OnShow()
+	{
+		switch (powerStyle)
+		{
+		case 1:
+			horizontal[style - 1][currentShow].SetTopLeft(x - (horizontal[style - 1][currentShow].Width() / 2 - 25), y);
+			horizontal[style - 1][currentShow].ShowBitmap();
+			break;
+		case 2:
+			vertical[style - 1][currentShow].SetTopLeft(x, y - (vertical[style - 1][currentShow].Height() / 2 - 25));
+			vertical[style - 1][currentShow].ShowBitmap();
+			break;
+		default:
+			GAME_ASSERT(0, "Invalid power style");
+		}
+	}
+
+	bool LineBlast::IsEnd()
+	{
+		return currentShow >= 29;
+	}
+
+	CAnimation SuperBlast::chocalate;
+
+	SuperBlast::SuperBlast(int x, int y, int delay, bool showAll) :currentShow(0), lightningDelay(delay), showAll(showAll)
+	{
+		this->x = x;
+		this->y = y;
+		chocalate.SetDelayCount(3);
+	}
+
+	SuperBlast::~SuperBlast()
+	{
+	}
+
+	void SuperBlast::OnMove()
+	{
+		currentShow++;
+		chocalate.OnMove();
+
+		for (auto i = magicBlasts.begin(); i != magicBlasts.end();)
+		{
+			if ((*i).IsEnd())
+				i = magicBlasts.erase(i);
+			else
+			{
+				(*i).OnMove();
+				i++;
+			}
+		}
+	}
+
+	void SuperBlast::OnShow()
+	{
+		if (!target.size())
+			return;
+
+		showAll ? ShowLightning(true) : ShowLightning();
+
+		for (auto i = magicBlasts.begin(); i != magicBlasts.end(); i++)
+		{	
+			(*i).OnShow();
+		}
+	}
+
+	void SuperBlast::ShowLightning(bool showAll)
+	{
+		chocalate.SetTopLeft(x, y);
+		chocalate.OnShow();	//Show chocalate
+		CDC *pDC = CDDraw::GetBackCDC();
+
+		CPen penLighting;
+		CPen *pPen;
+
+		penLighting.CreatePen(PS_SOLID | PS_COSMETIC, showAll ? 5 : rand() % 10 + 1, RGB(207, 249, 245));
+
+		pPen = pDC->SelectObject(&penLighting);
+
+		if (showAll)
+		{
+			for (auto i = target.begin(); i != target.end(); i++)
+			{
+				DrawLine(pDC, CPoint(x + 25, y + 25), *i);
+			}
+		}
+		else
+		{
+			for (int i = lightningDelay; i >= 0; i--)
+			{
+				if (currentShow - i >= 0 && currentShow - i < target.size())
+				{
+					DrawLine(pDC, CPoint(x + 25, y + 25), target[currentShow - i]);
+				}
+			}
+		}
+
+		pDC->SelectObject(pPen);
+		CDDraw::ReleaseBackCDC();
+		Sleep(5);
+	}
+
+	void SuperBlast::DrawLine(CDC* pDC, const CPoint& start, const CPoint& end)
+	{
+		list<CPoint>* route = GetRoutePoints(start, end); 
+
+		pDC->MoveTo(*route->begin());
+
+		for (auto j = route->begin()++; j != route->end(); j++)
+		{
+			pDC->LineTo(*j);
+		}
+
+		delete route;
+
+		MagicBlast blast(end);
+		bool blastExists = false;
+
+		for (auto i = magicBlasts.begin(); i != magicBlasts.end(); i++)
+		{	
+			if ((*i) == blast)
+			{
+				blastExists = true;
+				break;
+			}
+		}
+		if (!blastExists) magicBlasts.push_back(blast);
+	}
+
+	list<CPoint>* SuperBlast::GetRoutePoints(CPoint start, CPoint end)
+	{
+		list<CPoint>* route = new list<CPoint>();
+		int interval = abs(start.x - end.x) / (abs(start.x - end.x) > 10 ? abs(start.x - end.x) / 10 : abs(start.x - end.x) > 0 ? abs(start.x - end.x) : 1);
+		int totalPoint = abs(start.x - end.x) > 10 ? abs(start.x - end.x) / 10 : abs(start.x - end.x);
+
+		int reverse = start.x > end.x ? -1 : 1;
+		for (int i = 0; i < totalPoint; i++)
+		{
+			CPoint point;
+			point.x = start.x + interval * i * reverse;
+			point.y = (point.x * end.y - point.x * start.y - start.x * end.y + end.x * start.y) / (end.x - start.x);
+			route->push_back(point);
+		}
+		route->push_back(end);
+
+		int j = 0;
+
+		for (auto i = route->begin(); i != route->end(); i++, j++)
+		{
+			if (j % 2) i->x += rand() % 20 - 10;
+			else i->y += rand() % 20 - 10;
+		}
+
+		return route;
+	}
+
+	void SuperBlast::AddPoint(int x, int y)
+	{
+		target.push_back(CPoint(x, y));
+	}
+
+	bool SuperBlast::IsEnd()
+	{
+		return ((currentShow >= target.size() + lightningDelay) || (showAll && currentShow >= 10));
+	}
+
+	void SuperBlast::LoadBitmap()
+	{
+		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy1.bmp", RGB(254, 191, 200));
+		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy2.bmp", RGB(254, 191, 200));
+		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy3.bmp", RGB(254, 191, 200));
+		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy4.bmp", RGB(254, 191, 200));
+		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy5.bmp", RGB(254, 191, 200));
+	}
+
+	CMovingBitmap MagicBlast::bmp[4];
+
+	MagicBlast::MagicBlast(int x, int y) :x(x), y(y), currentShow(0)
+	{
+	}
+
+	MagicBlast::MagicBlast(CPoint p) : x(p.x), y(p.y), currentShow(0)
+	{ }
+
+	bool MagicBlast::IsEnd()
+	{
+		return currentShow == 3;
+	}
+
+	void MagicBlast::LoadBitmap()
+	{
+		bmp[0].LoadBitmap("Bitmaps\\MagicBlast1.bmp", RGB(255, 255, 255));
+		bmp[1].LoadBitmap("Bitmaps\\MagicBlast2.bmp", RGB(255, 255, 255));
+		bmp[2].LoadBitmap("Bitmaps\\MagicBlast3.bmp", RGB(255, 255, 255));
+		bmp[3].LoadBitmap("Bitmaps\\MagicBlast4.bmp", RGB(255, 255, 255));
+	}
+
+	void MagicBlast::OnMove()
+	{
+		delay = delay == 1 ? 0 : 1;
+
+		if (delay) 
+			currentShow++;
+	}
+
+	void MagicBlast::OnShow()
+	{
+		if (delay)
+		{
+			bmp[currentShow].SetTopLeft(x - bmp[currentShow].Width() / 2, y - bmp[currentShow].Height() / 2);
+			bmp[currentShow].ShowBitmap();
+		}
+	}
+
+	bool MagicBlast::operator==(const MagicBlast & rhs)
+	{
+		return rhs.x == x && rhs.y == y;
+	}
 }
-*/
+

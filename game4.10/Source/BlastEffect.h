@@ -2,7 +2,7 @@
 #ifndef BLASTEFFECT_H
 #define BLASTEFFECT_H
 
-/*
+
 namespace game_framework{
 	class BlastEffect
 	{
@@ -37,7 +37,62 @@ namespace game_framework{
 		int shatterShow[3];
 		const int totalShow;
 	};
+
+	class LineBlast :public BlastEffect
+	{
+	public:
+		LineBlast(int style, int x, int y, int power);
+		static void LoadBitmap();
+		void OnMove();
+		void OnShow();
+		bool IsLast();
+	private:
+		static CMovingBitmap horizontal[6][30];
+		static CMovingBitmap vertical[6][30];
+		int curShow;
+		int powStyle;
+	};
+
+	class MagicBlast :public BlastEffect
+	{
+	public:
+		MagicBlast(int x, int y);
+		MagicBlast(CPoint);
+		bool IsLast();
+		static void LoadBitmap();
+		void OnMove();
+		void OnShow();
+		bool operator==(const MagicBlast& rhs);
+	private:
+		static CMovingBitmap bmp[4];
+		int curShow;
+		int delay;
+		int x, y;
+	};
+
+	class SuperBlast :public BlastEffect
+	{
+	public:
+		SuperBlast(int x, int y, int delay = 0, bool showAll = false);
+		~SuperBlast();
+		void AddPoint(int x, int y);
+		bool IsLast();
+		static void LoadBitmap();
+		void OnMove();
+		void OnShow();
+	private:
+		void ShowLightning(bool showAll = false);
+		void DrawLine(CDC*, const CPoint&, const CPoint&);
+		list<CPoint>* GetRoutePoints(CPoint, CPoint);
+
+		static CAnimation chocalate;
+		vector<CPoint> target;
+		list<MagicBlast> magicBlasts;
+		int curShow;
+		int lightningDelay;		
+		bool showAll;			
+	};
 }
-*/
+
 
 #endif
