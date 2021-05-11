@@ -1,8 +1,7 @@
 #pragma once
 #ifndef BLASTEFFECT_H
 #define BLASTEFFECT_H
-
-
+/*
 namespace game_framework{
 	class BlastEffect
 	{
@@ -92,4 +91,5 @@ namespace game_framework{
 		bool showAll;			
 	};
 }
+*/
 #endif
