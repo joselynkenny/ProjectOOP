@@ -45,12 +45,12 @@ namespace game_framework{
 		static void LoadBitmap();
 		void OnMove();
 		void OnShow();
-		bool IsLast();
+		bool IsEnd();
 	private:
 		static CMovingBitmap horizontal[6][30];
 		static CMovingBitmap vertical[6][30];
-		int curShow;
-		int powStyle;
+		int currentShow;
+		int powerStyle;
 	};
 
 	class MagicBlast :public BlastEffect
@@ -58,14 +58,14 @@ namespace game_framework{
 	public:
 		MagicBlast(int x, int y);
 		MagicBlast(CPoint);
-		bool IsLast();
+		bool IsEnd();
 		static void LoadBitmap();
 		void OnMove();
 		void OnShow();
 		bool operator==(const MagicBlast& rhs);
 	private:
 		static CMovingBitmap bmp[4];
-		int curShow;
+		int currentShow;
 		int delay;
 		int x, y;
 	};
@@ -76,7 +76,7 @@ namespace game_framework{
 		SuperBlast(int x, int y, int delay = 0, bool showAll = false);
 		~SuperBlast();
 		void AddPoint(int x, int y);
-		bool IsLast();
+		bool IsEnd();
 		static void LoadBitmap();
 		void OnMove();
 		void OnShow();
@@ -84,15 +84,12 @@ namespace game_framework{
 		void ShowLightning(bool showAll = false);
 		void DrawLine(CDC*, const CPoint&, const CPoint&);
 		list<CPoint>* GetRoutePoints(CPoint, CPoint);
-
 		static CAnimation chocalate;
 		vector<CPoint> target;
 		list<MagicBlast> magicBlasts;
-		int curShow;
+		int currentShow;
 		int lightningDelay;		
 		bool showAll;			
 	};
 }
-
-
 #endif
