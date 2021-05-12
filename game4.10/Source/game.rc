@@ -1180,6 +1180,186 @@ IDB_YELLOW_V_EXPL29     BITMAP                  "..\\Bitmaps\\YellowVLineExplode
 
 IDB_YELLOW_V_EXPL30     BITMAP                  "..\\Bitmaps\\YellowVLineExplode (30).bmp"
 
+IDB_BLUE_SHAT1          BITMAP                  "..\\Bitmaps\\shatter1_BLU.bmp"
+
+IDB_BLUE_SHAT2          BITMAP                  "..\\Bitmaps\\shatter2_BLU.bmp"
+
+IDB_BLUE_SHAT3          BITMAP                  "..\\Bitmaps\\shatter3_BLU.bmp"
+
+IDB_BLUE_SHAT4          BITMAP                  "..\\Bitmaps\\shatter4_BLU.bmp"
+
+IDB_BLUE_SHAT5          BITMAP                  "..\\Bitmaps\\shatter5_BLU.bmp"
+
+IDB_BLUE_SHAT6          BITMAP                  "..\\Bitmaps\\shatter6_BLU.bmp"
+
+IDB_BLUE_SHAT7          BITMAP                  "..\\Bitmaps\\shatter7_BLU.bmp"
+
+IDB_BLUE_SHAT8          BITMAP                  "..\\Bitmaps\\shatter8_BLU.bmp"
+
+IDB_BLUE_SHAT9          BITMAP                  "..\\Bitmaps\\shatter9_BLU.bmp"
+
+IDB_BLUE_SHAT10         BITMAP                  "..\\Bitmaps\\shatter10_BLU.bmp"
+
+IDB_BLUE_SHAT11         BITMAP                  "..\\Bitmaps\\shatter11_BLU.bmp"
+
+IDB_BLUE_SHAT12         BITMAP                  "..\\Bitmaps\\shatter12_BLU.bmp"
+
+IDB_BLUE_SHAT13         BITMAP                  "..\\Bitmaps\\shatter13_BLU.bmp"
+
+IDB_BLUE_SHAT14         BITMAP                  "..\\Bitmaps\\shatter14_BLU.bmp"
+
+IDB_BLUE_SHAT15         BITMAP                  "..\\Bitmaps\\shatter15_BLU.bmp"
+
+IDB_GREEN_SHAT1         BITMAP                  "..\\Bitmaps\\shatter1_GRE.bmp"
+
+IDB_GREEN_SHAT2         BITMAP                  "..\\Bitmaps\\shatter2_GRE.bmp"
+
+IDB_GREEN_SHAT3         BITMAP                  "..\\Bitmaps\\shatter3_GRE.bmp"
+
+IDB_GREEN_SHAT4         BITMAP                  "..\\Bitmaps\\shatter4_GRE.bmp"
+
+IDB_GREEN_SHAT5         BITMAP                  "..\\Bitmaps\\shatter5_GRE.bmp"
+
+IDB_GREEN_SHAT6         BITMAP                  "..\\Bitmaps\\shatter6_GRE.bmp"
+
+IDB_GREEN_SHAT7         BITMAP                  "..\\Bitmaps\\shatter7_GRE.bmp"
+
+IDB_GREEN_SHAT8         BITMAP                  "..\\Bitmaps\\shatter8_GRE.bmp"
+
+IDB_GREEN_SHAT9         BITMAP                  "..\\Bitmaps\\shatter9_GRE.bmp"
+
+IDB_GREEN_SHAT10        BITMAP                  "..\\Bitmaps\\shatter10_GRE.bmp"
+
+IDB_GREEN_SHAT11        BITMAP                  "..\\Bitmaps\\shatter11_GRE.bmp"
+
+IDB_GREEN_SHAT12        BITMAP                  "..\\Bitmaps\\shatter12_GRE.bmp"
+
+IDB_GREEN_SHAT13        BITMAP                  "..\\Bitmaps\\shatter13_GRE.bmp"
+
+IDB_GREEN_SHAT14        BITMAP                  "..\\Bitmaps\\shatter14_GRE.bmp"
+
+IDB_GREEN_SHAT15        BITMAP                  "..\\Bitmaps\\shatter15_GRE.bmp"
+
+IDB_ORANGE_SHAT1        BITMAP                  "..\\Bitmaps\\shatter1_ORG.bmp"
+
+IDB_ORANGE_SHAT2        BITMAP                  "..\\Bitmaps\\shatter2_ORG.bmp"
+
+IDB_ORANGE_SHAT3        BITMAP                  "..\\Bitmaps\\shatter3_ORG.bmp"
+
+IDB_ORANGE_SHAT4        BITMAP                  "..\\Bitmaps\\shatter4_ORG.bmp"
+
+IDB_ORANGE_SHAT5        BITMAP                  "..\\Bitmaps\\shatter5_ORG.bmp"
+
+IDB_ORANGE_SHAT6        BITMAP                  "..\\Bitmaps\\shatter6_ORG.bmp"
+
+IDB_ORANGE_SHAT7        BITMAP                  "..\\Bitmaps\\shatter7_ORG.bmp"
+
+IDB_ORANGE_SHAT8        BITMAP                  "..\\Bitmaps\\shatter8_ORG.bmp"
+
+IDB_ORANGE_SHAT9        BITMAP                  "..\\Bitmaps\\shatter9_ORG.bmp"
+
+IDB_ORANGE_SHAT10       BITMAP                  "..\\Bitmaps\\shatter10_ORG.bmp"
+
+IDB_ORANGE_SHAT11       BITMAP                  "..\\Bitmaps\\shatter11_ORG.bmp"
+
+IDB_ORANGE_SHAT12       BITMAP                  "..\\Bitmaps\\shatter12_ORG.bmp"
+
+IDB_ORANGE_SHAT13       BITMAP                  "..\\Bitmaps\\shatter13_ORG.bmp"
+
+IDB_ORANGE_SHAT14       BITMAP                  "..\\Bitmaps\\shatter14_ORG.bmp"
+
+IDB_ORANGE_SHAT15       BITMAP                  "..\\Bitmaps\\shatter15_ORG.bmp"
+
+IDB_PURPLE_SHAT1        BITMAP                  "..\\Bitmaps\\shatter1_PUR.bmp"
+
+IDB_PURPLE_SHAT2        BITMAP                  "..\\Bitmaps\\shatter2_PUR.bmp"
+
+IDB_PURPLE_SHAT3        BITMAP                  "..\\Bitmaps\\shatter3_PUR.bmp"
+
+IDB_PURPLE_SHAT4        BITMAP                  "..\\Bitmaps\\shatter4_PUR.bmp"
+
+IDB_PURPLE_SHAT5        BITMAP                  "..\\Bitmaps\\shatter5_PUR.bmp"
+
+IDB_PURPLE_SHAT6        BITMAP                  "..\\Bitmaps\\shatter6_PUR.bmp"
+
+IDB_PURPLE_SHAT7        BITMAP                  "..\\Bitmaps\\shatter7_PUR.bmp"
+
+IDB_PURPLE_SHAT8        BITMAP                  "..\\Bitmaps\\shatter8_PUR.bmp"
+
+IDB_PURPLE_SHAT9        BITMAP                  "..\\Bitmaps\\shatter9_PUR.bmp"
+
+IDB_PURPLE_SHAT10       BITMAP                  "..\\Bitmaps\\shatter10_PUR.bmp"
+
+IDB_PURPLE_SHAT11       BITMAP                  "..\\Bitmaps\\shatter11_PUR.bmp"
+
+IDB_PURPLE_SHAT12       BITMAP                  "..\\Bitmaps\\shatter12_PUR.bmp"
+
+IDB_PURPLE_SHAT13       BITMAP                  "..\\Bitmaps\\shatter13_PUR.bmp"
+
+IDB_PURPLE_SHAT14       BITMAP                  "..\\Bitmaps\\shatter14_PUR.bmp"
+
+IDB_PURPLE_SHAT15       BITMAP                  "..\\Bitmaps\\shatter15_PUR.bmp"
+
+IDB_RED_SHAT1           BITMAP                  "..\\Bitmaps\\shatter1_RED.bmp"
+
+IDB_RED_SHAT2           BITMAP                  "..\\Bitmaps\\shatter2_RED.bmp"
+
+IDB_RED_SHAT3           BITMAP                  "..\\Bitmaps\\shatter3_RED.bmp"
+
+IDB_RED_SHAT4           BITMAP                  "..\\Bitmaps\\shatter4_RED.bmp"
+
+IDB_RED_SHAT5           BITMAP                  "..\\Bitmaps\\shatter5_RED.bmp"
+
+IDB_RED_SHAT6           BITMAP                  "..\\Bitmaps\\shatter6_RED.bmp"
+
+IDB_RED_SHAT7           BITMAP                  "..\\Bitmaps\\shatter7_RED.bmp"
+
+IDB_RED_SHAT8           BITMAP                  "..\\Bitmaps\\shatter8_RED.bmp"
+
+IDB_RED_SHAT9           BITMAP                  "..\\Bitmaps\\shatter9_RED.bmp"
+
+IDB_RED_SHAT10          BITMAP                  "..\\Bitmaps\\shatter10_RED.bmp"
+
+IDB_RED_SHAT11          BITMAP                  "..\\Bitmaps\\shatter11_RED.bmp"
+
+IDB_RED_SHAT12          BITMAP                  "..\\Bitmaps\\shatter12_RED.bmp"
+
+IDB_RED_SHAT13          BITMAP                  "..\\Bitmaps\\shatter13_RED.bmp"
+
+IDB_RED_SHAT14          BITMAP                  "..\\Bitmaps\\shatter14_RED.bmp"
+
+IDB_RED_SHAT15          BITMAP                  "..\\Bitmaps\\shatter15_RED.bmp"
+
+IDB_YELLOW_SHAT1        BITMAP                  "..\\Bitmaps\\shatter1_YEL.bmp"
+
+IDB_YELLOW_SHAT2        BITMAP                  "..\\Bitmaps\\shatter2_YEL.bmp"
+
+IDB_YELLOW_SHAT3        BITMAP                  "..\\Bitmaps\\shatter3_YEL.bmp"
+
+IDB_YELLOW_SHAT4        BITMAP                  "..\\Bitmaps\\shatter4_YEL.bmp"
+
+IDB_YELLOW_SHAT5        BITMAP                  "..\\Bitmaps\\shatter5_YEL.bmp"
+
+IDB_YELLOW_SHAT6        BITMAP                  "..\\Bitmaps\\shatter6_YEL.bmp"
+
+IDB_YELLOW_SHAT7        BITMAP                  "..\\Bitmaps\\shatter7_YEL.bmp"
+
+IDB_YELLOW_SHAT8        BITMAP                  "..\\Bitmaps\\shatter8_YEL.bmp"
+
+IDB_YELLOW_SHAT9        BITMAP                  "..\\Bitmaps\\shatter9_YEL.bmp"
+
+IDB_YELLOW_SHAT10       BITMAP                  "..\\Bitmaps\\shatter10_YEL.bmp"
+
+IDB_YELLOW_SHAT11       BITMAP                  "..\\Bitmaps\\shatter11_YEL.bmp"
+
+IDB_YELLOW_SHAT12       BITMAP                  "..\\Bitmaps\\shatter12_YEL.bmp"
+
+IDB_YELLOW_SHAT13       BITMAP                  "..\\Bitmaps\\shatter13_YEL.bmp"
+
+IDB_YELLOW_SHAT14       BITMAP                  "..\\Bitmaps\\shatter14_YEL.bmp"
+
+IDB_YELLOW_SHAT15       BITMAP                  "..\\Bitmaps\\shatter15_YEL.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
