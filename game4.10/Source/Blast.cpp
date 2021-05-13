@@ -5,8 +5,7 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
-#include "BlastEffect.h"
-
+#include "Blast.h"
 
 namespace game_framework {
 	static int redBmp[] = { IDB_RED_EXPL1, IDB_RED_EXPL2, IDB_RED_EXPL3, IDB_RED_EXPL4, IDB_RED_EXPL5,
@@ -117,7 +116,7 @@ namespace game_framework {
 						IDB_PURPLE_H_EXPL21, IDB_PURPLE_H_EXPL22, IDB_PURPLE_H_EXPL23, IDB_PURPLE_H_EXPL24, IDB_PURPLE_H_EXPL25,
 						IDB_PURPLE_H_EXPL26, IDB_PURPLE_H_EXPL27, IDB_PURPLE_H_EXPL28, IDB_PURPLE_H_EXPL29, IDB_PURPLE_H_EXPL30 };
 
-	void BlastEffect::SetTopLeft(int x, int y)
+	void Blast::SetTopLeft(int x, int y)
 	{
 		this->x = x;
 		this->y = y;
@@ -258,13 +257,13 @@ namespace game_framework {
 		return currentShow >= 29;
 	}
 
-	CAnimation SuperBlast::chocalate;
+	CAnimation SuperBlast::chocolate;
 
 	SuperBlast::SuperBlast(int x, int y, int delay, bool showAll) :currentShow(0), lightningDelay(delay), showAll(showAll)
 	{
 		this->x = x;
 		this->y = y;
-		chocalate.SetDelayCount(3);
+		chocolate.SetDelayCount(3);
 	}
 
 	SuperBlast::~SuperBlast()
@@ -274,7 +273,7 @@ namespace game_framework {
 	void SuperBlast::OnMove()
 	{
 		currentShow++;
-		chocalate.OnMove();
+		chocolate.OnMove();
 
 		for (auto i = magicBlasts.begin(); i != magicBlasts.end();)
 		{
@@ -303,10 +302,9 @@ namespace game_framework {
 
 	void SuperBlast::ShowLightning(bool showAll)
 	{
-		chocalate.SetTopLeft(x, y);
-		chocalate.OnShow();	//Show chocalate
+		chocolate.SetTopLeft(x, y);
+		chocolate.OnShow();
 		CDC *pDC = CDDraw::GetBackCDC();
-
 		CPen penLighting;
 		CPen *pPen;
 
@@ -318,7 +316,7 @@ namespace game_framework {
 		{
 			for (auto i = target.begin(); i != target.end(); i++)
 			{
-				DrawLine(pDC, CPoint(x + 25, y + 25), *i);
+				DrawLine(pDC, CPoint(x + 25, y + 25), *i); //Draw a lightning from current position to target
 			}
 		}
 		else
@@ -361,7 +359,9 @@ namespace game_framework {
 				break;
 			}
 		}
-		if (!blastExists) magicBlasts.push_back(blast);
+
+		if (!blastExists)
+			magicBlasts.push_back(blast);
 	}
 
 	list<CPoint>* SuperBlast::GetRoutePoints(CPoint start, CPoint end)
@@ -371,6 +371,7 @@ namespace game_framework {
 		int totalPoint = abs(start.x - end.x) > 10 ? abs(start.x - end.x) / 10 : abs(start.x - end.x);
 
 		int reverse = start.x > end.x ? -1 : 1;
+
 		for (int i = 0; i < totalPoint; i++)
 		{
 			CPoint point;
@@ -378,6 +379,7 @@ namespace game_framework {
 			point.y = (point.x * end.y - point.x * start.y - start.x * end.y + end.x * start.y) / (end.x - start.x);
 			route->push_back(point);
 		}
+
 		route->push_back(end);
 
 		int j = 0;
@@ -403,11 +405,11 @@ namespace game_framework {
 
 	void SuperBlast::LoadBitmap()
 	{
-		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy1.bmp", RGB(254, 191, 200));
-		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy2.bmp", RGB(254, 191, 200));
-		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy3.bmp", RGB(254, 191, 200));
-		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy4.bmp", RGB(254, 191, 200));
-		chocalate.AddBitmap("Bitmaps\\BlastSuperCandy5.bmp", RGB(254, 191, 200));
+		chocolate.AddBitmap("Bitmaps\\BlastSuperCandy1.bmp", RGB(254, 191, 200));
+		chocolate.AddBitmap("Bitmaps\\BlastSuperCandy2.bmp", RGB(254, 191, 200));
+		chocolate.AddBitmap("Bitmaps\\BlastSuperCandy3.bmp", RGB(254, 191, 200));
+		chocolate.AddBitmap("Bitmaps\\BlastSuperCandy4.bmp", RGB(254, 191, 200));
+		chocolate.AddBitmap("Bitmaps\\BlastSuperCandy5.bmp", RGB(254, 191, 200));
 	}
 
 	CMovingBitmap MagicBlast::bmp[4];

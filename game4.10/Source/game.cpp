@@ -34,6 +34,7 @@
 #include <ddraw.h>
 #include <direct.h>
 #include <string.h>
+#include <set>
 #include "gamelib.h"
 #include "mygame.h"
 #include "gameView.h"

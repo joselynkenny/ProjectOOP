@@ -54,7 +54,6 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
-#include <stdlib.h>
 #include <ddraw.h>
 #include <set>
 #include <string.h>
@@ -62,8 +61,6 @@
 #include "audio.h"
 #include "gamelib.h"
 #include "mygame.h"
-#include <iostream>
-#include <algorithm>
 
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////

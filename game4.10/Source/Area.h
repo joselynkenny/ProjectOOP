@@ -78,7 +78,8 @@ namespace game_framework
 		CMovingBitmap portalStart1, portalStart2, portalEnd1, portalEnd2;
 		vector<Candy*> clickedCandies;					
 		vector<Stage*>::iterator stage;					
-		list<pair<int, int>> spawnArea;					
+		list<pair<int, int>> spawnArea;
+		list<Blast*> blasts;
 		list<list<Candy*>*> removeList;					
 		list<Candy*> endingBonus;
 		ScoreBoard scoreBoard;

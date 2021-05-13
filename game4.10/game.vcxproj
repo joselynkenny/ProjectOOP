@@ -262,7 +262,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Area.cpp" />
     <ClCompile Include="Source\audio.cpp" />
-    <ClCompile Include="Source\BlastEffect.cpp" />
+    <ClCompile Include="Source\Blast.cpp" />
     <ClCompile Include="Source\Candy.cpp" />
     <ClCompile Include="Source\game.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -310,7 +310,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Area.h" />
     <ClInclude Include="Source\audio.h" />
-    <ClInclude Include="Source\BlastEffect.h" />
+    <ClInclude Include="Source\Blast.h" />
     <ClInclude Include="Source\Candy.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gameDoc.h" />

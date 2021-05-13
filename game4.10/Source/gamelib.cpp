@@ -248,6 +248,50 @@ namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 CMovingBitmap CInteger::digit[44];
 
+int operator+(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n + rhs.n;
+}
+
+int operator-(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n - rhs.n;
+}
+
+int operator*(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n * rhs.n;
+}
+
+int operator/(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n / rhs.n;
+}
+
+bool operator==(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n == rhs.n;
+}
+
+bool operator<(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n < rhs.n;
+}
+
+bool operator<=(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n <= rhs.n;
+}
+
+bool operator>(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n > rhs.n;
+}
+
+bool operator>=(const CInteger& lhs, const CInteger& rhs)
+{
+	return lhs.n >= rhs.n;
+}
 
 int GetDigit(int n)
 {
@@ -298,14 +342,12 @@ void CInteger::SetType(int Type)
 }
 void CInteger::LoadBitmap()
 {
-	//
-	// digit[i]為class varibale，所以必須避免重複LoadBitmap
-	//
 	if (!isBmpLoaded) {
 		int d[44] = { IDB_0, IDB_1, IDB_2, IDB_3, IDB_4, IDB_5, IDB_6, IDB_7, IDB_8, IDB_9, IDB_MINUS,
 					  IDB1_0, IDB1_1, IDB1_2, IDB1_3, IDB1_4, IDB1_5, IDB1_6, IDB1_7, IDB1_8, IDB1_9, IDB_MINUS,
 					  IDB2_0, IDB2_1, IDB2_2, IDB2_3, IDB2_4, IDB2_5, IDB2_6, IDB2_7, IDB2_8, IDB2_9, IDB_MINUS,
 					  IDB3_0, IDB3_1, IDB3_2, IDB3_3, IDB3_4, IDB3_5, IDB3_6, IDB3_7, IDB3_8, IDB3_9, IDB_MINUS };
+
 		for (int i = 0; i < 44; i++)
 		{
 			if (i < 11) digit[i].LoadBitmap(d[i], RGB(253, 191, 200));
@@ -408,51 +450,6 @@ void CInteger::ShowBitmap()
 		digit[10 + Type].SetTopLeft(nx, y);
 		digit[10 + Type].ShowBitmap();
 	}
-}
-
-int operator+(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n + rhs.n;
-}
-
-int operator-(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n - rhs.n;
-}
-
-int operator*(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n * rhs.n;
-}
-
-int operator/(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n / rhs.n;
-}
-
-bool operator==(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n == rhs.n;
-}
-
-bool operator<(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n < rhs.n;
-}
-
-bool operator<=(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n <= rhs.n;
-}
-
-bool operator>(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n > rhs.n;
-}
-
-bool operator>=(const CInteger& lhs, const CInteger& rhs)
-{
-	return lhs.n >= rhs.n;
 }
 
 /////////////////////////////////////////////////////////////////////////////

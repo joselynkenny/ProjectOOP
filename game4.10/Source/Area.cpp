@@ -9,6 +9,7 @@
 #include <set>
 #include "audio.h"
 #include "gamelib.h"
+#include "Blast.h"
 #include "Candy.h"
 #include "Stage.h"
 #include "ScoreBoard.h"
@@ -25,6 +26,7 @@ namespace game_framework
 		playingVoice(0)
 	{
 		scoreBoard.score = 0;
+
 		for (int i = 0; i < MaxHeight; i++)
 			for (int j = 0; j < MaxWidth; j++)
 				curPosition[i][j] = NULL;
@@ -52,6 +54,10 @@ namespace game_framework
 		portalEnd1.LoadBitmap("Bitmaps\\portalEnd1.bmp", RGB(0, 0, 0));
 		portalEnd2.LoadBitmap("Bitmaps\\portalEnd2.bmp", RGB(0, 0, 0));
 		Candy::LoadBitmap();
+		NormalBlast::LoadBitmap();
+		LineBlast::LoadBitmap();
+		SuperBlast::LoadBitmap();
+		MagicBlast::LoadBitmap();
 	}
 
 	void Area::LoadStage(vector<Stage*>& stages, int index)
@@ -127,6 +133,7 @@ namespace game_framework
 
 		if (!initiating && candy->GetStyle())
 		{
+			blasts.push_back(new NormalBlast(candy->GetStyle(), candy->GetTopLeftX(), candy->GetTopLeftY()));
 			totalCandyCleared++;
 		}
 
@@ -138,9 +145,19 @@ namespace game_framework
 		case 0:
 			break;
 		case 1:
+			if (!initiating && style)
+			{
+				blasts.push_back(new LineBlast(style, candy->GetTopLeftX(), candy->GetTopLeftY(), 1));
+			}
+
 			RemoveRow(row);
 			break;
 		case 2:
+			if (!initiating && style)
+			{
+				blasts.push_back(new LineBlast(style, candy->GetTopLeftX(), candy->GetTopLeftY(), 2));
+			}
+
 			RemoveColumn(column);
 			break;
 		case 3:
@@ -155,6 +172,7 @@ namespace game_framework
 	void Area::ReleaseSwap()
 	{
 		int firstPow = clickedCandies[0]->GetPower(), secondPow = clickedCandies[1]->GetPower();
+
 		if (firstPow == 4 && secondPow == 4)
 		{	
 			unsigned row, column;
@@ -187,6 +205,8 @@ namespace game_framework
 		{	
 			unsigned row, column;
 			Find(clickedCandies[0], row, column);
+			blasts.push_back(new LineBlast(clickedCandies[0]->GetStyle(), clickedCandies[0]->GetTopLeftX(), clickedCandies[0]->GetTopLeftY(), 1));
+			blasts.push_back(new LineBlast(clickedCandies[0]->GetStyle(), clickedCandies[1]->GetTopLeftX(), clickedCandies[1]->GetTopLeftY(), 2));
 			clickedCandies[0]->Delete();
 			clickedCandies[1]->Delete();
 			RemoveRow(row);
@@ -197,14 +217,15 @@ namespace game_framework
 			unsigned row, column;
 			Find(clickedCandies[0], row, column);
 			RemoveSquare(row, column, 2);
-			if (*sound) CAudio::Instance()->Play(AUDIO_SQUARE_REMOVE2, false);
 		}
 		else if (firstPow == 3 && secondPow > 0 && secondPow < 3)
 		{	
 			unsigned row, column;
 			Find(clickedCandies[1], row, column);
+
 			for (unsigned i = row - 1; i < row + 2; i++)
 				RemoveRow(i);
+
 			for (unsigned i = column - 1; i < column + 2; i++)
 				RemoveColumn(i);
 		}
@@ -212,11 +233,14 @@ namespace game_framework
 		{	
 			unsigned row, column;
 			Find(clickedCandies[0], row, column);
+			
 			for (unsigned i = row - 1; i < row + 2; i++)
 				RemoveRow(i);
+			
 			for (unsigned i = column - 1; i < column + 2; i++)
 				RemoveColumn(i);
 		}
+
 		InitClickedCandy();
 		clickedCandies.clear();
 		scoreBoard.moves--;
@@ -245,6 +269,7 @@ namespace game_framework
 				{
 					if (i == row && j == column)
 						continue;
+
 					if (i >= 0 && i < MaxHeight && j >= 0 && j < MaxWidth)
 						if (i >= row - 1 && i < row + 2 && j >= column - 1 && j < column + 2)
 							ReleasePower(NULL, i, j);
@@ -263,6 +288,7 @@ namespace game_framework
 				{
 					if (i == row && j == column)
 						continue;
+
 					if (i >= 0 && i < MaxHeight && j >= 0 && j < MaxWidth)
 						ReleasePower(NULL, i, j);
 				}
@@ -273,35 +299,50 @@ namespace game_framework
 	{	
 		for (int i = 0; i < MaxHeight; i++)
 		{
+			SuperBlast* superBlast = new SuperBlast(column * 50 + 280, row * 50 + 35);
 			removeList.push_back(new list<Candy*>);
+			
 			for (int j = 0; j < MaxWidth; j++)
 			{
 				if (map[i][j])
 				{
 					(*removeList.back()).push_back(&candies[i][j]);
+					superBlast->AddPoint(candies[i][j].GetTopLeftX() + 25, candies[i][j].GetTopLeftY() + 25);
 				}
 			}
+
+			blasts.push_back(superBlast);
 
 			if (!(*removeList.back()).size())
 			{	
 				delete removeList.back();
 				removeList.pop_back();
+				delete blasts.back();
+				blasts.pop_back();
 			}
 		}
 	}
 
 	void Area::RemoveStyle(int x, int y, int style)
 	{
-		if (!style) style = rand() % MAX_RAND_NUM + 1;
+		if (!style)
+			style = rand() % MAX_RAND_NUM + 1;
 
 		removeList.push_back(new list<Candy*>);
+		SuperBlast* superBlast = (x || y) ? new SuperBlast(x, y, 4) : NULL;
 
 		for (int i = 0; i < MaxHeight; i++)
 			for (int j = 0; j < MaxWidth; j++)
 				if (candies[i][j].GetStyle() == style && candies[i][j].GetPower() != 4)
 				{
 					(*removeList.rbegin())->push_back(&candies[i][j]);
+
+					if (superBlast != NULL)
+						superBlast->AddPoint(candies[i][j].GetTopLeftX() + 25, candies[i][j].GetTopLeftY() + 25);
 				}
+
+		if (superBlast != NULL)
+			blasts.push_back(superBlast);
 
 		if (!(*removeList.back()).size())
 		{	
@@ -312,13 +353,20 @@ namespace game_framework
 
 	void Area::PowerAll(int style, int power, int x, int y)
 	{
+		SuperBlast* superBlast = new SuperBlast(x, y, 0, true);
+
 		for (int i = 0; i < MaxHeight; i++)
 			for (int j = 0; j < MaxWidth; j++)
 				if (candies[i][j].GetStyle() == style && candies[i][j].GetPower() != 4)
 				{
-					if (power == 1 || power == 2) power = rand() % 2 + 1;
+					if (power == 1 || power == 2)
+						power = rand() % 2 + 1;
+					
 					candies[i][j].SetPower(power);
+					superBlast->AddPoint(candies[i][j].GetTopLeftX() + 25, candies[i][j].GetTopLeftY() + 25);
 				}
+
+		blasts.push_back(superBlast);
 		delay = (int)(1000.0 / GAME_CYCLE_TIME);
 		delayRemoveStyle = style;
 		delayRemove = true;
@@ -406,6 +454,9 @@ namespace game_framework
 		}
 
 		ShowPortal(2);
+
+		for (auto i = blasts.begin(); i != blasts.end(); i++)
+			(*i)->OnShow();
 	}
 
 	void Area::OnMove()
@@ -439,12 +490,14 @@ namespace game_framework
 
 	void Area::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
-		if (nChar == VK_F1) goldFinger = true;
+		if (nChar == VK_F1)
+			goldFinger = true;
 	}
 
 	void Area::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
-		if (nChar == VK_F1) goldFinger = false;
+		if (nChar == VK_F1) 
+			goldFinger = false;
 	}
 
 	int Area::FindCombo()
@@ -458,7 +511,6 @@ namespace game_framework
 		}
 		if (!initiating && !delayRemove && !removeList.size())
 		{
-
 			int candyCleared = ClearCombo();
 
 			if (totalCandyCleared)
@@ -467,6 +519,7 @@ namespace game_framework
 				sprintf(cc, "comboCleared : %d\n", totalCandyCleared);
 				TRACE(cc);
 			}
+
 			totalCandyCleared = 0;
 
 			if (candyCleared && clickedCandies.size() == 2)
@@ -488,6 +541,19 @@ namespace game_framework
 
 	void Area::OnMoveBlasts()
 	{
+		for (auto i = blasts.begin(); i != blasts.end();)
+		{
+			if ((*i)->IsEnd())
+			{
+				delete *i;
+				i = blasts.erase(i);
+			}
+			else
+			{
+				(*i)->OnMove();
+				i++;
+			}
+		}
 	}
 
 	void Area::OnLButtonDown(UINT nFlags, CPoint point)
@@ -578,6 +644,12 @@ namespace game_framework
 
 	void Area::InitCandy(bool drop)
 	{
+		for (auto i = blasts.begin(); i != blasts.end();)
+		{
+			delete *i;
+			blasts.erase(i++);
+		}
+
 		for (int i = 0; i < MaxHeight; i++)
 		{
 			for (int j = 0; j < MaxWidth; j++)
@@ -587,7 +659,6 @@ namespace game_framework
 				case 0:
 					candies[i][j] = Candy(j * 50 + x, i * 50 + y);
 					break;
-
 				default:
 					int id = drop == true ? 0 : rand() % MAX_RAND_NUM + 1;
 					candies[i][j] = Candy(id, j * 50 + x, i * 50 + y);
@@ -595,6 +666,7 @@ namespace game_framework
 				}
 			}
 		}
+
 		UpdateCurPosition();
 
 		while (!drop && (ClearCombo() || IsDropping()))
@@ -807,8 +879,8 @@ namespace game_framework
 		{
 			GetLine(line, toDelete, check);					
 			stable_sort(line.begin(), line.end(), Compare);
-
 			int count = 1;
+
 			for (unsigned int i = 0; i < line.size() - 1; i++)
 			{
 				if (line[i]->GetTopLeft(axis) + 50 == line[i + 1]->GetTopLeft(axis))
@@ -822,15 +894,19 @@ namespace game_framework
 					comboDeleted += count;
 				}
 			}
+
 			if (count >= 3)
 			{
 				RemoveContinuous(line, (unsigned)(line.size() - count), (unsigned)(line.size()), axis, temp);
 				comboDeleted += count;
 			}
+
 			line.clear();
+
 			if (toDelete.size() < 3)
 				break;	
 		}
+
 		toDelete.clear();
 		return comboDeleted;
 	}
@@ -907,6 +983,7 @@ namespace game_framework
 	void Area::GetLine(vector<Candy*>& line, vector<Candy*>& toDelete, char check)
 	{
 		int currentLine = toDelete[0]->GetTopLeft(check);
+		
 		for (auto i = toDelete.begin(); i != toDelete.end();)
 		{
 			if ((*i)->GetTopLeft(check) == currentLine)
@@ -928,7 +1005,8 @@ namespace game_framework
 	void Area::GotoGameStateOver(bool result)
 	{
 		
-		if (delay > 0) delay--;
+		if (delay > 0)
+			delay--;
 		else if (result)
 		{	
 			(*(stage + 1))->SetUnlock();
@@ -948,6 +1026,7 @@ namespace game_framework
 	int Area::PutCandy()
 	{	
 		int total = 0;
+
 		for (auto i = spawnArea.begin(); i != spawnArea.end(); i++)
 			if (curPosition[i->first][i->second] == NULL)
 			{
@@ -956,6 +1035,7 @@ namespace game_framework
 				candies[i->first][i->second].SetDestination(i->first * 50 + y);
 				total++;
 			}
+
 		return total;
 	}
 
@@ -986,16 +1066,15 @@ namespace game_framework
 
 	bool Area::IsNeighbour(Candy &a, Candy &b)
 	{
-		bool vertiNeighbour = fabs(a.GetTopLeftX() - b.GetTopLeftX()) == 50 && a.GetTopLeftY() == b.GetTopLeftY();
-		bool horztNeighbour = fabs(a.GetTopLeftY() - b.GetTopLeftY()) == 50 && a.GetTopLeftX() == b.GetTopLeftX();
-		return vertiNeighbour || horztNeighbour;
+		bool verticalNeighbour = fabs(a.GetTopLeftX() - b.GetTopLeftX()) == 50 && a.GetTopLeftY() == b.GetTopLeftY();
+		bool horizontalNeighbour = fabs(a.GetTopLeftY() - b.GetTopLeftY()) == 50 && a.GetTopLeftX() == b.GetTopLeftX();
+		return verticalNeighbour || horizontalNeighbour;
 	}
 
 	void Area::OnMoveEnding()
 	{
 		bool result = scoreBoard.IsReachedTarget() || (scoreBoard.score > scoreBoard.oneStar && scoreBoard.mode == 1);	//Win or lose
 
-		
 		if (!ending && (!scoreBoard.moves.GetInteger() || scoreBoard.IsReachedTarget()))
 		{
 			PutEndingBonus();
@@ -1022,11 +1101,13 @@ namespace game_framework
 							(*removeList.rbegin())->push_back(&candies[i][j]);
 					}
 				}
+
 				if (!removeList.back()->size())
 				{	
 					delete (*removeList.rbegin());
 					removeList.pop_back();
 				}
+
 				if (!removeList.size() && !gameOver)
 				{	
 					delay = (int)(700.0 / GAME_CYCLE_TIME);

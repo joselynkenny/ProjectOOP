@@ -1,12 +1,13 @@
 #pragma once
-#ifndef BLASTEFFECT_H
-#define BLASTEFFECT_H
+#ifndef BLAST_H
+#define BLAST_H
 
-namespace game_framework{
-	class BlastEffect
+namespace game_framework
+{
+	class Blast
 	{
 	public:
-		virtual ~BlastEffect() {};
+		virtual ~Blast() {};
 		virtual void LoadBitmap() {};
 		virtual void OnShow() {};
 		virtual void OnMove() {};
@@ -17,7 +18,7 @@ namespace game_framework{
 		int style;
 	};
 
-	class NormalBlast :public BlastEffect 
+	class NormalBlast :public Blast 
 	{
 	public:
 		NormalBlast();
@@ -37,7 +38,7 @@ namespace game_framework{
 		const int totalShow;
 	};
 
-	class LineBlast :public BlastEffect
+	class LineBlast :public Blast
 	{
 	public:
 		LineBlast(int style, int x, int y, int power);
@@ -52,7 +53,7 @@ namespace game_framework{
 		int powerStyle;
 	};
 
-	class MagicBlast :public BlastEffect
+	class MagicBlast :public Blast
 	{
 	public:
 		MagicBlast(int x, int y);
@@ -69,7 +70,7 @@ namespace game_framework{
 		int x, y;
 	};
 
-	class SuperBlast :public BlastEffect
+	class SuperBlast :public Blast
 	{
 	public:
 		SuperBlast(int x, int y, int delay = 0, bool showAll = false);
@@ -83,13 +84,12 @@ namespace game_framework{
 		void ShowLightning(bool showAll = false);
 		void DrawLine(CDC*, const CPoint&, const CPoint&);
 		list<CPoint>* GetRoutePoints(CPoint, CPoint);
-		static CAnimation chocalate;
+		static CAnimation chocolate;
 		vector<CPoint> target;
 		list<MagicBlast> magicBlasts;
-		int currentShow;
+		size_t currentShow;
 		int lightningDelay;		
 		bool showAll;			
 	};
 }
-
 #endif

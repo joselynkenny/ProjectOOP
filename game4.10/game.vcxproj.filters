@@ -133,7 +133,7 @@
     <ClCompile Include="Source\Area.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BlastEffect.cpp">
+    <ClCompile Include="Source\Blast.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
   </ItemGroup>
@@ -180,7 +180,7 @@
     <ClInclude Include="Source\Area.h">
       <Filter>MyGame</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BlastEffect.h">
+    <ClInclude Include="Source\Blast.h">
       <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>

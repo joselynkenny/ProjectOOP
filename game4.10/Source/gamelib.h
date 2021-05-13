@@ -316,7 +316,6 @@ public:
 	CGameState(CGame *g);
 	void OnDraw();			// Template Method
 	void OnCycle();			// Template Method
-	bool OnClick(const CPoint& point, CMovingBitmap& button);
 	//
 	// virtual functions, ¥ÑÄ~©ÓªÌ´£¨Ñimplementation
 	//
