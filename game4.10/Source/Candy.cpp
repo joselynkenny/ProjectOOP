@@ -101,6 +101,10 @@ namespace game_framework
 			{
 				y = dy;
 				dropSpeed = 0;
+				int landingSound = rand() % 4;
+
+				//if (!mute && *sound)
+					//CAudio::Instance()->Play(audioID[landingSound], false);
 			}
 		}
 

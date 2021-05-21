@@ -138,6 +138,7 @@ void CGameStateInit::OnBeginState()
 	if (finishLoaded) {
 		LogoCandy.Reset();
 		playBtnClicked = false;	
+
 		if (music) {
 			CAudio::Instance()->Play(AUDIO_STAGE, true);
 		}
@@ -147,6 +148,9 @@ void CGameStateInit::OnBeginState()
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if(ButtonOnClick(point, playButton)) {
+		if (sound)
+			CAudio::Instance()->Play(AUDIO_BTN_CLICK, false);
+
 		playBtnClicked = true;
 	} else {
 		playBtnClicked = false;
@@ -155,6 +159,9 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
 	if (ButtonOnClick(point, playButton)) {
+		if (sound) 
+			CAudio::Instance()->Play(AUDIO_BTN_RELEASE, false);
+		
 		GotoGameState(GAME_STATE_START);
 	}
 	else {
@@ -324,9 +331,15 @@ void CGameStateStart::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_UP = 0x26;
 	const char KEY_DOWN = 0x28;
+	const char KEY_ESC = 27;
 
 	if (nChar == KEY_UP) TapUp = false;
 	if (nChar == KEY_DOWN) TapDown =false;
+	if (nChar == KEY_ESC)
+	{
+		CAudio::Instance()->Stop(AUDIO_STAGE);
+		GotoGameState(GAME_STATE_INIT);
+	}
 }
 
 void CGameStateStart::OnLButtonDown(UINT nFlags, CPoint p)
@@ -350,6 +363,7 @@ void CGameStateStart::OnLButtonUp(UINT nFlags, CPoint point)
 			{
 				current_stage = i;
 				gameArea.LoadStage(stages, i);
+				CAudio::Instance()->Stop(AUDIO_STAGE);
 				GotoGameState(GAME_STATE_RUN);
 			}
 		}
@@ -418,6 +432,16 @@ void CGameStateStart::OnShow()
 		else
 			ShowStageButton(4, i, xButton, yButton);
 	}
+}
+
+void CGameStateStart::SetMusic(bool music)
+{
+	this->music = music;
+
+	if (music)
+		CAudio::Instance()->Play(AUDIO_STAGE, true);
+	else
+		CAudio::Instance()->Stop(AUDIO_STAGE);
 }
 
 void CGameStateStart::ShowStageButton(int stageBtn, int stage, int xButton, int yButton)

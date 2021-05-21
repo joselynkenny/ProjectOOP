@@ -46,15 +46,6 @@
 #include "Area.h"
 
 namespace game_framework {
-	/////////////////////////////////////////////////////////////////////////////
-	// Constants
-	/////////////////////////////////////////////////////////////////////////////
-
-	enum AUDIO_ID {				// �w�q�U�ح��Ī��s��
-		AUDIO_DING,				// 0
-		AUDIO_LAKE,				// 1
-		AUDIO_NTUT				// 2
-	};
 
 	/////////////////////////////////////////////////////////////////////////////
 	// CGameStateInit
@@ -97,6 +88,7 @@ namespace game_framework {
 	protected:
 		void OnShow();	
 		void OnMove();
+		void SetMusic(bool);
 	private:
 		void ShowStageButton(int, int, int, int);
 		void ShowStars(int, int, int);

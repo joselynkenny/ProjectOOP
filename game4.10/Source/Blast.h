@@ -16,6 +16,7 @@ namespace game_framework
 	protected:
 		int x, y;
 		int style;
+		bool *sound;
 	};
 
 	class NormalBlast :public Blast 

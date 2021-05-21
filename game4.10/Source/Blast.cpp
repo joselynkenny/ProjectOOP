@@ -126,6 +126,7 @@ namespace game_framework {
 
 	NormalBlast::NormalBlast() :currentShow(0), totalShow(0)
 	{
+		//sound = &CGameState::sound;
 	}
 
 	NormalBlast::NormalBlast(int style, int x, int y) : currentShow(0), size(1.8), totalShow(rand() % 2 + 2)
@@ -214,6 +215,7 @@ namespace game_framework {
 	{
 		this->style = style;
 		SetTopLeft(x, y);
+		//sound = &CGameState::sound;
 	}
 
 	void LineBlast::LoadBitmap()
@@ -237,6 +239,9 @@ namespace game_framework {
 
 	void LineBlast::OnShow()
 	{
+		//if (*sound && currentShow == 1)
+			//CAudio::Instance()->Play(AUDIO_LINE_BLAST, false);
+
 		switch (powerStyle)
 		{
 		case 1:
@@ -264,10 +269,12 @@ namespace game_framework {
 		this->x = x;
 		this->y = y;
 		chocolate.SetDelayCount(3);
+		sound = &CGameState::sound;
 	}
 
 	SuperBlast::~SuperBlast()
 	{
+		//CAudio::Instance()->Stop(AUDIO_SUPER_REMOVE);
 	}
 
 	void SuperBlast::OnMove()
@@ -416,6 +423,7 @@ namespace game_framework {
 
 	MagicBlast::MagicBlast(int x, int y) :x(x), y(y), currentShow(0)
 	{
+		//sound = &CGameState::sound;
 	}
 
 	MagicBlast::MagicBlast(CPoint p) : x(p.x), y(p.y), currentShow(0)

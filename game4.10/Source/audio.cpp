@@ -59,7 +59,6 @@
 #include <string.h>
 #include "gamelib.h"
 #include "audio.h"
-#include <string>
 
 namespace game_framework {
 

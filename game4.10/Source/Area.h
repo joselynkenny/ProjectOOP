@@ -43,6 +43,7 @@ namespace game_framework
 		bool IsNeighbour(Candy&, Candy&);				
 		void OnMoveBlasts();
 		void OnMoveEnding();
+		//void PlayVoiceEffect(int audio_id);
 		void PowerAll(int style, int power, int x, int y);	
 		int PutCandy();									
 		void PutEndingBonus();

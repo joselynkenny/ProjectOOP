@@ -30,10 +30,14 @@ namespace game_framework
 		for (int i = 0; i < MaxHeight; i++)
 			for (int j = 0; j < MaxWidth; j++)
 				curPosition[i][j] = NULL;
+
+		sound = &CGameState::sound;
 	}
 
 	Area::~Area()
 	{
+		for (auto i = removeList.begin(); i != removeList.end(); i++)
+			delete *i;
 		for (auto i = removeList.begin(); i != removeList.end(); i++)
 			delete *i;
 	}
@@ -217,6 +221,9 @@ namespace game_framework
 			unsigned row, column;
 			Find(clickedCandies[0], row, column);
 			RemoveSquare(row, column, 2);
+
+			//if (*sound)
+			//	CAudio::Instance()->Play(AUDIO_SQUARE_REMOVE2, false);
 		}
 		else if (firstPow == 3 && secondPow > 0 && secondPow < 3)
 		{	
@@ -349,6 +356,8 @@ namespace game_framework
 			delete removeList.back();
 			removeList.pop_back();
 		}
+		//else if (superBlast != NULL && *sound)
+		//	CAudio::Instance()->Play(AUDIO_SUPER_REMOVE, false);
 	}
 
 	void Area::PowerAll(int style, int power, int x, int y)
@@ -367,6 +376,10 @@ namespace game_framework
 				}
 
 		blasts.push_back(superBlast);
+
+		//if (*sound)
+		//	CAudio::Instance()->Play(AUDIO_POWER_ALL, false);
+
 		delay = (int)(1000.0 / GAME_CYCLE_TIME);
 		delayRemoveStyle = style;
 		delayRemove = true;
@@ -457,6 +470,8 @@ namespace game_framework
 
 		for (auto i = blasts.begin(); i != blasts.end(); i++)
 			(*i)->OnShow();
+
+		//PlayVoiceEffect(-1);
 	}
 
 	void Area::OnMove()
@@ -509,18 +524,38 @@ namespace game_framework
 			releaseSwap = false;
 			return 1;
 		}
+
 		if (!initiating && !delayRemove && !removeList.size())
 		{
 			int candyCleared = ClearCombo();
 
-			if (totalCandyCleared)
+			if (candyCleared)
 			{
-				char cc[50];
-				sprintf(cc, "comboCleared : %d\n", totalCandyCleared);
-				TRACE(cc);
+				currentComboSound = currentComboSound > 11 ? 11 : currentComboSound;
+				//if (*sound) CAudio::Instance()->Play(audioID[currentComboSound++], false);
 			}
+			else
+			{
+				if (totalCandyCleared)
+				{
+					char cc[50];
+					sprintf(cc, "comboCleared : %d\n", totalCandyCleared);
+					TRACE(cc);
+				}
 
-			totalCandyCleared = 0;
+				/*
+				if (totalCandyCleared > 30)
+					PlayVoiceEffect(AUDIO_DIVINE);
+				else if (totalCandyCleared >= 24)
+					PlayVoiceEffect(AUDIO_DELICIOUS);
+				else if (totalCandyCleared > 12)
+					PlayVoiceEffect(AUDIO_TASTY);
+				else if (totalCandyCleared == 12)
+					PlayVoiceEffect(AUDIO_SWEET);
+				*/
+
+				currentComboSound = totalCandyCleared = 0;
+			}
 
 			if (candyCleared && clickedCandies.size() == 2)
 			{
@@ -529,6 +564,9 @@ namespace game_framework
 			}
 			else if (!candyCleared && clickedCandies.size() == 2)
 			{
+				//if (*sound)
+				//	CAudio::Instance()->Play(AUDIO_NEG_SWAP, false);
+				
 				SwapCandy();
 				InitClickedCandy();
 			}
@@ -591,6 +629,10 @@ namespace game_framework
 					if (IsNeighbour(*clickedCandies[0], *clickedCandies[1]))
 					{
 						SwapCandy();
+
+						//if (*sound)
+						//	CAudio::Instance()->Play(AUDIO_SWAP, false);
+
 						if (clickedCandies[0]->GetPower() == 4 || clickedCandies[1]->GetPower() == 4 || (clickedCandies[0]->GetPower() && clickedCandies[1]->GetPower()))
 							releaseSwap = true;
 					}
@@ -924,6 +966,9 @@ namespace game_framework
 				temp.insert(line[j]);
 			else if (packCandy && find(temp.begin(), temp.end(), line[j]) != temp.end())
 			{
+				//if (!initiating && *sound)
+					//CAudio::Instance()->Play(AUDIO_PACK_CREATE, false);
+
 				line[j]->SetPower(3);
 				line[j]->Relive();
 				superCandy = linePower = packCandy = false;
@@ -932,6 +977,9 @@ namespace game_framework
 
 			if (linePower && find(clickedCandies.begin(), clickedCandies.end(), line[j]) != clickedCandies.end())
 			{
+				//if (!initiating && *sound)
+					//CAudio::Instance()->Play(AUDIO_LINE_CREATE, false);
+
 				line[j]->Relive();
 				line[j]->SetPower(axis == 'x' ? 2 : 1);
 				linePower = false;
@@ -940,6 +988,9 @@ namespace game_framework
 
 			if (superCandy && find(clickedCandies.begin(), clickedCandies.end(), line[j]) != clickedCandies.end())
 			{
+				//if (!initiating && *sound)
+					//CAudio::Instance()->Play(AUDIO_SUPER_CREATE, false);
+
 				line[j]->Relive();
 				line[j]->SetPower(4);
 				superCandy = false;
@@ -949,12 +1000,18 @@ namespace game_framework
 
 		if (linePower)
 		{
+			//if (!initiating && *sound)
+				//CAudio::Instance()->Play(AUDIO_LINE_CREATE, false);
+
 			line[offset]->SetPower(axis == 'x' ? 2 : 1);
 			line[offset]->Relive();
 		}
 
 		if (superCandy)
 		{
+			//if (!initiating && *sound)
+				//CAudio::Instance()->Play(AUDIO_SUPER_CREATE, false);
+
 			line[offset]->SetPower(4);
 			line[offset]->Relive();
 		}
@@ -996,10 +1053,35 @@ namespace game_framework
 		}
 	}
 
+	
 	void Area::GetWordBmp(double** size, int ** frame, CMovingBitmap ** word, int audio_id)
 	{
 		*size = new double(0.2);
 		*frame = new int(0);
+
+		/*
+		switch (audio_id)
+		{
+		case AUDIO_SWEET:
+			*word = &sweet;
+			break;
+		case AUDIO_TASTY:
+			*word = &tasty;
+			break;
+		case AUDIO_DELICIOUS:
+			*word = &delicious;
+			break;
+		case AUDIO_DIVINE:
+			*word = &divine;
+			break;
+		case AUDIO_SUGAR_CRUSH:
+			*word = &sugarCrush;
+			break;
+		default:
+			GAME_ASSERT(0, "Invalid audio id!");
+		}
+		playingVoice = true;
+		*/
 	}
 
 	void Area::GotoGameStateOver(bool result)
@@ -1009,6 +1091,9 @@ namespace game_framework
 			delay--;
 		else if (result)
 		{	
+			//if (*sound)
+				//CAudio::Instance()->Play(AUDIO_LEVEL_COMPLETE, false);
+
 			(*(stage + 1))->SetUnlock();
 			(*stage)->currentScore = scoreBoard.score.GetInteger();
 			(*stage)->lastHighScore = scoreBoard.lastHighScore < scoreBoard.score ? scoreBoard.score.GetInteger() : scoreBoard.lastHighScore;
@@ -1017,6 +1102,9 @@ namespace game_framework
 		}
 		else
 		{
+			//if (*sound)
+				//CAudio::Instance()->Play(AUDIO_LEVEL_FAIL, false);
+
 			(*stage)->currentScore = scoreBoard.score.GetInteger();
 			(*stage)->SetPassOrFail(1);
 			running = false;
@@ -1124,6 +1212,40 @@ namespace game_framework
 				GotoGameStateOver(result);
 		}
 	}
+
+	/*
+	void Area::PlayVoiceEffect(int audio_id)
+	{
+		static double* size;	
+		static int* frame;		
+		static CMovingBitmap* word;
+
+		if (audio_id != -1)
+			GetWordBmp(&size, &frame, &word, audio_id); // reset animation's size, frame & bitmap
+
+		if (!playingVoice)
+			return;
+
+		word->SetTopLeft(SIZE_X / 2 - (int)(word->Width() * *size) / 2, SIZE_Y / 2 - (int)(word->Height() * *size) / 2);
+		word->ShowBitmap(*size);
+
+		if (*size < 1)
+			*size += 0.1;
+
+		if ((*frame)++ > 30)
+		{
+			delete size;
+			delete frame;
+			playingVoice = false;
+		}
+
+		if (!(*sound) || (*frame) != 1)
+			return;
+
+		CAudio::Instance()->Play(audio_id, false);
+	}
+	*/
+	
 
 	void Area::TeleportCandy()
 	{
