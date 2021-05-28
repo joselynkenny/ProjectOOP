@@ -62,6 +62,8 @@
 #include "gamelib.h"
 #include "mygame.h"
 
+using namespace std;
+
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // CGameStateInit
@@ -131,6 +133,9 @@ void CGameStateInit::OnInit()
 
 	finishLoaded = true;
 	OnBeginState();
+
+	CAudio::Instance()->Load(AUDIO_STATE_FAIL, "sounds\\Level_Failed.mp3");
+	CAudio::Instance()->Load(AUDIO_STATE_COMPLETE, "sounds\\Level_Complete.mp3");
 }
 
 void CGameStateInit::OnBeginState()
@@ -509,6 +514,37 @@ void CGameStateRun::OnMove()
 void CGameStateRun::OnInit()
 {
 	background.LoadBitmap("Bitmaps\\Play.bmp");
+
+	CAudio::Instance()->Load(AUDIO_JELLY, "sounds\\MovesJellyLevels.mp3");
+	CAudio::Instance()->Load(AUDIO_NEG_SWAP, "sounds\\negative_switch_sound1.wav");
+	CAudio::Instance()->Load(AUDIO_SWAP, "sounds\\switch_sound1.wav");
+	CAudio::Instance()->Load(AUDIO_SUPER_CREATE, "sounds\\colour_bomb_created.wav");
+	CAudio::Instance()->Load(AUDIO_LINE_CREATE, "sounds\\striped_candy_created1.wav");
+	CAudio::Instance()->Load(AUDIO_PACK_CREATE, "sounds\\wrapped_candy_created1.wav");
+	CAudio::Instance()->Load(AUDIO_POWER_ALL, "sounds\\colour_bomb1.wav");
+	CAudio::Instance()->Load(AUDIO_SQUARE_REMOVE1, "sounds\\square_removed1.wav");
+	CAudio::Instance()->Load(AUDIO_SQUARE_REMOVE2, "sounds\\square_removed2.wav");
+	CAudio::Instance()->Load(AUDIO_LINE_BLAST, "sounds\\line_blast1.wav");
+	CAudio::Instance()->Load(AUDIO_CANDY_LAND1, "sounds\\candy_land1.wav");
+	CAudio::Instance()->Load(AUDIO_CANDY_LAND2, "sounds\\candy_land2.wav");
+	CAudio::Instance()->Load(AUDIO_CANDY_LAND3, "sounds\\candy_land3.wav");
+	CAudio::Instance()->Load(AUDIO_CANDY_LAND4, "sounds\\candy_land4.wav");
+	CAudio::Instance()->Load(AUDIO_SUPER_REMOVE, "sounds\\super_colour_bomb1.wav");
+	CAudio::Instance()->Load(AUDIO_SWEET, "sounds\\sweet.wav");
+	CAudio::Instance()->Load(AUDIO_TASTY, "sounds\\tasty.wav");
+	CAudio::Instance()->Load(AUDIO_DELICIOUS, "sounds\\delicious.wav");
+	CAudio::Instance()->Load(AUDIO_DIVINE, "sounds\\divine.wav");
+	CAudio::Instance()->Load(AUDIO_SUGAR_CRUSH, "sounds\\sugar_crush.wav");
+	CAudio::Instance()->Load(AUDIO_LEVEL_FAIL, "sounds\\level_failed1.wav");
+	CAudio::Instance()->Load(AUDIO_LEVEL_COMPLETE, "sounds\\level_completed.wav");
+
+	for (int i = 0; i < 12; i++)
+	{
+		char sound[30] = { 0 };
+		sprintf(sound, "sounds\\combo_sound%d.wav", i + 1);
+		CAudio::Instance()->Load(AUDIO_COMBO1 + i, sound);
+	}
+
 	gameArea.LoadBitmap();
 }
 

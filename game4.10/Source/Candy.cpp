@@ -103,8 +103,8 @@ namespace game_framework
 				dropSpeed = 0;
 				int landingSound = rand() % 4;
 
-				//if (!mute && *sound)
-					//CAudio::Instance()->Play(audioID[landingSound], false);
+				if (!mute && *sound)
+					CAudio::Instance()->Play(audioID[landingSound], false);
 			}
 		}
 
